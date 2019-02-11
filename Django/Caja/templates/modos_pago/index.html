@@ -43,7 +43,7 @@
             <th class="align-middle" scope="row">{{ modo_pago.mpago_id }}</th>
             <td class="align-middle">{{ modo_pago.mpago_nomb }}</td>
             <td class="align-middle">{{ modo_pago.mpago_cuot }}</td>
-            <td class="align-middle">{{ modo_pago.mpago_inte|stringformat:'0.02f' }}%</td>
+            <td class="align-middle">{{ modo_pago.mpago_inte }}%</td>
             <td class="align-middle text-center"><input type="checkbox" disabled{% if modo_pago.mpago_acti %} checked{% endif %}></td>
             <td class="text-right"><a class="btn text-primary" href="{% url 'modo_pago_update' modo_pago.mpago_id %}" role="button">Editar</a><a class="btn text-danger ml-3" href="{% url 'modo_pago_delete' modo_pago.mpago_id %}" role="button">Eliminar</a></td>
           </tr>
