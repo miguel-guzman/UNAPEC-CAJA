@@ -1,0 +1,51 @@
+{% extends '_layout\core.html' %}
+
+{% block title%}Formas de Pago{% endblock title %}
+
+{% block content %}
+    <div class="container">
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-primary alert-dismissible fade show mt-3" role="alert">
+        <button type="button" class="close" data-dismiss="alert">
+          &times;
+        </button>
+      {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+      <nav>
+        <ol class="breadcrumb bg-light mt-3">
+          <li class="breadcrumb-item"><a href="{% url 'index' %}">Inicio</a></li>
+          <li class="breadcrumb-item active" >Formas de Pago</li>
+        </ol>
+      </nav>
+      <div class="row mt-3">
+        <div class="col text-center">
+          <a class="btn btn-success" href="{% url 'forma_pago_create' %}" role="button">Crear</a>
+        </div>
+      </div>
+  {% if formas_pago %}
+      <table class="table table-striped mt-3">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nombre</th>
+            <th class="text-center" scope="col">Activa</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+    {% for forma_pago in formas_pago %}
+          <tr>
+            <th class="align-middle" scope="row">{{ forma_pago.fpago_id }}</th>
+            <td class="align-middle">{{ forma_pago.fpago_nomb }}</td>
+            <td class="align-middle text-center"><input type="checkbox" disabled{% if forma_pago.fpago_acti %} checked{% endif %}></td>
+            <td class="text-right"><a class="btn text-primary" href="{% url 'forma_pago_update' forma_pago.fpago_id %}" role="button">Editar</a><a class="btn text-danger ml-3" href="{% url 'forma_pago_delete' forma_pago.fpago_id %}" role="button">Eliminar</a></td>
+          </tr>
+    {% endfor %}
+        </tbody>
+      </table>
+  {% endif %}
+    </div>
+{% endblock content %}

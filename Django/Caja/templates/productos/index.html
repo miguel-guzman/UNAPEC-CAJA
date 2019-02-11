@@ -1,0 +1,53 @@
+{% extends '_layout\core.html' %}
+
+{% block title%}Productos{% endblock title %}
+
+{% block content %}
+    <div class="container">
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-primary alert-dismissible fade show mt-3" role="alert">
+        <button type="button" class="close" data-dismiss="alert">
+          &times;
+        </button>
+      {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+      <nav>
+        <ol class="breadcrumb bg-light mt-3">
+          <li class="breadcrumb-item"><a href="{% url 'index' %}">Inicio</a></li>
+          <li class="breadcrumb-item active" >Productos</li>
+        </ol>
+      </nav>
+      <div class="row mt-3">
+        <div class="col text-center">
+          <a class="btn btn-success" href="{% url 'producto_create' %}" role="button">Crear</a>
+        </div>
+      </div>
+  {% if productos %}
+      <table class="table table-striped mt-3">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Precio</th>
+            <th class="text-center" scope="col">Activo</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+    {% for producto in productos %}
+          <tr>
+            <th class="align-middle" scope="row">{{ producto.prod_id }}</th>
+            <td class="align-middle">{{ producto.prod_nomb }}</td>
+            <td class="align-middle"><small>RD$</small>{{ producto.prod_prec|floatformat:2 }}</td>
+            <td class="align-middle text-center"><input type="checkbox" disabled{% if producto.prod_acti %} checked{% endif %}></td>
+            <td class="text-right"><a class="btn text-primary" href="{% url 'producto_update' producto.prod_id %}" role="button">Editar</a><a class="btn text-danger ml-3" href="{% url 'producto_delete' producto.prod_id %}" role="button">Eliminar</a></td>
+          </tr>
+    {% endfor %}
+        </tbody>
+      </table>
+  {% endif %}
+    </div>
+{% endblock content %}

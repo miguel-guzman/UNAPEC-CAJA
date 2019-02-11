@@ -1,0 +1,53 @@
+{% extends '_layout\core.html' %}
+
+{% block title%}Carreras{% endblock title %}
+
+{% block content %}
+    <div class="container">
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-primary alert-dismissible fade show mt-3" role="alert">
+        <button type="button" class="close" data-dismiss="alert">
+          &times;
+        </button>
+      {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+      <nav>
+        <ol class="breadcrumb bg-light mt-3">
+          <li class="breadcrumb-item"><a href="{% url 'index' %}">Inicio</a></li>
+          <li class="breadcrumb-item active" >Carreras</li>
+        </ol>
+      </nav>
+      <div class="row mt-3">
+        <div class="col text-center">
+          <a class="btn btn-success" href="{% url 'carrera_create' %}" role="button">Crear</a>
+        </div>
+      </div>
+  {% if carreras %}
+      <table class="table table-striped mt-3">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Código</th>
+            <th scope="col">Nombre</th>
+            <th class="text-center" scope="col">Activa</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+    {% for carrera in carreras %}
+          <tr>
+            <th class="align-middle" scope="row">{{ carrera.carr_id }}</th>
+            <td class="align-middle">{{ carrera.carr_codi }}</td>
+            <td class="align-middle">{{ carrera.carr_nomb }}</td>
+            <td class="align-middle text-center"><input type="checkbox" disabled{% if carrera.carr_acti %} checked{% endif %}></td>
+            <td class="text-right"><a class="btn text-primary" href="{% url 'carrera_update' carrera.carr_id %}" role="button">Editar</a><a class="btn text-danger ml-3" href="{% url 'carrera_delete' carrera.carr_id %}" role="button">Eliminar</a></td>
+          </tr>
+    {% endfor %}
+        </tbody>
+      </table>
+  {% endif %}
+    </div>
+{% endblock content %}

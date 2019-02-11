@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="es-do">
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+
+  <!-- <Stylesheets> -->
+{% include '_layout\stylesheets.html' %}
+{% block stylesheets %}{% endblock stylesheets %}
+  <!-- </Stylesheets> -->
+
+    <title>{% block title %}UNAPEC{% endblock title %} | UNAPEC</title>
+
+  </head>
+  <body>
+
+  <!-- Nav -->
+{% include '_layout\nav.html' %}
+  <!-- /Nav -->
+
+  <!-- Content -->
+{% block content %}{% endblock content %}
+  <!-- /Content -->
+
+  <!-- Footer -->
+{% include '_layout\footer.html' %}
+  <!-- /Footer -->
+
+  <!-- Scripts -->
+{% include '_layout\scripts.html' %}
+{% block scripts %}{% endblock scripts %}
+  <!-- /Scripts -->
+
+  </body>
+</html>
