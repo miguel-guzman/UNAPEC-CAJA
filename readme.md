@@ -1,22 +1,24 @@
 # Platform
-Windows x64
+* Windows x64
 
 # Requirements
-Python 3.7
-Django
-MySQL Server
-mysqlclient
+* Python 3.7
+* Django
+* MySQL Server
+* mysqlclient
 
 # Installation
 
 ## MySQL Server
 
 See: https://dev.mysql.com/downloads/mysql/
+
 We'll be using username root password root and legacy authentication (mysql_native_password) for development purposes. See: https://stackoverflow.com/questions/49931541/mysql-changing-authentication-type-from-standard-to-caching-sha2-password
 
 ## Python
 
 See: https://www.python.org/downloads/
+
 Adding Python to your PATH system variable is recommended. See: https://geek-university.com/python/add-python-to-the-windows-path/
 
 Additionally, working under a virtual environment is preferred.
