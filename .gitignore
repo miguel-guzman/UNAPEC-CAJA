@@ -102,3 +102,15 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+#
+# custom
+#
+
+# virtualenv
+/tcl/
+/scripts/
+/include/
+
+# wheel file
+*.whl
