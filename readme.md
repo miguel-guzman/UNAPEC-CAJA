@@ -45,3 +45,19 @@ Currently, the mysql-connector for Python 3.7 is not available in the official w
 E.g.: grab a copy of mysqlclient‑1.4.1‑cp37‑cp37m‑win_amd64.whl from https://www.lfd.uci.edu/~gohlke/pythonlibs/#mysqlclient and install it using pip.
 
 > pip install path/to/mysqlclient‑1.4.1‑cp37‑cp37m‑win_amd64.whl
+
+# Run
+
+> cd django
+
+> .\manage.py runserver
+
+## Code First
+
+To prepare changes for the database:
+
+> manage.py makemigrations
+
+To apply changes to the database:
+
+> manage.py migrate
