@@ -1,0 +1,78 @@
+{% extends '_layout\core.html' %}
+
+{% block title%}Actualizar Empleado{% endblock title %}
+
+{% block content %}
+    <div class="container">
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-primary alert-dismissible fade show mt-3" role="alert">
+        <button type="button" class="close" data-dismiss="alert">
+          &times;
+        </button>
+      {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+      <nav>
+        <ol class="breadcrumb bg-light mt-3">
+          <li class="breadcrumb-item"><a href="{% url 'index' %}">Inicio</a></li>
+          <li class="breadcrumb-item"><a href="{% url 'empleados' %}">Empleados</a></li>
+          <li class="breadcrumb-item active">Actualizar</li>
+        </ol>
+      </nav>
+      <div class="row mt-3">
+        <div class="col-lg-6 mx-auto">
+          <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="emp_nomb">Nombre</label>
+              <input class="form-control" type="text" name="emp_nomb" id="emp_nomb" maxlength="60" required value="{{ empleado.emp_nomb }}">
+            </div>
+            <div class="form-group">
+              <label for="emp_ape1">Apellido Paterno</label>
+              <input class="form-control" type="text" name="emp_ape1" id="emp_ape1" maxlength="30" required value="{{ empleado.emp_ape1 }}">
+            </div>
+            <div class="form-group">
+              <label for="emp_ape2">Apellido Materno</label>
+              <input class="form-control" type="text" name="emp_ape2" id="emp_ape2" maxlength="30" value="{% if empleado.emp_ape2 %}{{ empleado.emp_ape2 }}{% endif %}">
+            </div>
+            <div class="form-group">
+              <label for="emp_cedu">Cédula de Identidad</label>
+              <input class="form-control" type="text" name="emp_cedu" id="emp_cedu" maxlength="11" value="{% if empleado.emp_cedu %}{{ empleado.emp_cedu }}{% endif %}">
+            </div>
+            <div class="form-group">
+              <label for="emp_entra">Fecha de Entrada</label>
+              <input class="form-control" type="date" name="emp_entra" id="emp_entra" required value="{{ empleado.emp_entra|date:'Y-m-d' }}">
+            </div>
+            <div class="form-group">
+              <label for="emp_sale">Fecha de Salida</label>
+              <input class="form-control" type="date" name="emp_sale" id="emp_sale" value="{% if empleado.emp_sale %}{{ empleado.emp_sale|date:'Y-m-d' }}{% endif %}">
+            </div>
+            {% if horarios %}
+            <div class="form-group">
+              <label for="hor_id">Horario</label>
+              <select class="form-control" name="hor_id" id="hor_id" required value>
+                  {% for horario in horarios %}
+                    {% if horario.hor_id == empleado.hor_id.hor_id %}
+                <option value="{{ horario.hor_id }}" selected>{{ horario.hor_nomb }} (de {{ horario.hor_entra }} a {{ horario.hor_sale }})</option>
+                    {% else %}
+                <option value="{{ horario.hor_id }}">{{ horario.hor_nomb }} (de {{ horario.hor_entra }} a {{ horario.hor_sale }})</option>
+                    {% endif %}
+                  {% endfor %}
+              </select>
+            </div>
+            {% endif %}
+            <div class="custom-control custom-checkbox text-center">
+                <input class="custom-control-input" type="checkbox" name="emp_acti" id="emp_acti"{% if empleado.emp_acti %} checked{% endif %}>
+                <label class="custom-control-label" for="emp_acti">Activo</label>
+              </div>
+            <div class="text-center my-3">
+              <a class="btn text-secondary" href="{% url 'empleados' %}" role="button">Volver</a>
+              <button type="submit" class="btn btn-primary">Listo</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+{% endblock content %}

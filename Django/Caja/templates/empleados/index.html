@@ -1,0 +1,52 @@
+{% extends '_layout\core.html' %}
+
+{% block title%}Empleados{% endblock title %}
+
+{% block content %}
+    <div class="container">
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-primary alert-dismissible fade show mt-3" role="alert">
+        <button type="button" class="close" data-dismiss="alert">
+          &times;
+        </button>
+      {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+      <nav>
+        <ol class="breadcrumb bg-light mt-3">
+          <li class="breadcrumb-item"><a href="{% url 'index' %}">Inicio</a></li>
+          <li class="breadcrumb-item active">Empleados</li>
+        </ol>
+      </nav>
+      <div class="row mt-3">
+        <div class="col text-center">
+          <a class="btn btn-success" href="{% url 'empleado_create' %}" role="button">Crear</a>
+        </div>
+      </div>
+      <div class="card-group">
+  {% if empleados %}
+    {% for empleado in empleados %}
+        <div class="col-sm-4">
+          <div class="card mt-3">
+            <div class="card-header">
+              <h6><span class="badge badge-primary">#{{ empleado.emp_id }}</span> {{ empleado.emp_nomb }} {{ empleado.emp_ape1 }}{% if empleado.emp_ape2 %} {{ empleado.emp_ape2 }}{% endif %}</h6>
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item"><i class="fa fa-id-card"></i> {% if empleado.emp_cedu %}{{ empleado.emp_cedu }}{% else %}N/A{% endif %}</li>
+              <li class="list-group-item"><i class="fa fa-clock-o"></i> {{ empleado.hor_id.hor_nomb }} ({{ empleado.hor_id.hor_entra }} a {{ empleado.hor_id.hor_sale }})</li>
+              <li class="list-group-item"><i class="fa fa-sign-in"></i> Entró el {{ empleado.emp_entra }}</li>
+              <li class="list-group-item"><i class="fa fa-sign-out"></i> {% if empleado.emp_sale %}Salió el {{ empleado.emp_sale }}{% else %}N/A{% endif %}</li>
+              <li class="list-group-item">{% if empleado.emp_acti %}<i class="fa fa-check-square-o"></i> Activo{% else %}<i class="fa fa-times"></i> Inactivo{% endif %}</li>
+            </ul>
+            <div class="card-footer text-right">
+              <a class="btn text-primary" href="{% url 'empleado_update' empleado.emp_id %}" role="button">Editar</a><a class="btn text-danger ml-3" href="{% url 'empleado_delete' empleado.emp_id %}" role="button">Eliminar</a>
+            </div>
+          </div>
+        </div>
+    {% endfor %}
+  {% endif %}
+      </div>
+    </div>
+{% endblock content %}
