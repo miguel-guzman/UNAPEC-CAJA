@@ -74,7 +74,9 @@ class TipoDocumento(models.Model):
 
 class Empleado(models.Model):
     emp_id = models.AutoField(primary_key=True)
-    emp_nomb = models.CharField(max_length=30)
+    emp_nomb = models.CharField(max_length=60)
+    emp_ape1 = models.CharField(max_length=30)
+    emp_ape2 = models.CharField(max_length=30, blank=True, null=True)
     emp_cedu = models.CharField(max_length=11, blank=True, null=True)
     emp_entra = models.DateField()
     emp_sale = models.DateField(blank=True, null=True)
