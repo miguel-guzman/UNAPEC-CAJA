@@ -37,11 +37,11 @@
               <label for="hor_sale">Hora de Salida</label>
               <input class="form-control" type="time" name="hor_sale" id="hor_sale" required value="{{ horario.hor_sale }}">
             </div>
-            <div class="custom-control custom-checkbox">
+            <div class="custom-control custom-checkbox text-center">
               <input class="custom-control-input" type="checkbox" name="hor_acti" id="hor_acti"{% if horario.hor_acti %} checked{% endif %}>
               <label class="custom-control-label" for="hor_acti">Habilitado</label>
             </div>
-            <div class="text-center">
+            <div class="text-center my-3">
               <a class="btn text-secondary" href="{% url 'horarios' %}" role="button">Volver</a>
               <button type="submit" class="btn btn-primary ">Listo</button>
             </div>

@@ -37,11 +37,11 @@
               <label for="mpago_inte">Interés (%)</label>
               <input class="form-control" type="number" name="mpago_inte" id="mpago_inte" min="0" max="100" required value="{{ modo_pago.mpago_inte|stringformat:'0.02f' }}">
             </div>
-            <div class="custom-control custom-checkbox">
+            <div class="custom-control custom-checkbox text-center">
               <input class="custom-control-input" type="checkbox" name="mpago_acti" id="mpago_acti"{% if modo_pago.mpago_acti %} checked{% endif %}>
               <label class="custom-control-label" for="mpago_acti">Habilitada</label>
             </div>
-            <div class="text-center">
+            <div class="text-center my-3">
               <a class="btn text-secondary" href="{% url 'modos_pago' %}" role="button">Volver</a>
               <button type="submit" class="btn btn-primary ">Listo</button>
             </div>

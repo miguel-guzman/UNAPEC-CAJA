@@ -33,11 +33,11 @@
               <label for="prod_prec">Precio (RD$)</label>
               <input class="form-control" type="number" name="prod_prec" id="prod_prec" min="0" max="9999999999.99" required value="{{ producto.prod_prec|stringformat:'0.02f' }}">
             </div>
-            <div class="custom-control custom-checkbox">
+            <div class="custom-control custom-checkbox text-center">
               <input class="custom-control-input" type="checkbox" name="prod_acti" id="prod_acti"{% if producto.prod_acti %} checked{% endif %}>
               <label class="custom-control-label" for="prod_acti">Habilitado</label>
             </div>
-            <div class="text-center">
+            <div class="text-center my-3">
               <a class="btn text-secondary" href="{% url 'productos' %}" role="button">Volver</a>
               <button type="submit" class="btn btn-primary ">Listo</button>
             </div>

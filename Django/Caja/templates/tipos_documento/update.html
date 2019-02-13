@@ -29,11 +29,11 @@
               <label for="tdoc_nomb">Nombre</label>
               <input class="form-control" type="text" name="tdoc_nomb" id="tdoc_nomb" maxlength="30" required value="{{ tipo_documento.tdoc_nomb }}">
             </div>
-            <div class="custom-control custom-checkbox">
+            <div class="custom-control custom-checkbox text-center">
               <input class="custom-control-input" type="checkbox" name="tdoc_acti" id="tdoc_acti"{% if tipo_documento.tdoc_acti %} checked{% endif %}>
               <label class="custom-control-label" for="tdoc_acti">Habilitado</label>
             </div>
-            <div class="text-center">
+            <div class="text-center my-3">
               <a class="btn text-secondary" href="{% url 'tipos_documento' %}" role="button">Volver</a>
               <button type="submit" class="btn btn-primary ">Listo</button>
             </div>

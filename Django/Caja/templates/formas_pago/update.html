@@ -29,11 +29,11 @@
               <label for="fpago_nomb">Nombre</label>
               <input class="form-control" type="text" name="fpago_nomb" id="fpago_nomb" maxlength="30" required value="{{ forma_pago.fpago_nomb }}">
             </div>
-            <div class="custom-control custom-checkbox">
+            <div class="custom-control custom-checkbox text-center">
               <input class="custom-control-input" type="checkbox" name="fpago_acti" id="fpago_acti"{% if forma_pago.fpago_acti %} checked{% endif %}>
               <label class="custom-control-label" for="fpago_acti">Habilitada</label>
             </div>
-            <div class="text-center">
+            <div class="text-center my-3">
               <a class="btn text-secondary" href="{% url 'formas_pago' %}" role="button">Volver</a>
               <button type="submit" class="btn btn-primary ">Listo</button>
             </div>

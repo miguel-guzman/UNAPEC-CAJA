@@ -33,11 +33,11 @@
               <label for="carr_nomb">Nombre</label>
               <input class="form-control" type="text" name="carr_nomb" id="carr_nomb" maxlength="30" required value="{{ carrera.carr_nomb }}">
             </div>
-            <div class="custom-control custom-checkbox">
+            <div class="custom-control custom-checkbox text-center">
               <input class="custom-control-input" type="checkbox" name="carr_acti" id="carr_acti"{% if carrera.carr_acti %} checked{% endif %}>
               <label class="custom-control-label" for="carr_acti">Habilitada</label>
             </div>
-            <div class="text-center">
+            <div class="text-center my-3">
               <a class="btn text-secondary" href="{% url 'carreras' %}" role="button">Volver</a>
               <button type="submit" class="btn btn-primary ">Listo</button>
             </div>
