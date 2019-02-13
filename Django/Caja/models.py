@@ -89,7 +89,9 @@ class Empleado(models.Model):
 
 class Cliente(models.Model):
     cli_id = models.AutoField(primary_key=True)
-    cli_nomb = models.CharField(max_length=30)
+    cli_nomb = models.CharField(max_length=60)
+    cli_ape1 = models.CharField(max_length=30)
+    cli_ape2 = models.CharField(max_length=30, blank=True, null=True)
     tcli_id = models.ForeignKey('TipoCliente', models.DO_NOTHING)
     carr_id = models.ForeignKey(Carrera, models.DO_NOTHING)
     cli_acti = models.BooleanField(default=True)

@@ -8,6 +8,12 @@ class EmpleadoForm(forms.ModelForm):
     fields = ['emp_nomb', 'emp_ape1', 'emp_ape2', 'emp_cedu', 'emp_entra', 'emp_sale', 'hor_id', 'emp_acti']
 
 
+class ClienteForm(forms.ModelForm):
+  class Meta:
+    model = models.Cliente
+    fields = ['cli_nomb', 'cli_ape1', 'cli_ape2', 'tcli_id', 'carr_id', 'cli_acti']
+
+
 class TipoClienteForm(forms.ModelForm):
   class Meta:
     model = models.TipoCliente

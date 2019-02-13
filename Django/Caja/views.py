@@ -55,6 +55,53 @@ def empleado_delete(request, empleado_id):
   messages.success(request, ('Operación realizada con éxito.'))
   return empleados(request)
 
+# Clientes
+
+def clientes(request):
+  return render(request, 'clientes/index.html', {'clientes': models.Cliente.objects.all(), 'messages': messages.get_messages(request)})
+
+
+def cliente_create(request):
+  if request.method == 'POST':
+    form = forms.ClienteForm(request.POST or None)
+
+    if form.is_valid():
+      form.save()
+      messages.success(request, ('Operación realizada con éxito.'))
+    else:
+      messages.error(request, ('Información incorrecta.'))
+
+  if models.TipoCliente.objects.count() == 0:
+    messages.error(request, ('No se han definido tipos de cliente.'))
+    return empleados(request)
+
+  if models.Carrera.objects.count() == 0:
+    messages.error(request, ('No se han definido carreras.'))
+    return empleados(request)
+
+  return render(request, 'clientes/create.html', {'tipos_cliente': models.TipoCliente.objects.all(), 'carreras': models.Carrera.objects.all()})
+
+
+def cliente_update(request, cliente_id):
+  cliente = models.Cliente.objects.get(pk=cliente_id)
+
+  if request.method == 'POST':
+    form = forms.ClienteForm(request.POST or None, instance=cliente)
+
+    if form.is_valid():
+      form.save()
+      messages.success(request, ('Operación realizada con éxito.'))
+      return clientes(request)
+    else:
+      messages.error(request, ('Información incorrecta.'))
+
+  return render(request, 'clientes/update.html', {'cliente': cliente, 'tipos_cliente': models.TipoCliente.objects.all(), 'carreras': models.Carrera.objects.all()})
+
+
+def cliente_delete(request, cliente_id):
+  models.Cliente.objects.get(pk=cliente_id).delete()
+  messages.success(request, ('Operación realizada con éxito.'))
+  return clientes(request)
 
 # Tipos de Cliente
 
