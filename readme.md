@@ -13,9 +13,9 @@
 
 See: https://dev.mysql.com/downloads/mysql/
 
-Important: for testing purposing we'll be using username root password root, as well as legacy authentication (mysql_native_password) for development purposes. See: https://stackoverflow.com/questions/49931541/mysql-changing-authentication-type-from-standard-to-caching-sha2-password
+Important: for testing purposing we'll be using **username root password root**, as well as **legacy authentication (mysql_native_password)** for development purposes. See: https://stackoverflow.com/questions/49931541/mysql-changing-authentication-type-from-standard-to-caching-sha2-password
 
-Use the following statement to create the database db_unapec_caja.
+Use the following statement to **create the database db_unapec_caja**.
 
 > CREATE DATABASE `db_unapec_caja` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci */;
 
@@ -25,11 +25,11 @@ See: https://www.python.org/downloads/
 
 Adding Python to your PATH system variable is recommended. Commands below will assume you've done so. See: https://geek-university.com/python/add-python-to-the-windows-path/
 
-Additionally, working under a virtual environment is preferred. Create a virtual environment in the *root folder* of this repository with:
+Additionally, working under a virtual environment is preferred. Create a virtual environment in the **root folder** of this repository with:
 
 > virtualenv .
 
-To activate the virtual environment, in the *root folder* do:
+To activate the virtual environment, in the **root folder** do:
 
 > .\scripts\activate
 
