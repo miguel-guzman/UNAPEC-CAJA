@@ -1,0 +1,87 @@
+{% extends '_layout\core.html' %}
+
+{% block title%}Actualizar Cliente{% endblock title %}
+
+{% block content %}
+    <div class="container">
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-primary alert-dismissible fade show mt-3" role="alert">
+        <button type="button" class="close" data-dismiss="alert">
+          &times;
+        </button>
+      {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+      <nav>
+        <ol class="breadcrumb bg-light mt-3">
+          <li class="breadcrumb-item"><a href="{% url 'index' %}">Inicio</a></li>
+          <li class="breadcrumb-item"><a href="{% url 'clientes' %}">Clientes</a></li>
+          <li class="breadcrumb-item active">Actualizar</li>
+        </ol>
+      </nav>
+      <div class="row mt-3">
+        <div class="col-lg-6 mx-auto">
+          <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="cli_nomb">Nombre</label>
+              <input class="form-control" type="text" name="cli_nomb" id="cli_nomb" maxlength="60" required value="{{ cliente.cli_nomb }}">
+            </div>
+            <div class="form-group">
+              <label for="cli_ape1">Apellido Paterno</label>
+              <input class="form-control" type="text" name="cli_ape1" id="cli_ape1" maxlength="30" required value="{{ cliente.cli_ape1 }}">
+            </div>
+            <div class="form-group">
+              <label for="cli_ape2">Apellido Materno</label>
+              <input class="form-control" type="text" name="cli_ape2" id="cli_ape2" maxlength="30" value="{{ cliente.cli_ape2 }}">
+            </div>
+            {% if tipos_cliente %}
+            <div class="form-group">
+              <label for="tcli_id">Tipo de Cliente</label>
+              <select class="form-control" name="tcli_id" id="tcli_id" required>
+                  {% for tipo_cliente in tipos_cliente %}
+                    {% if tipo_cliente.tcli_id == empleado.tcli_id.tcli_id %}
+                <option value="{{ tipo_cliente.tcli_id }}" selected>{{ tipo_cliente.tcli_nomb }}</option>
+                    {% else %}
+                <option value="{{ tipo_cliente.tcli_id }}">{{ tipo_cliente.tcli_nomb }}</option>
+                    {% endif %}
+                  {% endfor %}
+                  {% for tipo_cliente in tipos_cliente %}
+                <option value="{{ tipo_cliente.tcli_id }}">{{ tipo_cliente.tcli_nomb }}</option>
+                  {% endfor %}
+              </select>
+            </div>
+            {% endif %}
+            {% if carreras %}
+            <div class="form-group">
+              <label for="carr_id">Carrera</label>
+              <select class="form-control" name="carr_id" id="carr_id" required>
+                  {% for carrera in carreras %}
+                    {% if carrera.carr_id == empleado.carr_id.carr_id %}
+                <option value="{{ carrera.carr_id }}" selected>{{ carrera.carr_nomb }}</option>
+                    {% else %}
+                <option value="{{ carrera.carr_id }}">{{ carrera.carr_nomb }}</option>
+                    {% endif %}
+                  {% endfor %}
+                  {% for carrera in carreras %}
+                <option value="{{ carrera.carr_id }}">{{ carrera.carr_nomb }}</option>
+                  {% endfor %}
+              </select>
+            </div>
+            {% endif %}
+
+            <div class="custom-control custom-checkbox text-center">
+              <input class="custom-control-input" type="checkbox" name="cli_acti" id="cli_acti"{% if cliente.cli_acti %} checked{% endif %}>
+              <label class="custom-control-label" for="cli_acti">Activo</label>
+            </div>
+            <div class="text-center">
+              <a class="btn text-secondary" href="{% url 'clientes' %}" role="button">Volver</a>
+              <button type="submit" class="btn btn-primary">Listo</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+{% endblock content %}
