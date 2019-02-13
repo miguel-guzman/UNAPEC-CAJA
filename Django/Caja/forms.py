@@ -1,6 +1,13 @@
 from django import forms
 from . import models
 
+
+class EmpleadoForm(forms.ModelForm):
+  class Meta:
+    model = models.Empleado
+    fields = ['emp_nomb', 'emp_ape1', 'emp_ape2', 'emp_cedu', 'emp_entra', 'emp_sale', 'hor_id', 'emp_acti']
+
+
 class TipoClienteForm(forms.ModelForm):
   class Meta:
     model = models.TipoCliente

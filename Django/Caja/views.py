@@ -8,6 +8,54 @@ from . import forms
 def index(request):
   return render(request, 'index.html', {})
 
+
+def acerca_de(request):
+  return render(request, 'acerca_de.html', {})
+
+# Empleados
+
+def empleados(request):
+  return render(request, 'empleados/index.html', {'empleados': models.Empleado.objects.all(), 'messages': messages.get_messages(request)})
+
+def empleado_create(request):
+  if request.method == 'POST':
+    form = forms.EmpleadoForm(request.POST or None)
+
+    if form.is_valid():
+      form.save()
+      messages.success(request, ('Operación realizada con éxito.'))
+    else:
+      messages.error(request, ('Información incorrecta.'))
+
+  if models.Horario.objects.count() == 0:
+    messages.error(request, ('No se han definido horarios.'))
+    return empleados(request)
+
+  return render(request, 'empleados/create.html', {'horarios': models.Horario.objects.all()})
+
+
+def empleado_update(request, empleado_id):
+  empleado = models.Empleado.objects.get(pk=empleado_id)
+
+  if request.method == 'POST':
+    form = forms.EmpleadoForm(request.POST or None, instance=empleado)
+
+    if form.is_valid():
+      form.save()
+      messages.success(request, ('Operación realizada con éxito.'))
+      return empleados(request)
+    else:
+      messages.error(request, ('Información incorrecta.'))
+
+  return render(request, 'empleados/update.html', {'empleado': empleado, 'horarios': models.Horario.objects.all()})
+
+
+def empleado_delete(request, empleado_id):
+  models.Empleado.objects.get(pk=empleado_id).delete()
+  messages.success(request, ('Operación realizada con éxito.'))
+  return empleados(request)
+
+
 # Tipos de Cliente
 
 def tipos_cliente(request):

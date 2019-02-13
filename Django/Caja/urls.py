@@ -18,6 +18,11 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name="index"),
+    path('acerca-de', views.acerca_de, name="acerca_de"),
+    path('empleados', views.empleados, name="empleados"),
+    path('empleado/create', views.empleado_create, name="empleado_create"),
+    path('empleado/update/<empleado_id>', views.empleado_update, name="empleado_update"),
+    path('empleado/delete/<empleado_id>', views.empleado_delete, name="empleado_delete"),
     path('tipos-cliente', views.tipos_cliente, name="tipos_cliente"),
     path('tipo-cliente/create', views.tipo_cliente_create, name="tipo_cliente_create"),
     path('tipo-cliente/update/<tipo_cliente_id>', views.tipo_cliente_update, name="tipo_cliente_update"),
