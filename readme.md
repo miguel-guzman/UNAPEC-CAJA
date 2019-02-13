@@ -51,7 +51,7 @@ Grab a copy from https://www.lfd.uci.edu/~gohlke/pythonlibs/#mysqlclient and ins
 
 # Run
 
-While in the rool folder, do:
+While in the **root folder**, do:
 
 > cd django
 
@@ -66,3 +66,7 @@ To prepare changes for the database:
 To apply changes to the database:
 
 > manage.py migrate
+
+To delete all data from the database:
+
+> manage.py flush
