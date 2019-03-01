@@ -1,6 +1,5 @@
 import re
 from django import forms
-from django.core.exceptions import ValidationError
 from . import models
 
 
@@ -35,12 +34,12 @@ class HorarioForm(forms.ModelForm):
 
   def clean_hor_nomb(self):
     if not re.match('^[a-zA-Z0-9_]+$', self.cleaned_data['hor_nomb']):
-      raise ValidationError("Nombre sólo puede contener carácteres alfanuméricos.")
+      raise forms.ValidationError("Nombre sólo puede contener carácteres alfanuméricos.")
     return self.cleaned_data['hor_nomb']
 
   def clean_hor_sale(self):
     if self.cleaned_data['hor_entra'] >= self.cleaned_data['hor_sale']:
-      raise ValidationError("Hora de entrada no puede ser mayor o igual que la hora de salida.")
+      raise forms.ValidationError("Hora de entrada no puede ser mayor o igual que la hora de salida.")
     return self.cleaned_data['hor_sale']
 
 
