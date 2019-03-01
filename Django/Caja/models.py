@@ -102,7 +102,7 @@ class Cliente(models.Model):
 
 class Movimiento(models.Model):
     mov_id = models.AutoField(primary_key=True)
-    mov_fecha = models.DateTimeField()
+    mov_fecha = models.DateTimeField(auto_now_add=True)
     emp_id = models.ForeignKey(Empleado, models.DO_NOTHING)
     cli_id = models.ForeignKey(Cliente, models.DO_NOTHING)
     prod_id = models.ForeignKey(Producto, models.DO_NOTHING)
