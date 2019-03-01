@@ -31,7 +31,7 @@ class HorarioForm(forms.ModelForm):
   class Meta:
     model = models.Horario
     fields = ['hor_nomb', 'hor_entra', 'hor_sale', 'hor_acti']
-  
+
   def clean_hor_sale(self):
     if self.cleaned_data['hor_entra'] > self.cleaned_data['hor_sale']:
       raise ValidationError("Hora de entrada no puede ser mayor que hora de salida.")
@@ -60,6 +60,7 @@ class TipoDocumentoForm(forms.ModelForm):
   class Meta:
     model = models.TipoDocumento
     fields = ['tdoc_nomb', 'tdoc_acti']
+
 
 class MovimientoForm(forms.ModelForm):
   class Meta:

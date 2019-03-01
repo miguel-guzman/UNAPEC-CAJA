@@ -103,6 +103,49 @@ def cliente_delete(request, cliente_id):
   messages.success(request, ('Operación realizada con éxito.'))
   return clientes(request)
 
+# Movimientos
+
+def movimientos(request):
+  return render(request, 'movimientos/index.html', {'movimientos': models.Movimiento.objects.all(), 'messages': messages.get_messages(request)})
+
+def movimiento_create(request):
+  if request.method == 'POST':
+    form = forms.MovimientoForm(request.POST or None)
+
+    if form.is_valid():
+      form.save()
+      messages.success(request, ('Operación realizada con éxito.'))
+    else:
+      messages.error(request, ('Información incorrecta.'))
+
+  if models.Horario.objects.count() == 0:
+    messages.error(request, ('No se han definido horarios.'))
+    return movimientos(request)
+
+  return render(request, 'movimientos/create.html', {})
+
+
+def movimiento_update(request, movimiento_id):
+  movimiento = models.Movimiento.objects.get(pk=movimiento_id)
+
+  if request.method == 'POST':
+    form = forms.MovimientoForm(request.POST or None, instance=movimiento)
+
+    if form.is_valid():
+      form.save()
+      messages.success(request, ('Operación realizada con éxito.'))
+      return movimientos(request)
+    else:
+      messages.error(request, ('Información incorrecta.'))
+
+  return render(request, 'movimientos/update.html', {})
+
+
+def movimiento_delete(request, movimiento_id):
+  models.Movimiento.objects.get(pk=movimiento_id).delete()
+  messages.success(request, ('Operación realizada con éxito.'))
+  return movimientos(request)
+
 # Tipos de Cliente
 
 def tipos_cliente(request):
