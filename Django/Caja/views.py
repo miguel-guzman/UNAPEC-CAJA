@@ -279,9 +279,9 @@ def horarios(request):
 
 
 def horario_create(request):
-  if request.method == 'POST':
-    form = forms.HorarioForm(request.POST or None)
+  form = forms.HorarioForm(request.POST or None)
 
+  if request.method == 'POST':
     if form.is_valid():
       form.save()
       messages.success(request, ('Operación realizada con éxito.'))
@@ -289,14 +289,14 @@ def horario_create(request):
     else:
       messages.error(request, ('Información incorrecta.'))
 
-  return render(request, 'horarios/create.html', {})
+  return render(request, 'horarios/create.html', {'form': form})
 
 
 def horario_update(request, horario_id):
   horario = models.Horario.objects.get(pk=horario_id)
+  form = forms.HorarioForm(request.POST or None, instance=horario)
 
   if request.method == 'POST':
-    form = forms.HorarioForm(request.POST or None, instance=horario)
 
     if form.is_valid():
       form.save()
@@ -305,7 +305,7 @@ def horario_update(request, horario_id):
     else:
       messages.error(request, ('Información incorrecta.'))
 
-  return render(request, 'horarios/update.html', {'horario': horario})
+  return render(request, 'horarios/update.html', {'form': form, 'horario': horario})
 
 
 def horario_delete(request, horario_id):
