@@ -108,6 +108,7 @@ class Movimiento(models.Model):
     prod_id = models.ForeignKey(Producto, models.DO_NOTHING)
     tdoc_id = models.ForeignKey(TipoDocumento, models.DO_NOTHING)
     fpago_id = models.ForeignKey(FormaPago, models.DO_NOTHING)
+    mpago_id = models.ForeignKey(ModoPago, models.DO_NOTHING)
     mov_monto = models.DecimalField(max_digits=12, decimal_places=2)
     mov_acti = models.BooleanField(default=True)
 
