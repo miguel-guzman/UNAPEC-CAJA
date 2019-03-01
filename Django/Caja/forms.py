@@ -1,3 +1,4 @@
+import re
 from django import forms
 from django.core.exceptions import ValidationError
 from . import models
@@ -32,9 +33,14 @@ class HorarioForm(forms.ModelForm):
     model = models.Horario
     fields = ['hor_nomb', 'hor_entra', 'hor_sale', 'hor_acti']
 
+  def clean_hor_nomb(self):
+    if not re.match('^[a-zA-Z0-9_]+$', self.cleaned_data['hor_nomb']):
+      raise ValidationError("Nombre sólo puede contener carácteres alfanuméricos.")
+    return self.cleaned_data['hor_nomb']
+
   def clean_hor_sale(self):
-    if self.cleaned_data['hor_entra'] > self.cleaned_data['hor_sale']:
-      raise ValidationError("Hora de entrada no puede ser mayor que hora de salida.")
+    if self.cleaned_data['hor_entra'] >= self.cleaned_data['hor_sale']:
+      raise ValidationError("Hora de entrada no puede ser mayor o igual que la hora de salida.")
     return self.cleaned_data['hor_sale']
 
 
@@ -65,5 +71,5 @@ class TipoDocumentoForm(forms.ModelForm):
 class MovimientoForm(forms.ModelForm):
   class Meta:
     model = models.Movimiento
-    fields = ['mov_fecha', 'emp_id', 'cli_id', 'prod_id', 'tdoc_id', 'fpago_id', 'mov_monto', 'mov_acti']
+    fields = ['emp_id', 'cli_id', 'prod_id', 'tdoc_id', 'fpago_id', 'mpago_id', 'mov_monto', 'mov_acti']
 
