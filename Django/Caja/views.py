@@ -24,14 +24,15 @@ def empleado_create(request):
     if form.is_valid():
       form.save()
       messages.success(request, ('Operación realizada con éxito.'))
+      return empleados(request)
     else:
       messages.error(request, ('Información incorrecta.'))
 
-  if models.Horario.objects.count() == 0:
-    messages.error(request, ('No se han definido horarios.'))
+  if models.Horario.objects.filter(hor_acti=True).count() == 0:
+    messages.error(request, ('No hay horarios disponibles.'))
     return empleados(request)
 
-  return render(request, 'empleados/create.html', {'horarios': models.Horario.objects.all()})
+  return render(request, 'empleados/create.html', {'horarios': models.Horario.objects.filter(hor_acti=True)})
 
 
 def empleado_update(request, empleado_id):
@@ -47,7 +48,7 @@ def empleado_update(request, empleado_id):
     else:
       messages.error(request, ('Información incorrecta.'))
 
-  return render(request, 'empleados/update.html', {'empleado': empleado, 'horarios': models.Horario.objects.all()})
+  return render(request, 'empleados/update.html', {'empleado': empleado, 'horarios': models.Horario.objects.filter(hor_acti=True)})
 
 
 def empleado_delete(request, empleado_id):
@@ -68,18 +69,19 @@ def cliente_create(request):
     if form.is_valid():
       form.save()
       messages.success(request, ('Operación realizada con éxito.'))
+      return clientes(request)
     else:
       messages.error(request, ('Información incorrecta.'))
 
-  if models.TipoCliente.objects.count() == 0:
-    messages.error(request, ('No se han definido tipos de cliente.'))
-    return empleados(request)
+  if models.TipoCliente.objects.filter(tcli_acti=True).count() == 0:
+    messages.error(request, ('No hay tipos de cliente disponibles.'))
+    return clientes(request)
 
-  if models.Carrera.objects.count() == 0:
-    messages.error(request, ('No se han definido carreras.'))
-    return empleados(request)
+  if models.Carrera.objects.filter(carr_acti=True).count() == 0:
+    messages.error(request, ('No hay carreras disponibles.'))
+    return clientes(request)
 
-  return render(request, 'clientes/create.html', {'tipos_cliente': models.TipoCliente.objects.all(), 'carreras': models.Carrera.objects.all()})
+  return render(request, 'clientes/create.html', {'tipos_cliente': models.TipoCliente.objects.filter(tcli_acti=True), 'carreras': models.Carrera.objects.filter(carr_acti=True)})
 
 
 def cliente_update(request, cliente_id):
@@ -95,7 +97,7 @@ def cliente_update(request, cliente_id):
     else:
       messages.error(request, ('Información incorrecta.'))
 
-  return render(request, 'clientes/update.html', {'cliente': cliente, 'tipos_cliente': models.TipoCliente.objects.all(), 'carreras': models.Carrera.objects.all()})
+  return render(request, 'clientes/update.html', {'cliente': cliente, 'tipos_cliente': models.TipoCliente.objects.filter(tcli_acti=True), 'carreras': models.Carrera.objects.filter(carr_acti=True)})
 
 
 def cliente_delete(request, cliente_id):
@@ -115,11 +117,12 @@ def movimiento_create(request):
     if form.is_valid():
       form.save()
       messages.success(request, ('Operación realizada con éxito.'))
+      return movimientos(request)
     else:
       messages.error(request, ('Información incorrecta.'))
 
-  if models.Horario.objects.count() == 0:
-    messages.error(request, ('No se han definido horarios.'))
+  if models.Cliente.objects.count() == 0:
+    messages.error(request, ('No se han definido clientes.'))
     return movimientos(request)
 
   return render(request, 'movimientos/create.html', {})
@@ -159,6 +162,7 @@ def tipo_cliente_create(request):
     if form.is_valid():
       form.save()
       messages.success(request, ('Operación realizada con éxito.'))
+      return tipos_cliente(request)
     else:
       messages.error(request, ('Información incorrecta.'))
 
@@ -199,6 +203,7 @@ def carrera_create(request):
     if form.is_valid():
       form.save()
       messages.success(request, ('Operación realizada con éxito.'))
+      return carreras(request)
     else:
       messages.error(request, ('Información incorrecta.'))
 
@@ -239,6 +244,7 @@ def producto_create(request):
     if form.is_valid():
       form.save()
       messages.success(request, ('Operación realizada con éxito.'))
+      return productos(request)
     else:
       messages.error(request, ('Información incorrecta.'))
 
@@ -279,6 +285,7 @@ def horario_create(request):
     if form.is_valid():
       form.save()
       messages.success(request, ('Operación realizada con éxito.'))
+      return horarios(request)
     else:
       messages.error(request, ('Información incorrecta.'))
 
@@ -319,6 +326,7 @@ def forma_pago_create(request):
     if form.is_valid():
       form.save()
       messages.success(request, ('Operación realizada con éxito.'))
+      return formas_pago(request)
     else:
       messages.error(request, ('Información incorrecta.'))
 
@@ -359,6 +367,7 @@ def modo_pago_create(request):
     if form.is_valid():
       form.save()
       messages.success(request, ('Operación realizada con éxito.'))
+      return modos_pago(request)
     else:
       messages.error(request, ('Información incorrecta.'))
 
@@ -399,6 +408,7 @@ def tipo_documento_create(request):
     if form.is_valid():
       form.save()
       messages.success(request, ('Operación realizada con éxito.'))
+      return tipos_documento(request)
     else:
       messages.error(request, ('Información incorrecta.'))
 
