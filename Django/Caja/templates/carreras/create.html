@@ -4,36 +4,14 @@
 
 {% block content %}
     <div class="container">
-   {% if messages %}
-   {% for message in messages %}
+  {% if messages %}
+    {% for message in messages %}
       <div class="alert alert-primary alert-dismissible fade show mt-3" role="alert">
         <button type="button" class="close" data-dismiss="alert">
           &times;
         </button>
       {{ message }}
       </div>
-     {% endfor %} 
-   {% endif %}
-  {% if form.errors %}
-    {% for field in form %}
-      {% for error in field.errors %}
-      <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
-        <button type="button" class="close" data-dismiss="alert">
-          &times;
-        </button>
-      {{ error|escape }}
-      </div>
-      {% endfor %}
-    {% endfor %}
-    {% for error in form.non_field_errors %}
-      {% for error in field.errors %}
-      <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
-        <button type="button" class="close" data-dismiss="alert">
-          &times;
-        </button>
-      {{ error|escape }}
-      </div>
-      {% endfor %}
     {% endfor %}
   {% endif %}
       <nav>
@@ -49,11 +27,11 @@
             {% csrf_token %}
             <div class="form-group">
               <label for="carr_codi">Código</label>
-              <input class="form-control" type="text" name="carr_codi" id="carr_codi" maxlength="3" required>
+              <input class="form-control" type="text" name="carr_codi" id="carr_codi" maxlength="3" required pattern="[A-Z]+" title="Solo debe contener letras mayusculas">
             </div>
             <div class="form-group">
               <label for="carr_nomb">Nombre</label>
-              <input class="form-control" type="text" name="carr_nomb" id="carr_nomb" maxlength="30" required>
+              <input class="form-control" type="text" name="carr_nomb" id="carr_nomb" pattern="[A-za-z áéíóú]+" maxlength="30" required title="Solo debe contener letras mayusculas y minusculas">
             </div>
             <div class="form-check" hidden>
               <input class="form-check-input" type="checkbox" name="carr_acti" id="carr_acti" checked>
@@ -69,4 +47,5 @@
         </div>
       </div>
     </div>
+
 {% endblock content %}

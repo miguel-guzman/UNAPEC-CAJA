@@ -49,15 +49,15 @@
             {% csrf_token %}
             <div class="form-group">
               <label for="cli_nomb">Nombre</label>
-              <input class="form-control" type="text" name="cli_nomb" id="cli_nomb" maxlength="60" required>
+              <input class="form-control" type="text" name="cli_nomb" id="cli_nomb" maxlength="60" required pattern="[A-za-z áéíóú]+" title="No debe contener caracteres especiales o numeros">
             </div>
             <div class="form-group">
               <label for="cli_ape1">Apellido Paterno</label>
-              <input class="form-control" type="text" name="cli_ape1" id="cli_ape1" maxlength="30" required>
+              <input class="form-control" type="text" name="cli_ape1" id="cli_ape1" maxlength="30" required pattern="[A-za-z áéíóú]+" title="No debe contener caracteres especiales o numeros">
             </div>
             <div class="form-group">
               <label for="cli_ape2">Apellido Materno</label>
-              <input class="form-control" type="text" name="cli_ape2" id="cli_ape2" maxlength="30">
+              <input class="form-control" type="text" name="cli_ape2" id="cli_ape2" maxlength="30" pattern="[A-za-z áéíóú]+" title="No debe contener caracteres especiales o numeros">
             </div>
             {% if tipos_cliente %}
             <div class="form-group">
