@@ -4,7 +4,7 @@
 
 {% block content %}
     <div class="container">
-   {% if messages %}
+  {% if messages %}
     {% for message in messages %}
       <div class="alert alert-primary alert-dismissible fade show mt-3" role="alert">
         <button type="button" class="close" data-dismiss="alert">
@@ -36,6 +36,8 @@
       {% endfor %}
     {% endfor %}
   {% endif %}
+  {% if user.is_authenticated %}
+    {% if user.is_superuser %}
       <nav>
         <ol class="breadcrumb bg-light mt-3">
           <li class="breadcrumb-item"><a href="{% url 'index' %}">Inicio</a></li>
@@ -63,4 +65,29 @@
         </div>
       </div>
     </div>
+    {% else %}
+    <div class="row mt-3">
+      <div class="col-lg-6 mx-auto">
+        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+          <button type="button" class="close" data-dismiss="alert">
+            &times;
+          </button>
+          No tiene los permisos suficientes para ver este contenido
+        </div>
+      </div>
+    </div>
+    {% endif %}
+    {% else %}
+    <div class="row mt-3">
+      <div class="col-lg-6 mx-auto">
+        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+          <button type="button" class="close" data-dismiss="alert">
+            &times;
+          </button>
+          Para continuar, debe iniciar sesión
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
 {% endblock content %}
