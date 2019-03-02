@@ -1,16 +1,25 @@
 from django.shortcuts import render
 from django.contrib import messages
+from django.contrib.auth import logout
+from django.contrib.auth.models import User
 from . import models
 from . import forms
 
-# Create your views here.
+# Inicio
 
 def index(request):
   return render(request, 'index.html', {})
 
+# Acerca de
 
 def acerca_de(request):
   return render(request, 'acerca_de.html', {})
+
+# Usuarios
+
+def usuario_cerrar_sesion(request):
+  logout(request)
+  return index(request)
 
 # Empleados
 
@@ -28,11 +37,15 @@ def empleado_create(request):
     else:
       messages.error(request, ('Información incorrecta.'))
 
-  if models.Horario.objects.filter(hor_acti=True).count() == 0:
+  if not models.Horario.objects.filter(hor_acti=True).count() > 0:
     messages.error(request, ('No hay horarios disponibles.'))
     return empleados(request)
 
-  return render(request, 'empleados/create.html', {'horarios': models.Horario.objects.filter(hor_acti=True)})
+  if not User.objects.exclude(pk__in=models.Empleado.objects.values('usu_id')).count() > 0:
+    messages.error(request, ('No hay usuarios disponibles.'))
+    return empleados(request)
+
+  return render(request, 'empleados/create.html', {'horarios': models.Horario.objects.filter(hor_acti=True), 'usuarios': User.objects.exclude(pk__in=models.Empleado.objects.values('usu_id'))})
 
 
 def empleado_update(request, empleado_id):
