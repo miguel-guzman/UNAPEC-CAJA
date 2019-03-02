@@ -114,3 +114,6 @@ venv.bak/
 
 # wheel file
 *.whl
+
+# database migrations
+/django/caja/migrations
