@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 
 class TipoCliente(models.Model):
     tcli_id = models.AutoField(primary_key=True)
@@ -77,10 +77,12 @@ class Empleado(models.Model):
     emp_nomb = models.CharField(max_length=60)
     emp_ape1 = models.CharField(max_length=30)
     emp_ape2 = models.CharField(max_length=30, blank=True, null=True)
+    # Cédula de Identidad
     emp_cedu = models.CharField(max_length=11, blank=True, null=True)
+    usu_id = models.OneToOneField(User, on_delete=models.DO_NOTHING, db_column='usu_id')
     emp_entra = models.DateField()
     emp_sale = models.DateField(blank=True, null=True)
-    hor_id = models.ForeignKey('Horario', models.DO_NOTHING)
+    hor_id = models.ForeignKey(Horario, on_delete=models.DO_NOTHING, db_column='hor_id')
     emp_acti = models.BooleanField(default=True)
 
     class Meta:
@@ -92,8 +94,8 @@ class Cliente(models.Model):
     cli_nomb = models.CharField(max_length=60)
     cli_ape1 = models.CharField(max_length=30)
     cli_ape2 = models.CharField(max_length=30, blank=True, null=True)
-    tcli_id = models.ForeignKey('TipoCliente', models.DO_NOTHING)
-    carr_id = models.ForeignKey(Carrera, models.DO_NOTHING)
+    tcli_id = models.ForeignKey(TipoCliente, on_delete=models.DO_NOTHING, db_column='tcli_id')
+    carr_id = models.ForeignKey(Carrera, on_delete=models.DO_NOTHING, db_column='carr_id')
     cli_acti = models.BooleanField(default=True)
 
     class Meta:
@@ -103,12 +105,12 @@ class Cliente(models.Model):
 class Movimiento(models.Model):
     mov_id = models.AutoField(primary_key=True)
     mov_fecha = models.DateTimeField(auto_now_add=True)
-    emp_id = models.ForeignKey(Empleado, models.DO_NOTHING)
-    cli_id = models.ForeignKey(Cliente, models.DO_NOTHING)
-    prod_id = models.ForeignKey(Producto, models.DO_NOTHING)
-    tdoc_id = models.ForeignKey(TipoDocumento, models.DO_NOTHING)
-    fpago_id = models.ForeignKey(FormaPago, models.DO_NOTHING)
-    mpago_id = models.ForeignKey(ModoPago, models.DO_NOTHING)
+    emp_id = models.ForeignKey(Empleado, on_delete=models.DO_NOTHING, db_column='emp_id')
+    cli_id = models.ForeignKey(Cliente, on_delete=models.DO_NOTHING, db_column='cli_id')
+    prod_id = models.ForeignKey(Producto, on_delete=models.DO_NOTHING, db_column='prod_id')
+    tdoc_id = models.ForeignKey(TipoDocumento, on_delete=models.DO_NOTHING, db_column='tdoc_id')
+    fpago_id = models.ForeignKey(FormaPago, on_delete=models.DO_NOTHING, db_column='fpago_id')
+    mpago_id = models.ForeignKey(ModoPago, on_delete=models.DO_NOTHING, db_column='mpago_id')
     mov_monto = models.DecimalField(max_digits=12, decimal_places=2)
     mov_acti = models.BooleanField(default=True)
 
