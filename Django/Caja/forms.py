@@ -39,9 +39,10 @@ class HorarioForm(forms.ModelForm):
     fields = ['hor_nomb', 'hor_entra', 'hor_sale', 'hor_acti']
 
   def clean_hor_nomb(self):
-    if not re.match('^[a-zA-Z0-9_]+$', self.cleaned_data['hor_nomb']):
+    nombre_horario=self.cleaned_data['hor_nomb']
+    if not re.match('^[a-zA-Z0-9_]+$', nombre_horario):
       raise forms.ValidationError("Nombre sólo puede contener carácteres alfanuméricos.")
-    return self.cleaned_data['hor_nomb']
+    return nombre_horario
 
   def clean_hor_sale(self):
     if self.cleaned_data['hor_entra'] >= self.cleaned_data['hor_sale']:
