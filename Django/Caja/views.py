@@ -61,7 +61,7 @@ def empleado_update(request, empleado_id):
     else:
       messages.error(request, ('Información incorrecta.'))
 
-  return render(request, 'empleados/update.html', {'empleado': empleado, 'horarios': models.Horario.objects.filter(hor_acti=True), 'usuarios': User.objects.filter(is_active=True).exclude(pk__in=models.Empleado.objects.values('usu_id')) | User.objects.filter(pk=empleado.usu_id.id)})
+  return render(request, 'empleados/update.html', {'empleado': empleado, 'horarios': models.Horario.objects.filter(hor_acti=True).exclude(pk=empleado.hor_id.hor_id) | models.Horario.objects.filter(pk=empleado.hor_id.hor_id), 'usuarios': User.objects.filter(is_active=True).exclude(pk__in=models.Empleado.objects.values('usu_id')) | User.objects.filter(pk=empleado.usu_id.id)})
 
 
 def empleado_delete(request, empleado_id):
@@ -110,7 +110,7 @@ def cliente_update(request, cliente_id):
     else:
       messages.error(request, ('Información incorrecta.'))
 
-  return render(request, 'clientes/update.html', {'cliente': cliente, 'tipos_cliente': models.TipoCliente.objects.filter(tcli_acti=True), 'carreras': models.Carrera.objects.filter(carr_acti=True)})
+  return render(request, 'clientes/update.html', {'cliente': cliente, 'tipos_cliente': models.TipoCliente.objects.filter(tcli_acti=True).exclude(pk=cliente.tcli_id.tcli_id) | models.TipoCliente.objects.filter(pk=cliente.tcli_id.tcli_id), 'carreras': models.Carrera.objects.filter(carr_acti=True).exclude(pk=empleado.carr_id.carr_id) | models.Carrera.objects.filter(pk=empleado.carr_id.carr_id)})
 
 
 def cliente_delete(request, cliente_id):
