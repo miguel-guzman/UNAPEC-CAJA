@@ -41,11 +41,11 @@ def empleado_create(request):
     messages.error(request, ('No hay horarios disponibles.'))
     return empleados(request)
 
-  if not User.objects.exclude(pk__in=models.Empleado.objects.values('usu_id')).count() > 0:
+  if not User.objects.filter(is_active=True).exclude(pk__in=models.Empleado.objects.values('usu_id')).count() > 0:
     messages.error(request, ('No hay usuarios disponibles.'))
     return empleados(request)
 
-  return render(request, 'empleados/create.html', {'horarios': models.Horario.objects.filter(hor_acti=True), 'usuarios': User.objects.exclude(pk__in=models.Empleado.objects.values('usu_id'))})
+  return render(request, 'empleados/create.html', {'horarios': models.Horario.objects.filter(hor_acti=True), 'usuarios': User.objects.filter(is_active=True).exclude(pk__in=models.Empleado.objects.values('usu_id'))})
 
 
 def empleado_update(request, empleado_id):
@@ -61,7 +61,7 @@ def empleado_update(request, empleado_id):
     else:
       messages.error(request, ('Información incorrecta.'))
 
-  return render(request, 'empleados/update.html', {'empleado': empleado, 'horarios': models.Horario.objects.filter(hor_acti=True)})
+  return render(request, 'empleados/update.html', {'empleado': empleado, 'horarios': models.Horario.objects.filter(hor_acti=True), 'usuarios': User.objects.filter(is_active=True).exclude(pk__in=models.Empleado.objects.values('usu_id')) | User.objects.filter(pk=empleado.usu_id.id)})
 
 
 def empleado_delete(request, empleado_id):
