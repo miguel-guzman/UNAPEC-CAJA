@@ -49,11 +49,11 @@
             {% csrf_token %}
             <div class="form-group">
               <label for="carr_codi">Código</label>
-              <input class="form-control" type="text" name="carr_codi" id="carr_codi" maxlength="3" required value="{{ carrera.carr_codi }}">
+              <input class="form-control" type="text" name="carr_codi" id="carr_codi" maxlength="3" pattern="[A-z]+" title="Solo debe contener letras mayusculas" required value="{{ carrera.carr_codi }}">
             </div>
             <div class="form-group">
               <label for="carr_nomb">Nombre</label>
-              <input class="form-control" type="text" name="carr_nomb" id="carr_nomb" maxlength="30" required value="{{ carrera.carr_nomb }}">
+              <input class="form-control" type="text" name="carr_nomb" id="carr_nomb" pattern="[A-za-z áéíóú]+" title="No debe contener caracteres especiales o numeros" maxlength="30" required value="{{ carrera.carr_nomb }}">
             </div>
             <div class="custom-control custom-checkbox text-center">
               <input class="custom-control-input" type="checkbox" name="carr_acti" id="carr_acti"{% if carrera.carr_acti %} checked{% endif %}>

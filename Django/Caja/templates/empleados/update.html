@@ -27,15 +27,15 @@
             {% csrf_token %}
             <div class="form-group">
               <label for="emp_nomb">Nombre</label>
-              <input class="form-control" type="text" name="emp_nomb" id="emp_nomb" maxlength="60" required value="{{ empleado.emp_nomb }}">
+              <input class="form-control" type="text" name="emp_nomb" id="emp_nomb" maxlength="60" required value="{{ empleado.emp_nomb }}" pattern="[A-za-z áéíóú]+" title="No debe contener caracteres especiales o numeros">
             </div>
             <div class="form-group">
               <label for="emp_ape1">Apellido Paterno</label>
-              <input class="form-control" type="text" name="emp_ape1" id="emp_ape1" maxlength="30" required value="{{ empleado.emp_ape1 }}">
+              <input class="form-control" type="text" name="emp_ape1" id="emp_ape1" maxlength="30" required value="{{ empleado.emp_ape1 }}" pattern="[A-za-z áéíóú]+" title="No debe contener caracteres especiales o numeros">
             </div>
             <div class="form-group">
               <label for="emp_ape2">Apellido Materno</label>
-              <input class="form-control" type="text" name="emp_ape2" id="emp_ape2" maxlength="30" value="{% if empleado.emp_ape2 %}{{ empleado.emp_ape2 }}{% endif %}">
+              <input class="form-control" type="text" name="emp_ape2" id="emp_ape2" maxlength="30" value="{% if empleado.emp_ape2 %}{{ empleado.emp_ape2 }}{% endif %}" pattern="[A-za-z áéíóú]+" title="No debe contener caracteres especiales o numeros">
             </div>
             <div class="form-group">
               <label for="emp_cedu">Cédula de Identidad</label>
