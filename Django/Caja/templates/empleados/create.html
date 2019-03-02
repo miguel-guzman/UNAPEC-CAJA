@@ -41,6 +41,17 @@
               <label for="emp_cedu">Cédula de Identidad</label>
               <input class="form-control" type="text" name="emp_cedu" id="emp_cedu" maxlength="11">
             </div>
+            {% if usuarios %}
+            <div class="form-group">
+              <label for="usu_id">Usuario</label>
+              <select class="form-control" name="usu_id" id="usu_id" required>
+                <option value="">Elegir usuario...</option>
+                  {% for usuario in usuarios %}
+                <option value="{{ usuario.id }}">{{ usuario.username }}</option>
+                  {% endfor %}
+              </select>
+            </div>
+            {% endif %}
             <div class="form-group">
               <label for="emp_entra">Fecha de Entrada</label>
               <input class="form-control" type="date" name="emp_entra" id="emp_entra" required>
@@ -62,7 +73,7 @@
                 Habilitado
               </label>
             </div>
-            <div class="text-center">
+            <div class="text-center my-3">
               <a class="btn text-secondary" href="{% url 'empleados' %}" role="button">Volver</a>
               <button type="submit" class="btn btn-primary">Agregar</button>
             </div>
