@@ -41,6 +41,20 @@
               <label for="emp_cedu">Cédula de Identidad</label>
               <input class="form-control" type="text" name="emp_cedu" id="emp_cedu" maxlength="11" value="{% if empleado.emp_cedu %}{{ empleado.emp_cedu }}{% endif %}">
             </div>
+            {% if usuarios %}
+            <div class="form-group">
+              <label for="usu_id">Usuario</label>
+              <select class="form-control" name="usu_id" id="usu_id" required value>
+                  {% for usuario in usuarios %}
+                    {% if usuario.id == empleado.usu_id.id %}
+                <option value="{{ usuario.id }}" selected>{{ usuario.username }}</option>
+                    {% else %}
+                <option value="{{ usuario.id }}">{{ usuario.username }}</option>
+                    {% endif %}
+                  {% endfor %}
+              </select>
+            </div>
+            {% endif %}
             <div class="form-group">
               <label for="emp_entra">Fecha de Entrada</label>
               <input class="form-control" type="date" name="emp_entra" id="emp_entra" required value="{{ empleado.emp_entra|date:'Y-m-d' }}">

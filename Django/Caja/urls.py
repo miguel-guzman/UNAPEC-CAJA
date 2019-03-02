@@ -59,4 +59,5 @@ urlpatterns = [
     path('tipo-documento/create', views.tipo_documento_create, name="tipo_documento_create"),
     path('tipo-documento/update/<tipo_documento_id>', views.tipo_documento_update, name="tipo_documento_update"),
     path('tipo-documento/delete/<tipo_documento_id>', views.tipo_documento_delete, name="tipo_documento_delete"),
+    path('usuarios/cerrar-sesion', views.usuario_cerrar_sesion, name="usuario_cerrar_sesion"),
 ]
