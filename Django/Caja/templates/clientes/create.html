@@ -12,7 +12,7 @@
         </button>
       {{ message }}
       </div>
-     {% endfor %} 
+     {% endfor %}
    {% endif %}
   {% if form.errors %}
     {% for field in form %}
@@ -73,7 +73,7 @@
             {% if carreras %}
             <div class="form-group">
               <label for="carr_id">Carrera</label>
-              <select class="form-control" name="carr_id" id="carr_id" required>
+              <select class="form-control" name="carr_id" id="carr_id">
                 <option value="">Elegir carrera...</option>
                   {% for tipo_cliente in carreras %}
                 <option value="{{ tipo_cliente.carr_id }}">{{ tipo_cliente.carr_nomb }}</option>

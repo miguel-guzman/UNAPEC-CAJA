@@ -76,9 +76,9 @@ def clientes(request):
 
 
 def cliente_create(request):
-  if request.method == 'POST':
-    form = forms.ClienteForm(request.POST or None)
+  form = forms.ClienteForm(request.POST or None)
 
+  if request.method == 'POST':
     if form.is_valid():
       form.save()
       messages.success(request, ('Operación realizada con éxito.'))
@@ -90,19 +90,14 @@ def cliente_create(request):
     messages.error(request, ('No hay tipos de cliente disponibles.'))
     return clientes(request)
 
-  if models.Carrera.objects.filter(carr_acti=True).count() == 0:
-    messages.error(request, ('No hay carreras disponibles.'))
-    return clientes(request)
-
-  return render(request, 'clientes/create.html', {'tipos_cliente': models.TipoCliente.objects.filter(tcli_acti=True), 'carreras': models.Carrera.objects.filter(carr_acti=True)})
+  return render(request, 'clientes/create.html', {'form': form, 'tipos_cliente': models.TipoCliente.objects.filter(tcli_acti=True), 'carreras': models.Carrera.objects.filter(carr_acti=True)})
 
 
 def cliente_update(request, cliente_id):
   cliente = models.Cliente.objects.get(pk=cliente_id)
+  form = forms.ClienteForm(request.POST or None, instance=cliente)
 
   if request.method == 'POST':
-    form = forms.ClienteForm(request.POST or None, instance=cliente)
-
     if form.is_valid():
       form.save()
       messages.success(request, ('Operación realizada con éxito.'))
@@ -110,7 +105,7 @@ def cliente_update(request, cliente_id):
     else:
       messages.error(request, ('Información incorrecta.'))
 
-  return render(request, 'clientes/update.html', {'cliente': cliente, 'tipos_cliente': models.TipoCliente.objects.filter(tcli_acti=True).exclude(pk=cliente.tcli_id.tcli_id) | models.TipoCliente.objects.filter(pk=cliente.tcli_id.tcli_id), 'carreras': models.Carrera.objects.filter(carr_acti=True).exclude(pk=cliente.carr_id.carr_id) | models.Carrera.objects.filter(pk=cliente.carr_id.carr_id)})
+  return render(request, 'clientes/update.html', {'form': form, 'cliente': cliente, 'tipos_cliente': models.TipoCliente.objects.filter(tcli_acti=True).exclude(pk=cliente.tcli_id.tcli_id) | models.TipoCliente.objects.filter(pk=cliente.tcli_id.tcli_id), 'carreras': models.Carrera.objects.filter(carr_acti=True).exclude(pk=cliente.carr_id.carr_id) | models.Carrera.objects.filter(pk=cliente.carr_id.carr_id)})
 
 
 def cliente_delete(request, cliente_id):
@@ -124,9 +119,9 @@ def movimientos(request):
   return render(request, 'movimientos/index.html', {'movimientos': models.Movimiento.objects.all(), 'messages': messages.get_messages(request)})
 
 def movimiento_create(request):
-  if request.method == 'POST':
-    form = forms.MovimientoForm(request.POST or None)
+  form = forms.MovimientoForm(request.POST or None)
 
+  if request.method == 'POST':
     if form.is_valid():
       form.save()
       messages.success(request, ('Operación realizada con éxito.'))
@@ -138,15 +133,14 @@ def movimiento_create(request):
     messages.error(request, ('No se han definido clientes.'))
     return movimientos(request)
 
-  return render(request, 'movimientos/create.html', {})
+  return render(request, 'movimientos/create.html', {'form': form})
 
 
 def movimiento_update(request, movimiento_id):
   movimiento = models.Movimiento.objects.get(pk=movimiento_id)
+  form = forms.MovimientoForm(request.POST or None, instance=movimiento)
 
   if request.method == 'POST':
-    form = forms.MovimientoForm(request.POST or None, instance=movimiento)
-
     if form.is_valid():
       form.save()
       messages.success(request, ('Operación realizada con éxito.'))
@@ -154,7 +148,7 @@ def movimiento_update(request, movimiento_id):
     else:
       messages.error(request, ('Información incorrecta.'))
 
-  return render(request, 'movimientos/update.html', {})
+  return render(request, 'movimientos/update.html', {'form': form})
 
 
 def movimiento_delete(request, movimiento_id):
@@ -169,9 +163,9 @@ def tipos_cliente(request):
 
 
 def tipo_cliente_create(request):
-  if request.method == 'POST':
-    form = forms.TipoClienteForm(request.POST or None)
+  form = forms.TipoClienteForm(request.POST or None)
 
+  if request.method == 'POST':
     if form.is_valid():
       form.save()
       messages.success(request, ('Operación realizada con éxito.'))
@@ -179,15 +173,14 @@ def tipo_cliente_create(request):
     else:
       messages.error(request, ('Información incorrecta.'))
 
-  return render(request, 'tipos_cliente/create.html', {})
+  return render(request, 'tipos_cliente/create.html', {'form': form})
 
 
 def tipo_cliente_update(request, tipo_cliente_id):
   tipo_cliente = models.TipoCliente.objects.get(pk=tipo_cliente_id)
+  form = forms.TipoClienteForm(request.POST or None, instance=tipo_cliente)
 
   if request.method == 'POST':
-    form = forms.TipoClienteForm(request.POST or None, instance=tipo_cliente)
-
     if form.is_valid():
       form.save()
       messages.success(request, ('Operación realizada con éxito.'))
@@ -195,7 +188,7 @@ def tipo_cliente_update(request, tipo_cliente_id):
     else:
       messages.error(request, ('Información incorrecta.'))
 
-  return render(request, 'tipos_cliente/update.html', {'tipo_cliente': tipo_cliente})
+  return render(request, 'tipos_cliente/update.html', {'form': form, 'tipo_cliente': tipo_cliente})
 
 
 def tipo_cliente_delete(request, tipo_cliente_id):
@@ -210,9 +203,9 @@ def carreras(request):
 
 
 def carrera_create(request):
-  if request.method == 'POST':
-    form = forms.CarreraForm(request.POST or None)
+  form = forms.CarreraForm(request.POST or None)
 
+  if request.method == 'POST':
     if form.is_valid():
       form.save()
       messages.success(request, ('Operación realizada con éxito.'))
@@ -220,15 +213,14 @@ def carrera_create(request):
     else:
       messages.error(request, ('Información incorrecta.'))
 
-  return render(request, 'carreras/create.html', {})
+  return render(request, 'carreras/create.html', {'form': form})
 
 
 def carrera_update(request, carrera_id):
   carrera = models.Carrera.objects.get(pk=carrera_id)
+  form = forms.CarreraForm(request.POST or None, instance=carrera)
 
   if request.method == 'POST':
-    form = forms.CarreraForm(request.POST or None, instance=carrera)
-
     if form.is_valid():
       form.save()
       messages.success(request, ('Operación realizada con éxito.'))
@@ -236,7 +228,7 @@ def carrera_update(request, carrera_id):
     else:
       messages.error(request, ('Información incorrecta.'))
 
-  return render(request, 'carreras/update.html', {'carrera': carrera})
+  return render(request, 'carreras/update.html', {'form': form, 'carrera': carrera})
 
 
 def carrera_delete(request, carrera_id):
@@ -251,9 +243,9 @@ def productos(request):
 
 
 def producto_create(request):
-  if request.method == 'POST':
-    form = forms.ProductoForm(request.POST or None)
+  form = forms.ProductoForm(request.POST or None)
 
+  if request.method == 'POST':
     if form.is_valid():
       form.save()
       messages.success(request, ('Operación realizada con éxito.'))
@@ -261,15 +253,14 @@ def producto_create(request):
     else:
       messages.error(request, ('Información incorrecta.'))
 
-  return render(request, 'productos/create.html', {})
+  return render(request, 'productos/create.html', {'form': form})
 
 
 def producto_update(request, producto_id):
   producto = models.Producto.objects.get(pk=producto_id)
+  form = forms.ProductoForm(request.POST or None, instance=producto)
 
   if request.method == 'POST':
-    form = forms.ProductoForm(request.POST or None, instance=producto)
-
     if form.is_valid():
       form.save()
       messages.success(request, ('Operación realizada con éxito.'))
@@ -277,7 +268,7 @@ def producto_update(request, producto_id):
     else:
       messages.error(request, ('Información incorrecta.'))
 
-  return render(request, 'productos/update.html', {'producto': producto})
+  return render(request, 'productos/update.html', {'form': form, 'producto': producto})
 
 
 def producto_delete(request, producto_id):
@@ -333,9 +324,9 @@ def formas_pago(request):
 
 
 def forma_pago_create(request):
-  if request.method == 'POST':
-    form = forms.FormaPagoForm(request.POST or None)
+  form = forms.FormaPagoForm(request.POST or None)
 
+  if request.method == 'POST':
     if form.is_valid():
       form.save()
       messages.success(request, ('Operación realizada con éxito.'))
@@ -343,15 +334,14 @@ def forma_pago_create(request):
     else:
       messages.error(request, ('Información incorrecta.'))
 
-  return render(request, 'formas_pago/create.html', {})
+  return render(request, 'formas_pago/create.html', {'form': form})
 
 
 def forma_pago_update(request, forma_pago_id):
   forma_pago = models.FormaPago.objects.get(pk=forma_pago_id)
+  form = forms.FormaPagoForm(request.POST or None, instance=forma_pago)
 
   if request.method == 'POST':
-    form = forms.FormaPagoForm(request.POST or None, instance=forma_pago)
-
     if form.is_valid():
       form.save()
       messages.success(request, ('Operación realizada con éxito.'))
@@ -359,7 +349,7 @@ def forma_pago_update(request, forma_pago_id):
     else:
       messages.error(request, ('Información incorrecta.'))
 
-  return render(request, 'formas_pago/update.html', {'forma_pago': forma_pago})
+  return render(request, 'formas_pago/update.html', {'form': form, 'forma_pago': forma_pago})
 
 
 def forma_pago_delete(request, forma_pago_id):
@@ -374,9 +364,9 @@ def modos_pago(request):
 
 
 def modo_pago_create(request):
-  if request.method == 'POST':
-    form = forms.ModoPagoForm(request.POST or None)
+  form = forms.ModoPagoForm(request.POST or None)
 
+  if request.method == 'POST':
     if form.is_valid():
       form.save()
       messages.success(request, ('Operación realizada con éxito.'))
@@ -384,15 +374,14 @@ def modo_pago_create(request):
     else:
       messages.error(request, ('Información incorrecta.'))
 
-  return render(request, 'modos_pago/create.html', {})
+  return render(request, 'modos_pago/create.html', {'form': form})
 
 
 def modo_pago_update(request, modo_pago_id):
   modo_pago = models.ModoPago.objects.get(pk=modo_pago_id)
+  form = forms.ModoPagoForm(request.POST or None, instance=modo_pago)
 
   if request.method == 'POST':
-    form = forms.ModoPagoForm(request.POST or None, instance=modo_pago)
-
     if form.is_valid():
       form.save()
       messages.success(request, ('Operación realizada con éxito.'))
@@ -400,7 +389,7 @@ def modo_pago_update(request, modo_pago_id):
     else:
       messages.error(request, ('Información incorrecta.'))
 
-  return render(request, 'modos_pago/update.html', {'modo_pago': modo_pago})
+  return render(request, 'modos_pago/update.html', {'form': form, 'modo_pago': modo_pago})
 
 
 def modo_pago_delete(request, modo_pago_id):
@@ -415,9 +404,9 @@ def tipos_documento(request):
 
 
 def tipo_documento_create(request):
-  if request.method == 'POST':
-    form = forms.TipoDocumentoForm(request.POST or None)
+  form = forms.TipoDocumentoForm(request.POST or None)
 
+  if request.method == 'POST':
     if form.is_valid():
       form.save()
       messages.success(request, ('Operación realizada con éxito.'))
@@ -425,15 +414,14 @@ def tipo_documento_create(request):
     else:
       messages.error(request, ('Información incorrecta.'))
 
-  return render(request, 'tipos_documento/create.html', {})
+  return render(request, 'tipos_documento/create.html', {'form': form})
 
 
 def tipo_documento_update(request, tipo_documento_id):
   tipo_documento = models.TipoDocumento.objects.get(pk=tipo_documento_id)
+  form = forms.TipoDocumentoForm(request.POST or None, instance=tipo_documento)
 
   if request.method == 'POST':
-    form = forms.TipoDocumentoForm(request.POST or None, instance=tipo_documento)
-
     if form.is_valid():
       form.save()
       messages.success(request, ('Operación realizada con éxito.'))
@@ -441,7 +429,7 @@ def tipo_documento_update(request, tipo_documento_id):
     else:
       messages.error(request, ('Información incorrecta.'))
 
-  return render(request, 'tipos_documento/update.html', {'tipo_documento': tipo_documento})
+  return render(request, 'tipos_documento/update.html', {'form': form, 'tipo_documento': tipo_documento})
 
 
 def tipo_documento_delete(request, tipo_documento_id):

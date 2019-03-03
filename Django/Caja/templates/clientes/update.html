@@ -76,7 +76,7 @@
             {% if carreras %}
             <div class="form-group">
               <label for="carr_id">Carrera</label>
-              <select class="form-control" name="carr_id" id="carr_id" required>
+              <select class="form-control" name="carr_id" id="carr_id">
                   {% for carrera in carreras %}
                     {% if carrera.carr_id == empleado.carr_id.carr_id %}
                 <option value="{{ carrera.carr_id }}" selected>{{ carrera.carr_nomb }}</option>
