@@ -26,10 +26,11 @@ def usuario_cerrar_sesion(request):
 def empleados(request):
   return render(request, 'empleados/index.html', {'empleados': models.Empleado.objects.all(), 'messages': messages.get_messages(request)})
 
-def empleado_create(request):
-  if request.method == 'POST':
-    form = forms.EmpleadoForm(request.POST or None)
 
+def empleado_create(request):
+  form = forms.EmpleadoForm(request.POST or None)
+
+  if request.method == 'POST':
     if form.is_valid():
       form.save()
       messages.success(request, ('Operación realizada con éxito.'))
@@ -45,15 +46,14 @@ def empleado_create(request):
     messages.error(request, ('No hay usuarios disponibles.'))
     return empleados(request)
 
-  return render(request, 'empleados/create.html', {'horarios': models.Horario.objects.filter(hor_acti=True), 'usuarios': User.objects.filter(is_active=True).exclude(pk__in=models.Empleado.objects.values('usu_id'))})
+  return render(request, 'empleados/create.html', {'form': form, 'horarios': models.Horario.objects.filter(hor_acti=True), 'usuarios': User.objects.filter(is_active=True).exclude(pk__in=models.Empleado.objects.values('usu_id'))})
 
 
 def empleado_update(request, empleado_id):
   empleado = models.Empleado.objects.get(pk=empleado_id)
+  form = forms.EmpleadoForm(request.POST or None, instance=empleado)
 
   if request.method == 'POST':
-    form = forms.EmpleadoForm(request.POST or None, instance=empleado)
-
     if form.is_valid():
       form.save()
       messages.success(request, ('Operación realizada con éxito.'))
@@ -61,7 +61,7 @@ def empleado_update(request, empleado_id):
     else:
       messages.error(request, ('Información incorrecta.'))
 
-  return render(request, 'empleados/update.html', {'empleado': empleado, 'horarios': models.Horario.objects.filter(hor_acti=True).exclude(pk=empleado.hor_id.hor_id) | models.Horario.objects.filter(pk=empleado.hor_id.hor_id), 'usuarios': User.objects.filter(is_active=True).exclude(pk__in=models.Empleado.objects.values('usu_id')) | User.objects.filter(pk=empleado.usu_id.id)})
+  return render(request, 'empleados/update.html', {'form': form, 'empleado': empleado, 'horarios': models.Horario.objects.filter(hor_acti=True).exclude(pk=empleado.hor_id.hor_id) | models.Horario.objects.filter(pk=empleado.hor_id.hor_id), 'usuarios': User.objects.filter(is_active=True).exclude(pk__in=models.Empleado.objects.values('usu_id')) | User.objects.filter(pk=empleado.usu_id.id)})
 
 
 def empleado_delete(request, empleado_id):
