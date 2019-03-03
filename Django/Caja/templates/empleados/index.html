@@ -36,6 +36,7 @@
             <ul class="list-group list-group-flush">
               <li class="list-group-item"><i class="fa fa-id-card"></i> {% if empleado.emp_cedu %}{{ empleado.emp_cedu }}{% else %}N/A{% endif %}</li>
               <li class="list-group-item"><i class="fa fa-user-circle"></i> {{ empleado.usu_id.username }}</li>
+              <li class="list-group-item"><i class="fa fa-key"></i> {% if empleado.usu_id.is_superuser %}Administrador{% else %}{% if empleado.usu_id.is_staff %}Empleado{% endif %}{% endif %}{% if not empleado.usu_id.is_active %} (Inactivo){% endif %}</li>
               <li class="list-group-item"><i class="fa fa-clock-o"></i> {{ empleado.hor_id.hor_nomb }} ({{ empleado.hor_id.hor_entra }} a {{ empleado.hor_id.hor_sale }})</li>
               <li class="list-group-item"><i class="fa fa-sign-in"></i> Entró el {{ empleado.emp_entra }}</li>
               <li class="list-group-item"><i class="fa fa-sign-out"></i> {% if empleado.emp_sale %}Salió el {{ empleado.emp_sale }}{% else %}N/A{% endif %}</li>
