@@ -51,7 +51,7 @@
             {% csrf_token %}
             <div class="form-group">
               <label for="carr_codi">Código</label>
-              <input class="form-control" type="text" name="carr_codi" id="carr_codi" maxlength="3" pattern="[A-z]+" title="Solo debe contener letras mayusculas" required value="{{ carrera.carr_codi }}">
+              <input class="form-control" type="text" name="carr_codi" id="carr_codi" maxlength="3" pattern="[A-Z]+" title="Solo debe contener letras mayusculas" required value="{{ carrera.carr_codi }}">
             </div>
             <div class="form-group">
               <label for="carr_nomb">Nombre</label>

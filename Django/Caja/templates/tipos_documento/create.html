@@ -51,7 +51,7 @@
             {% csrf_token %}
             <div class="form-group">
               <label for="tdoc_nomb">Nombre</label>
-              <input class="form-control" type="text" name="tdoc_nomb" id="tdoc_nomb" maxlength="30" required>
+              <input class="form-control" type="text" name="tdoc_nomb" id="tdoc_nomb" pattern="[A-za-z áéíóú]+" title="No debe contener caracteres especiales o numeros" maxlength="30" required>
             </div>
             <div class="form-check" hidden>
               <input class="form-check-input" type="checkbox" name="tdoc_acti" id="tdoc_acti" checked>

@@ -52,7 +52,7 @@
             {% csrf_token %}
             <div class="form-group">
               <label for="tdoc_nomb">Nombre</label>
-              <input class="form-control" type="text" name="tdoc_nomb" id="tdoc_nomb" maxlength="30" required value="{{ tipo_documento.tdoc_nomb }}">
+              <input class="form-control" type="text" name="tdoc_nomb" id="tdoc_nomb" pattern="[A-za-z áéíóú]+" title="No debe contener caracteres especiales o numeros" maxlength="30" required value="{{ tipo_documento.tdoc_nomb }}">
             </div>
             <div class="custom-control custom-checkbox text-center">
               <input class="custom-control-input" type="checkbox" name="tdoc_acti" id="tdoc_acti"{% if tipo_documento.tdoc_acti %} checked{% endif %}>
