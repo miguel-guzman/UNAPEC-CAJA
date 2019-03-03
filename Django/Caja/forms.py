@@ -68,14 +68,9 @@ class HorarioForm(forms.ModelForm):
     model = models.Horario
     fields = ['hor_nomb', 'hor_entra', 'hor_sale', 'hor_acti']
 
-  def clean_hor_nomb(self):
-    if not re.match('^[a-zA-Z0-9_]+$', self.cleaned_data['hor_nomb']):
-      raise forms.ValidationError("Nombre sólo puede contener carácteres alfanuméricos.")
-    return self.cleaned_data['hor_nomb']
-
   def clean_hor_sale(self):
     if self.cleaned_data['hor_entra'] >= self.cleaned_data['hor_sale']:
-      raise forms.ValidationError("Hora de entrada no puede ser mayor o igual que la hora de salida.")
+      raise forms.ValidationError("Hora de entrada no puede ser mayor ni igual que la hora de salida.")
     return self.cleaned_data['hor_sale']
 
 
