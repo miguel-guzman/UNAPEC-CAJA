@@ -8,6 +8,36 @@ class EmpleadoForm(forms.ModelForm):
     model = models.Empleado
     fields = ['emp_nomb', 'emp_ape1', 'emp_ape2', 'emp_cedu', 'usu_id', 'emp_entra', 'emp_sale', 'hor_id', 'emp_acti']
 
+  def clean_emp_cedu(self):
+
+    # La cédula debe tener 11 dígitos
+    emp_cedu = self.cleaned_data['emp_cedu'].replace('-', '')
+    if len(emp_cedu) == 11:
+      if (int(emp_cedu[0:3]) < 122 and int(emp_cedu[0:3]) > 0 or int(emp_cedu[0:3]) == 402):
+        suma = 0
+        verificador = 0
+        mutliplicador = [1, 2, 1, 2, 1, 2, 1, 2, 1, 2]
+
+        for i in range(10):
+
+          digito = int(emp_cedu[i]) * mutliplicador[i]
+
+          if (digito > 9):
+            digito = digito // 10 + digito % 10
+
+          suma = suma + digito
+
+        verificador = (10 - (suma % 10)) % 10
+
+        if (verificador == int(emp_cedu[10])):
+          return self.cleaned_data['emp_cedu']
+        else:
+          raise forms.ValidationError('Cédula de identidad introducida no es válida')
+      else:
+        raise forms.ValidationError('Cédula de identidad introducida no es válida')
+    else:
+      raise forms.ValidationError('Cédula de identidad introducida no es válida.')
+
 
 class ClienteForm(forms.ModelForm):
   class Meta:
