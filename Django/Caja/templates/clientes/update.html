@@ -55,7 +55,7 @@
             </div>
             <div class="form-group">
               <label for="cli_ape2">Apellido Materno</label>
-              <input class="form-control" type="text" name="cli_ape2" id="cli_ape2" maxlength="30" value="{{ cliente.cli_ape2 }}" pattern="[A-za-z áéíóú]+" title="No debe contener caracteres especiales o numeros">
+              <input class="form-control" type="text" name="cli_ape2" id="cli_ape2" maxlength="30" value="{{ cliente.cli_ape2|default_if_none:'' }}" pattern="[A-za-z áéíóú]+" title="No debe contener caracteres especiales o numeros">
             </div>
             {% if tipos_cliente %}
             <div class="form-group">

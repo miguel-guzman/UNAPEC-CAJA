@@ -59,7 +59,7 @@
             </div>
             <div class="form-group">
               <label for="emp_cedu">Cédula de Identidad</label>
-              <input class="form-control" type="text" name="emp_cedu" id="emp_cedu" value="{{ form.emp_cedu.value|default_if_none:empleado.emp_cedu }}" maxlength="11" pattern="[0-9]+" title="Solo puede contener caracteres numéricos." required>
+              <input class="form-control" type="text" name="emp_cedu" id="emp_cedu" value="{{ form.emp_cedu.value|default_if_none:empleado.emp_cedu|default_if_none:'' }}" maxlength="11" pattern="[0-9]+" title="Solo puede contener caracteres numéricos.">
             </div>
             {% if usuarios %}
             <div class="form-group">
