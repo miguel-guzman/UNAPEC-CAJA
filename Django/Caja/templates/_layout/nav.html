@@ -15,30 +15,28 @@
       </li>
     {% if user.is_authenticated %}
       {% if user.is_staff %}
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false">
-          Administración
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="{% url 'empleados' %}">Empleados</a>
-          <a class="dropdown-item" href="{% url 'clientes' %}">Clientes</a>
-          <a class="dropdown-item" href="{% url 'movimientos' %}">Movimientos</a>
-        </div>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'movimientos' %}">Movimientos</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'clientes' %}">Clientes</a>
       </li>
         {% if user.is_superuser %}
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'empleados' %}">Empleados</a>
+      </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
           aria-haspopup="true" aria-expanded="false">
           Configuración
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="{% url 'tipos_cliente' %}">Tipos de Cliente</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="{% url 'carreras' %}">Carreras</a>
-          <a class="dropdown-item" href="{% url 'productos' %}">Productos</a>
-          <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="{% url 'horarios' %}">Horarios</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="{% url 'tipos_cliente' %}">Tipos de Cliente</a>
+          <a class="dropdown-item" href="{% url 'carreras' %}">Carreras</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="{% url 'productos' %}">Productos</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="{% url 'formas_pago' %}">Formas de Pago</a>
           <a class="dropdown-item" href="{% url 'modos_pago' %}">Modalidades de Pago</a>
@@ -48,9 +46,6 @@
       {% endif %}{% endif %}{% endif %}
       <li class="nav-item">
         <a class="nav-link" href="{% url 'acerca_de' %}">Acerca de</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Otros</a>
       </li>
     </ul>
     <ul class="nav navbar-nav">
