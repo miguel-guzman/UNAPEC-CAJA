@@ -1,6 +1,6 @@
 {% extends '_layout\core.html' %}
 
-{% block title%}Crear Producto{% endblock title %}
+{% block title %}Crear Producto{% endblock title %}
 
 {% block content %}
     <div class="container">
@@ -26,14 +26,12 @@
       {% endfor %}
     {% endfor %}
     {% for error in form.non_field_errors %}
-      {% for error in field.errors %}
       <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
         <button type="button" class="close" data-dismiss="alert">
           &times;
         </button>
       {{ error|escape }}
       </div>
-      {% endfor %}
     {% endfor %}
   {% endif %}
   {% if user.is_authenticated %}
@@ -71,30 +69,6 @@
         </div>
       </div>
     </div>
-        {% else %}
-    <div class="row mt-3">
-      <div class="col-lg-6 mx-auto">
-        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
-          <button type="button" class="close" data-dismiss="alert">
-            &times;
-          </button>
-          No tiene los permisos suficientes para ver este contenido
-        </div>
-      </div>
-    </div>
-    {% endif %}
-    {% else %}
-    <div class="row mt-3">
-      <div class="col-lg-6 mx-auto">
-        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
-          <button type="button" class="close" data-dismiss="alert">
-            &times;
-          </button>
-          Para continuar, debe iniciar sesión
-        </div>
-      </div>
-    </div>
-  {% endif %}
     {% else %}
     <div class="row mt-3">
       <div class="col-lg-6 mx-auto">
@@ -107,7 +81,7 @@
       </div>
     </div>
     {% endif %}
-    {% else %}
+  {% else %}
     <div class="row mt-3">
       <div class="col-lg-6 mx-auto">
         <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">

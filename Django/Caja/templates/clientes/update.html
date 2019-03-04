@@ -1,6 +1,6 @@
 {% extends '_layout\core.html' %}
 
-{% block title%}Actualizar Cliente{% endblock title %}
+{% block title %}Actualizar Cliente{% endblock title %}
 
 {% block content %}
     <div class="container">
@@ -26,14 +26,12 @@
       {% endfor %}
     {% endfor %}
     {% for error in form.non_field_errors %}
-      {% for error in field.errors %}
       <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
         <button type="button" class="close" data-dismiss="alert">
           &times;
         </button>
       {{ error|escape }}
       </div>
-      {% endfor %}
     {% endfor %}
   {% endif %}
       <nav>
@@ -77,20 +75,17 @@
             <div class="form-group">
               <label for="carr_id">Carrera</label>
               <select class="form-control" name="carr_id" id="carr_id">
+                <option value=""{% if cliente.carr_id == None %} selected{% endif %}>N/A</option>
                   {% for carrera in carreras %}
-                    {% if carrera.carr_id == empleado.carr_id.carr_id %}
+                    {% if carrera.carr_id == cliente.carr_id.carr_id %}
                 <option value="{{ carrera.carr_id }}" selected>{{ carrera.carr_nomb }}</option>
                     {% else %}
                 <option value="{{ carrera.carr_id }}">{{ carrera.carr_nomb }}</option>
                     {% endif %}
                   {% endfor %}
-                  {% for carrera in carreras %}
-                <option value="{{ carrera.carr_id }}">{{ carrera.carr_nomb }}</option>
-                  {% endfor %}
               </select>
             </div>
             {% endif %}
-
             <div class="custom-control custom-checkbox text-center">
               <input class="custom-control-input" type="checkbox" name="cli_acti" id="cli_acti"{% if cliente.cli_acti %} checked{% endif %}>
               <label class="custom-control-label" for="cli_acti">Activo</label>

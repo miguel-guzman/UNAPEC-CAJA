@@ -51,9 +51,10 @@ def empleado_create(request):
 
 def empleado_update(request, empleado_id):
   empleado = models.Empleado.objects.get(pk=empleado_id)
-  form = forms.EmpleadoForm(request.POST or None, instance=empleado)
+  form = forms.EmpleadoForm(None)
 
   if request.method == 'POST':
+    form = forms.EmpleadoForm(request.POST or None, instance=empleado)
     if form.is_valid():
       form.save()
       messages.success(request, ('Operación realizada con éxito.'))
@@ -61,7 +62,9 @@ def empleado_update(request, empleado_id):
     else:
       messages.error(request, ('Información incorrecta.'))
 
-  return render(request, 'empleados/update.html', {'form': form, 'empleado': empleado, 'horarios': models.Horario.objects.filter(hor_acti=True).exclude(pk=empleado.hor_id.hor_id) | models.Horario.objects.filter(pk=empleado.hor_id.hor_id), 'usuarios': User.objects.filter(is_active=True).exclude(pk__in=models.Empleado.objects.values('usu_id')) | User.objects.filter(pk=empleado.usu_id.id)})
+  print(User.objects.filter(is_active=True).exclude(pk__in=models.Empleado.objects.values('usu_id')) | User.objects.filter(pk=models.Empleado.objects.get(pk=empleado_id).usu_id.id))
+
+  return render(request, 'empleados/update.html', {'form': form, 'empleado': empleado, 'horarios': models.Horario.objects.filter(hor_acti=True).exclude(pk=empleado.hor_id.hor_id) | models.Horario.objects.filter(pk=empleado.hor_id.hor_id), 'usuarios': User.objects.filter(is_active=True).exclude(pk__in=models.Empleado.objects.values('usu_id')) | User.objects.filter(pk=models.Empleado.objects.get(pk=empleado_id).usu_id.id)})
 
 
 def empleado_delete(request, empleado_id):
@@ -95,9 +98,10 @@ def cliente_create(request):
 
 def cliente_update(request, cliente_id):
   cliente = models.Cliente.objects.get(pk=cliente_id)
-  form = forms.ClienteForm(request.POST or None, instance=cliente)
+  form = forms.ClienteForm(None)
 
   if request.method == 'POST':
+    form = forms.ClienteForm(request.POST or None, instance=cliente)
     if form.is_valid():
       form.save()
       messages.success(request, ('Operación realizada con éxito.'))
@@ -105,7 +109,7 @@ def cliente_update(request, cliente_id):
     else:
       messages.error(request, ('Información incorrecta.'))
 
-  return render(request, 'clientes/update.html', {'form': form, 'cliente': cliente, 'tipos_cliente': models.TipoCliente.objects.filter(tcli_acti=True).exclude(pk=cliente.tcli_id.tcli_id) | models.TipoCliente.objects.filter(pk=cliente.tcli_id.tcli_id), 'carreras': models.Carrera.objects.filter(carr_acti=True).exclude(pk=cliente.carr_id.carr_id) | models.Carrera.objects.filter(pk=cliente.carr_id.carr_id)})
+  return render(request, 'clientes/update.html', {'form': form, 'cliente': cliente, 'tipos_cliente': models.TipoCliente.objects.filter(tcli_acti=True).exclude(pk=cliente.tcli_id.tcli_id) | models.TipoCliente.objects.filter(pk=cliente.tcli_id.tcli_id), 'carreras': models.Carrera.objects.filter(carr_acti=True) if cliente.carr_id == None else models.Carrera.objects.filter(carr_acti=True).exclude(pk=cliente.carr_id.carr_id) | models.Carrera.objects.filter(pk=cliente.carr_id.carr_id)})
 
 
 def cliente_delete(request, cliente_id):

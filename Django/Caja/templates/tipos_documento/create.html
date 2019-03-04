@@ -1,6 +1,6 @@
 {% extends '_layout\core.html' %}
 
-{% block title%}Crear Tipo de Documento{% endblock title %}
+{% block title %}Crear Tipo de Documento{% endblock title %}
 
 {% block content %}
     <div class="container">
@@ -26,14 +26,12 @@
       {% endfor %}
     {% endfor %}
     {% for error in form.non_field_errors %}
-      {% for error in field.errors %}
       <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
         <button type="button" class="close" data-dismiss="alert">
           &times;
         </button>
       {{ error|escape }}
       </div>
-      {% endfor %}
     {% endfor %}
   {% endif %}
   {% if user.is_authenticated %}
@@ -51,7 +49,7 @@
             {% csrf_token %}
             <div class="form-group">
               <label for="tdoc_nomb">Nombre</label>
-              <input class="form-control" type="text" name="tdoc_nomb" id="tdoc_nomb" pattern="[A-za-z áéíóú]+" title="No debe contener caracteres especiales o numeros" maxlength="30" required>
+              <input class="form-control" type="text" name="tdoc_nomb" id="tdoc_nomb" maxlength="30" pattern="[A-za-z ÁÉÍÓÚáéíóúü&]+" title="Solo puede contener caracteres alfabéticos." required>
             </div>
             <div class="form-check" hidden>
               <input class="form-check-input" type="checkbox" name="tdoc_acti" id="tdoc_acti" checked>

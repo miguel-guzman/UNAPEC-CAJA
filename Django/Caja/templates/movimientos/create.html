@@ -14,26 +14,6 @@
       </div>
     {% endfor %}
   {% endif %}
-  {% if form.errors %}
-    {% for field in form %}
-      {% for error in field.errors %}
-      <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
-        <button type="button" class="close" data-dismiss="alert">
-          &times;
-        </button>
-      {{ error|escape }}
-      </div>
-      {% endfor %}
-    {% endfor %}
-    {% for error in form.non_field_errors %}
-      <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
-        <button type="button" class="close" data-dismiss="alert">
-          &times;
-        </button>
-      {{ error|escape }}
-      </div>
-    {% endfor %}
-  {% endif %}
       <nav>
         <ol class="breadcrumb bg-light mt-3">
           <li class="breadcrumb-item"><a href="{% url 'index' %}">Inicio</a></li>
@@ -47,19 +27,19 @@
             {% csrf_token %}
             <div class="form-group">
               <label for="emp_nomb">Nombre</label>
-              <input class="form-control" type="text" name="emp_nomb" id="emp_nomb" value="{{ form.emp_nomb.value|default_if_none:'' }}" maxlength="60" required pattern="[A-za-z áéíóú]+" title="No debe contener caracteres especiales o numeros">
+              <input class="form-control" type="text" name="emp_nomb" id="emp_nomb" maxlength="60" required pattern="[A-za-z áéíóú]+" title="No debe contener caracteres especiales o numeros">
             </div>
             <div class="form-group">
               <label for="emp_ape1">Apellido Paterno</label>
-              <input class="form-control" type="text" name="emp_ape1" id="emp_ape1" value="{{ form.emp_ape1.value|default_if_none:'' }}" maxlength="30" required pattern="[A-za-z áéíóú]+" title="No debe contener caracteres especiales o numeros">
+              <input class="form-control" type="text" name="emp_ape1" id="emp_ape1" maxlength="30" required pattern="[A-za-z áéíóú]+" title="No debe contener caracteres especiales o numeros">
             </div>
             <div class="form-group">
               <label for="emp_ape2">Apellido Materno</label>
-              <input class="form-control" type="text" name="emp_ape2" id="emp_ape2" value="{{ form.emp_ape2.value|default_if_none:'' }}" maxlength="30" pattern="[A-za-z áéíóú]+" title="No debe contener caracteres especiales o numeros">
+              <input class="form-control" type="text" name="emp_ape2" id="emp_ape2" maxlength="30" pattern="[A-za-z áéíóú]+" title="No debe contener caracteres especiales o numeros">
             </div>
             <div class="form-group">
               <label for="emp_cedu">Cédula de Identidad</label>
-              <input class="form-control" type="text" name="emp_cedu" id="emp_cedu" value="{{ form.emp_cedu.value|default_if_none:'' }}" maxlength="11">
+              <input class="form-control" type="text" name="emp_cedu" id="emp_cedu" maxlength="11">
             </div>
             {% if usuarios %}
             <div class="form-group">
@@ -67,14 +47,14 @@
               <select class="form-control" name="usu_id" id="usu_id" required>
                 <option value="">Elegir usuario...</option>
                   {% for usuario in usuarios %}
-                <option value="{{ usuario.id }}"{% if form.usu_id.value == usuario.id|slugify %} selected{% endif %}>{{ usuario.username }}</option>
+                <option value="{{ usuario.id }}">{{ usuario.username }}</option>
                   {% endfor %}
               </select>
             </div>
             {% endif %}
             <div class="form-group">
               <label for="emp_entra">Fecha de Entrada</label>
-              <input class="form-control" type="date" name="emp_entra" id="emp_entra" value="{{ form.emp_entra.value|default_if_none:'' }}" required>
+              <input class="form-control" type="date" name="emp_entra" id="emp_entra" required>
             </div>
             {% if horarios %}
             <div class="form-group">
@@ -82,7 +62,7 @@
               <select class="form-control" name="hor_id" id="hor_id" required>
                 <option value="">Elegir horario...</option>
                   {% for horario in horarios %}
-                <option value="{{ horario.hor_id }}"{% if form.hor_id.value == horario.hor_id|slugify %} selected{% endif %}>{{ horario.hor_nomb }} (de {{ horario.hor_entra }} a {{ horario.hor_sale }})</option>
+                <option value="{{ horario.hor_id }}">{{ horario.hor_nomb }} (de {{ horario.hor_entra }} a {{ horario.hor_sale }})</option>
                   {% endfor %}
               </select>
             </div>
