@@ -57,6 +57,10 @@ class EmpleadoForm(forms.ModelForm):
         if emp_entra > emp_sale:
           raise forms.ValidationError("Fecha de entrada no puede ser mayor que fecha de salida.")
 
+    else:
+      if not emp_acti:
+        raise forms.ValidationError("Empleado no puede estar inactivo sin fecha de salida.")
+
     return cleaned_data
 
 
