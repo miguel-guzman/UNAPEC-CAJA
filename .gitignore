@@ -117,3 +117,4 @@ venv.bak/
 
 # database migrations
 /django/caja/migrations
+Django/UNAPEC/settings.py
