@@ -1,4 +1,5 @@
 import re
+import datetime
 from django import forms
 from . import models
 
@@ -8,35 +9,55 @@ class EmpleadoForm(forms.ModelForm):
     model = models.Empleado
     fields = ['emp_nomb', 'emp_ape1', 'emp_ape2', 'emp_cedu', 'usu_id', 'emp_entra', 'emp_sale', 'hor_id', 'emp_acti']
 
-  def clean_emp_cedu(self):
+  def clean(self):
+    cleaned_data = super(EmpleadoForm, self).clean()
 
-    # La cédula debe tener 11 dígitos
-    emp_cedu = self.cleaned_data['emp_cedu'].replace('-', '')
-    if len(emp_cedu) == 11:
-      if (int(emp_cedu[0:3]) < 122 and int(emp_cedu[0:3]) > 0 or int(emp_cedu[0:3]) == 402):
-        suma = 0
-        verificador = 0
-        mutliplicador = [1, 2, 1, 2, 1, 2, 1, 2, 1, 2]
+    emp_cedu = cleaned_data.get('emp_cedu')
+    emp_entra = cleaned_data.get('emp_entra')
+    emp_sale = cleaned_data.get('emp_sale')
+    emp_acti = cleaned_data.get('emp_acti')
 
-        for i in range(10):
+    if emp_cedu:
+      if len(emp_cedu) == 11:
+        if (int(emp_cedu[0:3]) < 122 and int(emp_cedu[0:3]) > 0 or int(emp_cedu[0:3]) == 402):
+          suma = 0
+          verificador = 0
+          mutliplicador = [1, 2, 1, 2, 1, 2, 1, 2, 1, 2]
 
-          digito = int(emp_cedu[i]) * mutliplicador[i]
+          for i in range(10):
 
-          if (digito > 9):
-            digito = digito // 10 + digito % 10
+            digito = int(emp_cedu[i]) * mutliplicador[i]
 
-          suma = suma + digito
+            if (digito > 9):
+              digito = digito // 10 + digito % 10
 
-        verificador = (10 - (suma % 10)) % 10
+            suma = suma + digito
 
-        if (verificador == int(emp_cedu[10])):
-          return self.cleaned_data['emp_cedu']
+          verificador = (10 - (suma % 10)) % 10
+
+          if not (verificador == int(emp_cedu[10])):
+            raise forms.ValidationError('Cédula de identidad introducida no es válida')
         else:
           raise forms.ValidationError('Cédula de identidad introducida no es válida')
       else:
-        raise forms.ValidationError('Cédula de identidad introducida no es válida')
-    else:
-      raise forms.ValidationError('Cédula de identidad introducida no es válida.')
+        raise forms.ValidationError('Cédula de identidad introducida no es válida.')
+
+    if emp_entra:
+      if emp_entra > datetime.date.today():
+        raise forms.ValidationError("Fecha de entrada no puede ser mayor que la fecha actual.")
+
+    if emp_sale:
+      if emp_sale > datetime.date.today():
+        raise forms.ValidationError("Fecha de salida no puede ser mayor que la fecha actual.")
+
+      if emp_acti:
+        raise forms.ValidationError("Empleado con fecha de salida no puede estar activo.")
+
+      if emp_entra:
+        if emp_entra > emp_sale:
+          raise forms.ValidationError("Fecha de entrada no puede ser mayor que fecha de salida.")
+
+    return cleaned_data
 
 
 class ClienteForm(forms.ModelForm):
@@ -68,10 +89,17 @@ class HorarioForm(forms.ModelForm):
     model = models.Horario
     fields = ['hor_nomb', 'hor_entra', 'hor_sale', 'hor_acti']
 
-  def clean_hor_sale(self):
-    if self.cleaned_data['hor_entra'] >= self.cleaned_data['hor_sale']:
-      raise forms.ValidationError("Hora de entrada no puede ser mayor ni igual que la hora de salida.")
-    return self.cleaned_data['hor_sale']
+  def clean(self):
+    cleaned_data = super(HorarioForm, self).clean()
+
+    hor_entra = cleaned_data.get('hor_entra')
+    hor_sale = cleaned_data.get('hor_sale')
+
+    if hor_entra and hor_sale:
+      if hor_entra >= hor_sale:
+        raise forms.ValidationError("Hora de entrada no puede ser mayor ni igual que la hora de salida.")
+
+    return cleaned_data
 
 
 class ProductoForm(forms.ModelForm):
