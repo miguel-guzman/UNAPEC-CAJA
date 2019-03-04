@@ -14,28 +14,8 @@
       </div>
     {% endfor %}
   {% endif %}
-  {% if form.errors %}
-    {% for field in form %}
-      {% for error in field.errors %}
-      <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
-        <button type="button" class="close" data-dismiss="alert">
-          &times;
-        </button>
-      {{ error|escape }}
-      </div>
-      {% endfor %}
-    {% endfor %}
-    {% for error in form.non_field_errors %}
-      <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
-        <button type="button" class="close" data-dismiss="alert">
-          &times;
-        </button>
-      {{ error|escape }}
-      </div>
-    {% endfor %}
-  {% endif %}
-{% if user.is_authenticated %}
-  {% if user.is_superuser %}
+  {% if user.is_authenticated %}
+    {% if user.is_superuser %}
       <nav>
         <ol class="breadcrumb bg-light mt-3">
           <li class="breadcrumb-item"><a href="{% url 'index' %}">Inicio</a></li>
@@ -49,11 +29,11 @@
             {% csrf_token %}
             <div class="form-group">
               <label for="carr_codi">Código</label>
-              <input class="form-control" type="text" name="carr_codi" id="carr_codi" maxlength="3" pattern="[A-Z]+" title="Solo debe contener letras mayusculas" required value="{{ carrera.carr_codi }}">
+              <input class="form-control" type="text" name="carr_codi" id="carr_codi" value="{{ carrera.carr_codi }}" maxlength="3" pattern="[A-Z]+" title="Solo puede contener letras mayúsculas sin tilde." required>
             </div>
             <div class="form-group">
               <label for="carr_nomb">Nombre</label>
-              <input class="form-control" type="text" name="carr_nomb" id="carr_nomb" pattern="[A-za-z áéíóú]+" title="No debe contener caracteres especiales o numeros" maxlength="30" required value="{{ carrera.carr_nomb }}">
+              <input class="form-control" type="text" name="carr_nomb" id="carr_nomb" value="{{ carrera.carr_nomb }}" maxlength="30" pattern="[A-za-z ÁÉÍÓÚáéíóúü&]+" title="Solo puede contener carácteres alfabéticos." required>
             </div>
             <div class="custom-control custom-checkbox text-center">
               <input class="custom-control-input" type="checkbox" name="carr_acti" id="carr_acti"{% if carrera.carr_acti %} checked{% endif %}>

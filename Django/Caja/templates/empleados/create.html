@@ -34,6 +34,8 @@
       </div>
     {% endfor %}
   {% endif %}
+  {% if user.is_authenticated %}
+    {% if user.is_superuser %}
       <nav>
         <ol class="breadcrumb bg-light mt-3">
           <li class="breadcrumb-item"><a href="{% url 'index' %}">Inicio</a></li>
@@ -47,19 +49,19 @@
             {% csrf_token %}
             <div class="form-group">
               <label for="emp_nomb">Nombre</label>
-              <input class="form-control" type="text" name="emp_nomb" id="emp_nomb" value="{{ form.emp_nomb.value|default_if_none:'' }}" maxlength="60" required pattern="[A-za-z áéíóú]+" title="No debe contener caracteres especiales o numeros">
+              <input class="form-control" type="text" name="emp_nomb" id="emp_nomb" value="{{ form.emp_nomb.value|default_if_none:'' }}" maxlength="60" pattern="[A-za-z ÁÉÍÓÚáéíóúü&]+" title="Solo puede contener caracteres alfabéticos." required>
             </div>
             <div class="form-group">
               <label for="emp_ape1">Apellido Paterno</label>
-              <input class="form-control" type="text" name="emp_ape1" id="emp_ape1" value="{{ form.emp_ape1.value|default_if_none:'' }}" maxlength="30" required pattern="[A-za-z áéíóú]+" title="No debe contener caracteres especiales o numeros">
+              <input class="form-control" type="text" name="emp_ape1" id="emp_ape1" value="{{ form.emp_ape1.value|default_if_none:'' }}" maxlength="30" pattern="[A-za-z ÁÉÍÓÚáéíóúü&]+" title="Solo puede contener caracteres alfabéticos." required>
             </div>
             <div class="form-group">
               <label for="emp_ape2">Apellido Materno</label>
-              <input class="form-control" type="text" name="emp_ape2" id="emp_ape2" value="{{ form.emp_ape2.value|default_if_none:'' }}" maxlength="30" pattern="[A-za-z áéíóú]+" title="No debe contener caracteres especiales o numeros">
+              <input class="form-control" type="text" name="emp_ape2" id="emp_ape2" value="{{ form.emp_ape2.value|default_if_none:'' }}" maxlength="30" pattern="[A-za-z ÁÉÍÓÚáéíóúü&]+" title="Solo puede contener caracteres alfabéticos.">
             </div>
             <div class="form-group">
               <label for="emp_cedu">Cédula de Identidad</label>
-              <input class="form-control" type="text" name="emp_cedu" id="emp_cedu" value="{{ form.emp_cedu.value|default_if_none:'' }}" maxlength="11">
+              <input class="form-control" type="text" name="emp_cedu" id="emp_cedu" value="{{ form.emp_cedu.value|default_if_none:'' }}" minlength="11" maxlength="11" pattern="[0-9]+" title="Solo puede contener caracteres numéricos.">
             </div>
             {% if usuarios %}
             <div class="form-group">
@@ -101,4 +103,28 @@
         </div>
       </div>
     </div>
+    {% else %}
+    <div class="row mt-3">
+      <div class="col-lg-6 mx-auto">
+        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+          <button type="button" class="close" data-dismiss="alert">
+            &times;
+          </button>
+          No tiene los permisos suficientes para ver este contenido
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  {% else %}
+    <div class="row mt-3">
+      <div class="col-lg-6 mx-auto">
+        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+          <button type="button" class="close" data-dismiss="alert">
+            &times;
+          </button>
+          Para continuar, debe iniciar sesión
+        </div>
+      </div>
+    </div>
+  {% endif %}
 {% endblock content %}

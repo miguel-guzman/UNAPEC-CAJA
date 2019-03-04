@@ -93,7 +93,7 @@ def cliente_create(request):
     messages.error(request, ('No hay tipos de cliente disponibles.'))
     return clientes(request)
 
-  return render(request, 'clientes/create.html', {'form': form, 'tipos_cliente': models.TipoCliente.objects.filter(tcli_acti=True), 'carreras': models.Carrera.objects.filter(carr_acti=True)})
+  return render(request, 'clientes/create.html', {'tipos_cliente': models.TipoCliente.objects.filter(tcli_acti=True), 'carreras': models.Carrera.objects.filter(carr_acti=True)})
 
 
 def cliente_update(request, cliente_id):
@@ -109,7 +109,7 @@ def cliente_update(request, cliente_id):
     else:
       messages.error(request, ('Información incorrecta.'))
 
-  return render(request, 'clientes/update.html', {'form': form, 'cliente': cliente, 'tipos_cliente': models.TipoCliente.objects.filter(tcli_acti=True).exclude(pk=cliente.tcli_id.tcli_id) | models.TipoCliente.objects.filter(pk=cliente.tcli_id.tcli_id), 'carreras': models.Carrera.objects.filter(carr_acti=True) if cliente.carr_id == None else models.Carrera.objects.filter(carr_acti=True).exclude(pk=cliente.carr_id.carr_id) | models.Carrera.objects.filter(pk=cliente.carr_id.carr_id)})
+  return render(request, 'clientes/update.html', {'cliente': cliente, 'tipos_cliente': models.TipoCliente.objects.filter(tcli_acti=True).exclude(pk=cliente.tcli_id.tcli_id) | models.TipoCliente.objects.filter(pk=cliente.tcli_id.tcli_id), 'carreras': models.Carrera.objects.filter(carr_acti=True) if cliente.carr_id == None else models.Carrera.objects.filter(carr_acti=True).exclude(pk=cliente.carr_id.carr_id) | models.Carrera.objects.filter(pk=cliente.carr_id.carr_id)})
 
 
 def cliente_delete(request, cliente_id):
@@ -133,11 +133,32 @@ def movimiento_create(request):
     else:
       messages.error(request, ('Información incorrecta.'))
 
-  if models.Cliente.objects.count() == 0:
-    messages.error(request, ('No se han definido clientes.'))
+  if request.user.is_authenticated and request.user.is_staff:
+    if models.Empleado.objects.filter(usu_id=request.user.id).count() == 0:
+      messages.error(request, ('Su usuario no está configurado como empleado. Contacto a su administrador.'))
+      return movimientos(request)
+
+  if models.Cliente.objects.filter(cli_acti=True).count() == 0:
+    messages.error(request, ('No hay clientes disponibles.'))
     return movimientos(request)
 
-  return render(request, 'movimientos/create.html', {'form': form})
+  if models.Producto.objects.filter(prod_acti=True).count() == 0:
+    messages.error(request, ('No hay productos disponibles.'))
+    return movimientos(request)
+
+  if models.TipoDocumento.objects.filter(tdoc_acti=True).count() == 0:
+    messages.error(request, ('No hay tipos de documento disponibles.'))
+    return movimientos(request)
+
+  if models.FormaPago.objects.filter(fpago_acti=True).count() == 0:
+    messages.error(request, ('No hay formas de pago disponibles.'))
+    return movimientos(request)
+
+  if models.ModoPago.objects.filter(mpago_acti=True).count() == 0:
+    messages.error(request, ('No hay modalidades de pago disponibles.'))
+    return movimientos(request)
+
+  return render(request, 'movimientos/create.html', {'form': form, })
 
 
 def movimiento_update(request, movimiento_id):
@@ -167,9 +188,8 @@ def tipos_cliente(request):
 
 
 def tipo_cliente_create(request):
-  form = forms.TipoClienteForm(request.POST or None)
-
   if request.method == 'POST':
+    form = forms.TipoClienteForm(request.POST or None)
     if form.is_valid():
       form.save()
       messages.success(request, ('Operación realizada con éxito.'))
@@ -177,14 +197,14 @@ def tipo_cliente_create(request):
     else:
       messages.error(request, ('Información incorrecta.'))
 
-  return render(request, 'tipos_cliente/create.html', {'form': form})
+  return render(request, 'tipos_cliente/create.html', {})
 
 
 def tipo_cliente_update(request, tipo_cliente_id):
   tipo_cliente = models.TipoCliente.objects.get(pk=tipo_cliente_id)
-  form = forms.TipoClienteForm(request.POST or None, instance=tipo_cliente)
 
   if request.method == 'POST':
+    form = forms.TipoClienteForm(request.POST or None, instance=tipo_cliente)
     if form.is_valid():
       form.save()
       messages.success(request, ('Operación realizada con éxito.'))
@@ -192,7 +212,7 @@ def tipo_cliente_update(request, tipo_cliente_id):
     else:
       messages.error(request, ('Información incorrecta.'))
 
-  return render(request, 'tipos_cliente/update.html', {'form': form, 'tipo_cliente': tipo_cliente})
+  return render(request, 'tipos_cliente/update.html', {'tipo_cliente': tipo_cliente})
 
 
 def tipo_cliente_delete(request, tipo_cliente_id):
@@ -207,9 +227,9 @@ def carreras(request):
 
 
 def carrera_create(request):
-  form = forms.CarreraForm(request.POST or None)
 
   if request.method == 'POST':
+    form = forms.CarreraForm(request.POST or None)
     if form.is_valid():
       form.save()
       messages.success(request, ('Operación realizada con éxito.'))
@@ -217,14 +237,14 @@ def carrera_create(request):
     else:
       messages.error(request, ('Información incorrecta.'))
 
-  return render(request, 'carreras/create.html', {'form': form})
+  return render(request, 'carreras/create.html', {})
 
 
 def carrera_update(request, carrera_id):
   carrera = models.Carrera.objects.get(pk=carrera_id)
-  form = forms.CarreraForm(request.POST or None, instance=carrera)
 
   if request.method == 'POST':
+    form = forms.CarreraForm(request.POST or None, instance=carrera)
     if form.is_valid():
       form.save()
       messages.success(request, ('Operación realizada con éxito.'))
@@ -232,7 +252,7 @@ def carrera_update(request, carrera_id):
     else:
       messages.error(request, ('Información incorrecta.'))
 
-  return render(request, 'carreras/update.html', {'form': form, 'carrera': carrera})
+  return render(request, 'carreras/update.html', {'carrera': carrera})
 
 
 def carrera_delete(request, carrera_id):
@@ -247,9 +267,9 @@ def productos(request):
 
 
 def producto_create(request):
-  form = forms.ProductoForm(request.POST or None)
 
   if request.method == 'POST':
+    form = forms.ProductoForm(request.POST or None)
     if form.is_valid():
       form.save()
       messages.success(request, ('Operación realizada con éxito.'))
@@ -257,7 +277,7 @@ def producto_create(request):
     else:
       messages.error(request, ('Información incorrecta.'))
 
-  return render(request, 'productos/create.html', {'form': form})
+  return render(request, 'productos/create.html', {})
 
 
 def producto_update(request, producto_id):
@@ -272,7 +292,7 @@ def producto_update(request, producto_id):
     else:
       messages.error(request, ('Información incorrecta.'))
 
-  return render(request, 'productos/update.html', {'form': form, 'producto': producto})
+  return render(request, 'productos/update.html', {'producto': producto})
 
 
 def producto_delete(request, producto_id):
@@ -338,7 +358,7 @@ def forma_pago_create(request):
     else:
       messages.error(request, ('Información incorrecta.'))
 
-  return render(request, 'formas_pago/create.html', {'form': form})
+  return render(request, 'formas_pago/create.html', {})
 
 
 def forma_pago_update(request, forma_pago_id):
@@ -353,7 +373,7 @@ def forma_pago_update(request, forma_pago_id):
     else:
       messages.error(request, ('Información incorrecta.'))
 
-  return render(request, 'formas_pago/update.html', {'form': form, 'forma_pago': forma_pago})
+  return render(request, 'formas_pago/update.html', {'forma_pago': forma_pago})
 
 
 def forma_pago_delete(request, forma_pago_id):
@@ -378,7 +398,7 @@ def modo_pago_create(request):
     else:
       messages.error(request, ('Información incorrecta.'))
 
-  return render(request, 'modos_pago/create.html', {'form': form})
+  return render(request, 'modos_pago/create.html', {})
 
 
 def modo_pago_update(request, modo_pago_id):
@@ -393,7 +413,7 @@ def modo_pago_update(request, modo_pago_id):
     else:
       messages.error(request, ('Información incorrecta.'))
 
-  return render(request, 'modos_pago/update.html', {'form': form, 'modo_pago': modo_pago})
+  return render(request, 'modos_pago/update.html', {'modo_pago': modo_pago})
 
 
 def modo_pago_delete(request, modo_pago_id):
@@ -418,7 +438,7 @@ def tipo_documento_create(request):
     else:
       messages.error(request, ('Información incorrecta.'))
 
-  return render(request, 'tipos_documento/create.html', {'form': form})
+  return render(request, 'tipos_documento/create.html', {})
 
 
 def tipo_documento_update(request, tipo_documento_id):
@@ -433,7 +453,7 @@ def tipo_documento_update(request, tipo_documento_id):
     else:
       messages.error(request, ('Información incorrecta.'))
 
-  return render(request, 'tipos_documento/update.html', {'form': form, 'tipo_documento': tipo_documento})
+  return render(request, 'tipos_documento/update.html', {'tipo_documento': tipo_documento})
 
 
 def tipo_documento_delete(request, tipo_documento_id):

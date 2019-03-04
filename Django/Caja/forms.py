@@ -35,12 +35,10 @@ class EmpleadoForm(forms.ModelForm):
 
           verificador = (10 - (suma % 10)) % 10
 
-          if not (verificador == int(emp_cedu[10])):
+          if not verificador == int(emp_cedu[10]):
             raise forms.ValidationError('Cédula de identidad introducida no es válida')
         else:
           raise forms.ValidationError('Cédula de identidad introducida no es válida')
-      else:
-        raise forms.ValidationError('Cédula de identidad introducida no es válida.')
 
     if emp_entra:
       if emp_entra > datetime.date.today():

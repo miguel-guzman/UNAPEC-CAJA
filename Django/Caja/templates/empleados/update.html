@@ -59,7 +59,7 @@
             </div>
             <div class="form-group">
               <label for="emp_cedu">Cédula de Identidad</label>
-              <input class="form-control" type="text" name="emp_cedu" id="emp_cedu" value="{{ form.emp_cedu.value|default_if_none:empleado.emp_cedu|default_if_none:'' }}" maxlength="11" pattern="[0-9]+" title="Solo puede contener caracteres numéricos.">
+              <input class="form-control" type="text" name="emp_cedu" id="emp_cedu" value="{{ form.emp_cedu.value|default_if_none:empleado.emp_cedu|default_if_none:'' }}" minlength="11" maxlength="11" pattern="[0-9]+" title="Solo puede contener caracteres numéricos.">
             </div>
             {% if usuarios %}
             <div class="form-group">
@@ -86,7 +86,7 @@
             {% if horarios %}
             <div class="form-group">
               <label for="hor_id">Horario</label>
-              <select class="form-control" name="hor_id" id="hor_id" required value>
+              <select class="form-control" name="hor_id" id="hor_id" required>
                   {% for horario in horarios %}
                     {% if form.hor_id.value|default_if_none:empleado.hor_id.hor_id|slugify == horario.hor_id|slugify  %}
                 <option value="{{ horario.hor_id }}" selected>{{ horario.hor_nomb }} (de {{ horario.hor_entra }} a {{ horario.hor_sale }})</option>
@@ -98,9 +98,9 @@
             </div>
             {% endif %}
             <div class="custom-control custom-checkbox text-center">
-                <input class="custom-control-input" type="checkbox" name="emp_acti" id="emp_acti"{% if empleado.emp_acti and form.emp_acti.value %} checked{% endif %}>
-                <label class="custom-control-label" for="emp_acti">Activo</label>
-              </div>
+              <input class="custom-control-input" type="checkbox" name="emp_acti" id="emp_acti"{% if form.emp_acti.value and empleado.emp_acti %} checked{% endif %}>
+              <label class="custom-control-label" for="emp_acti">Activo</label>
+            </div>
             <div class="text-center my-3">
               <a class="btn text-secondary" href="{% url 'empleados' %}" role="button">Volver</a>
               <button type="submit" class="btn btn-primary">Listo</button>

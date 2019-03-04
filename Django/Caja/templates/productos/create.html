@@ -14,26 +14,6 @@
       </div>
     {% endfor %}
   {% endif %}
-  {% if form.errors %}
-    {% for field in form %}
-      {% for error in field.errors %}
-      <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
-        <button type="button" class="close" data-dismiss="alert">
-          &times;
-        </button>
-      {{ error|escape }}
-      </div>
-      {% endfor %}
-    {% endfor %}
-    {% for error in form.non_field_errors %}
-      <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
-        <button type="button" class="close" data-dismiss="alert">
-          &times;
-        </button>
-      {{ error|escape }}
-      </div>
-    {% endfor %}
-  {% endif %}
   {% if user.is_authenticated %}
     {% if user.is_superuser %}
       <nav>
@@ -49,7 +29,7 @@
             {% csrf_token %}
             <div class="form-group">
               <label for="prod_nomb">Nombre</label>
-              <input class="form-control" type="text" name="prod_nomb" id="prod_nomb" maxlength="30" required>
+              <input class="form-control" type="text" name="prod_nomb" id="prod_nomb" maxlength="30" pattern="[A-za-z ÁÉÍÓÚáéíóúü&0-9.,-]+" title="Solo puede contener caracteres alfanuméricos, puntos, comas y guiones." required>
             </div>
             <div class="form-group">
               <label for="prod_prec">Precio (RD$)</label>
