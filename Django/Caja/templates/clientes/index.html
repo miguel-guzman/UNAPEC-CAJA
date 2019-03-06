@@ -38,14 +38,13 @@
               <label class="custom-control-label" for="match">Concidencia exacta</label>
             </div>
             <button type="submit" class="btn btn-primary ml-2">Buscar</button>
-            {% if filtered %}<a class="btn btn-secondary ml-2" href="{% url 'empleados' %}" role="button">Reestablecer</a>{% endif %}
+            {% if filtered %}<a class="btn btn-secondary ml-2" href="{% url 'clientes' %}" role="button">Reestablecer</a>{% endif %}
           </div>
         </form>
-      </div>
-
-      <div class="row mt-3">
-        <div class="col text-center">
-          <a class="btn btn-success" href="{% url 'cliente_create' %}" role="button">Crear</a>
+        <div class="row mt-3">
+          <div class="col text-center">
+            <a class="btn btn-success" href="{% url 'cliente_create' %}" role="button">Crear</a>
+          </div>
         </div>
       </div>
       <div class="card-group">
