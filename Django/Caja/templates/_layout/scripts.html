@@ -16,6 +16,7 @@
             }
 
             field.on('change', function(){  
+                query.val('');
                 if(this.value !== 'emp_entra' || this.value !== 'emp_sale'){
                     query.prop('type', 'text');
                     query2.hide();
