@@ -34,7 +34,7 @@ def empleados(request):
         empleados = models.Empleado.objects.filter(emp_id=request.GET.get('query'))
         messages.success(request, 'ID igual a ' + request.GET.get('query') + '.')
       else:
-        empleados = models.Empleado.objects.filter(emp_id__regex=r'[' + request.GET.get('query') + r']+')
+        empleados = models.Empleado.objects.filter(emp_id__regex=r'(' + request.GET.get('query') + r')+')
         messages.success(request, 'ID que contenga ' + request.GET.get('query') + '.')
       filtered = True
 
@@ -43,7 +43,7 @@ def empleados(request):
         empleados = models.Empleado.objects.filter(emp_nomb=request.GET.get('query'))
         messages.success(request, 'Nombres igual a ' + request.GET.get('query') + '.')
       else:
-        empleados = models.Empleado.objects.filter(emp_nomb__regex=r'[' + request.GET.get('query') + r']+')
+        empleados = models.Empleado.objects.filter(emp_nomb__regex=r'(' + request.GET.get('query') + r')+')
         messages.success(request, 'Nombres que contengan ' + request.GET.get('query') + '.')
       filtered = True
 
@@ -52,7 +52,7 @@ def empleados(request):
         empleados = models.Empleado.objects.filter(emp_ape1=request.GET.get('query'))
         messages.success(request, 'Apellido Paterno igual a ' + request.GET.get('query') + '.')
       else:
-        empleados = models.Empleado.objects.filter(emp_ape1__regex=r'[' + request.GET.get('query') + r']+')
+        empleados = models.Empleado.objects.filter(emp_ape1__regex=r'(' + request.GET.get('query') + r')+')
         messages.success(request, 'Apellido Paterno que contenga ' + request.GET.get('query') + '.')
       filtered = True
 
@@ -61,7 +61,7 @@ def empleados(request):
         empleados = models.Empleado.objects.filter(emp_ape2=request.GET.get('query'))
         messages.success(request, 'Apellido Materno igual a ' + request.GET.get('query') + '.')
       else:
-        empleados = models.Empleado.objects.filter(emp_ape2__regex=r'[' + request.GET.get('query') + r']+')
+        empleados = models.Empleado.objects.filter(emp_ape2__regex=r'(' + request.GET.get('query') + r')+')
         messages.success(request, 'Apellido Materno que contenga ' + request.GET.get('query') + '.')
       filtered = True
 
@@ -70,7 +70,7 @@ def empleados(request):
         empleados = models.Empleado.objects.filter(emp_cedu=request.GET.get('query'))
         messages.success(request, 'Cédula de Identidad igual a ' + request.GET.get('query') + '.')
       else:
-        empleados = models.Empleado.objects.filter(emp_cedu__regex=r'[' + request.GET.get('query') + r']+')
+        empleados = models.Empleado.objects.filter(emp_cedu__regex=r'(' + request.GET.get('query') + r')+')
         messages.success(request, 'Cédula de Identidad que contenga ' + request.GET.get('query') + '.')
       filtered = True
 
@@ -79,7 +79,7 @@ def empleados(request):
         empleados = models.Empleado.objects.filter(usu_id__in=User.objects.filter(username=request.GET.get('query')))
         messages.success(request, 'Nombre de Usuario igual a ' + request.GET.get('query') + '.')
       else:
-        empleados = models.Empleado.objects.filter(usu_id__in=User.objects.filter(username__iregex=r'[' + request.GET.get('query') + r']+'))
+        empleados = models.Empleado.objects.filter(usu_id__in=User.objects.filter(username__iregex=r'(' + request.GET.get('query') + r')+'))
         messages.success(request, 'Nombre de Usuario que contenga ' + request.GET.get('query') + '.')
       filtered = True
 
@@ -99,7 +99,7 @@ def empleados(request):
         empleados = models.Empleado.objects.filter(hor_id__in=models.Horario.objects.filter(hor_nomb=request.GET.get('query')))
         messages.success(request, 'Nombre de Horario igual a ' + request.GET.get('query') + '.')
       else:
-        empleados = models.Empleado.objects.filter(hor_id__in=User.objects.filter(hor_nomb__iregex=r'[' + request.GET.get('query') + r']+'))
+        empleados = models.Empleado.objects.filter(hor_id__in=User.objects.filter(hor_nomb__iregex=r'(' + request.GET.get('query') + r')+'))
         messages.success(request, 'Nombre de Horario que contenga ' + request.GET.get('query') + '.')
       filtered = True
 
