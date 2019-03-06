@@ -21,7 +21,7 @@ def usuario_cerrar_sesion(request):
   logout(request)
   return index(request)
 
-# Empleados
+# clientes
 
 def empleados(request):
   empleados = models.Empleado.objects.all()
@@ -99,7 +99,7 @@ def empleados(request):
         empleados = models.Empleado.objects.filter(hor_id__in=models.Horario.objects.filter(hor_nomb=request.GET.get('query')))
         messages.success(request, 'Nombre de Horario igual a ' + request.GET.get('query') + '.')
       else:
-        empleados = models.Empleado.objects.filter(hor_id__in=User.objects.filter(hor_nomb__iregex=r'(' + request.GET.get('query') + r')+'))
+        empleados = models.Empleado.objects.filter(hor_id__in=models.Horario.objects.filter(hor_nomb__iregex=r'(' + request.GET.get('query') + r')+'))
         messages.success(request, 'Nombre de Horario que contenga ' + request.GET.get('query') + '.')
       filtered = True
 
@@ -165,7 +165,77 @@ def empleado_delete(request, empleado_id):
 # Clientes
 
 def clientes(request):
-  return render(request, 'clientes/index.html', {'clientes': models.Cliente.objects.all(), 'messages': messages.get_messages(request)})
+  clientes = models.Cliente.objects.all()
+  filtered = None
+
+  if request.method == 'GET':
+
+    if request.GET.get('field') == 'cli_id':
+      if request.GET.get('match') == 'on':
+        clientes = models.Cliente.objects.filter(cli_id=request.GET.get('query'))
+        messages.success(request, 'ID igual a ' + request.GET.get('query') + '.')
+      else:
+        clientes = models.Cliente.objects.filter(cli_id__regex=r'(' + request.GET.get('query') + r')+')
+        messages.success(request, 'ID que contenga ' + request.GET.get('query') + '.')
+      filtered = True
+
+    if request.GET.get('field') == 'cli_nomb':
+      if request.GET.get('match') == 'on':
+        clientes = models.Cliente.objects.filter(cli_nomb=request.GET.get('query'))
+        messages.success(request, 'Nombre igual a ' + request.GET.get('query') + '.')
+      else:
+        clientes = models.Cliente.objects.filter(cli_nomb__regex=r'(' + request.GET.get('query') + r')+')
+        messages.success(request, 'Nombre que contenga ' + request.GET.get('query') + '.')
+      filtered = True
+
+    if request.GET.get('field') == 'cli_ape1':
+      if request.GET.get('match') == 'on':
+        clientes = models.Cliente.objects.filter(cli_ape1=request.GET.get('query'))
+        messages.success(request, 'Apellido Paterno igual a ' + request.GET.get('query') + '.')
+      else:
+        clientes = models.Cliente.objects.filter(cli_ape1__regex=r'(' + request.GET.get('query') + r')+')
+        messages.success(request, 'Apellido Paterno que contenga ' + request.GET.get('query') + '.')
+      filtered = True
+
+    if request.GET.get('field') == 'cli_ape2':
+      if request.GET.get('match') == 'on':
+        clientes = models.Cliente.objects.filter(cli_ape2=request.GET.get('query'))
+        messages.success(request, 'Apellido Materno igual a ' + request.GET.get('query') + '.')
+      else:
+        clientes = models.Cliente.objects.filter(cli_ape2__regex=r'(' + request.GET.get('query') + r')+')
+        messages.success(request, 'Apellido Materno que contenga ' + request.GET.get('query') + '.')
+      filtered = True
+
+    if request.GET.get('field') == 'tcli_nomb':
+      if request.GET.get('match') == 'on':
+        clientes = models.Cliente.objects.filter(hor_id__in=models.TipoCliente.objects.filter(tcli_nomb=request.GET.get('query')))
+        messages.success(request, 'Tipo de Cliente igual a ' + request.GET.get('query') + '.')
+      else:
+        clientes = models.Cliente.objects.filter(hor_id__in=models.TipoCliente.filter(tcli_nomb__iregex=r'(' + request.GET.get('query') + r')+'))
+        messages.success(request, 'Tipo de Cliente que contenga ' + request.GET.get('query') + '.')
+      filtered = True
+
+    if request.GET.get('field') == 'carr_nomb':
+      if request.GET.get('match') == 'on':
+        clientes = models.Cliente.objects.filter(hor_id__in=models.Carrera.objects.filter(carr_nomb=request.GET.get('query')))
+        messages.success(request, 'Tipo de Cliente igual a ' + request.GET.get('query') + '.')
+      else:
+        clientes = models.Cliente.objects.filter(hor_id__in=models.Carrera.filter(carr_nomb__iregex=r'(' + request.GET.get('query') + r')+'))
+        messages.success(request, 'Tipo de Cliente que contenga ' + request.GET.get('query') + '.')
+      filtered = True
+
+    if request.GET.get('field') == 'cli_acti':
+      if request.GET.get('query').upper().strip() == 'ACTIVO':
+        clientes = models.Cliente.objects.filter(cli_acti=True)
+        messages.success(request, 'Activo.')
+      elif request.GET.get('query').upper().strip() == 'INACTIVO':
+        clientes = models.Cliente.objects.filter(cli_acti=False)
+        messages.success(request, 'Inactivo.')
+      else:
+        messages.error(request, 'Por favor, introduzca un estado válido (Activo, Inactivo).')
+      filtered = True
+
+  return render(request, 'clientes/index.html', {'clientes': clientes, 'filtered': filtered, 'messages': messages.get_messages(request)})
 
 
 def cliente_create(request):

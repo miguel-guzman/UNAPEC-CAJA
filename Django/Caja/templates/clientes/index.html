@@ -20,17 +20,17 @@
           <li class="breadcrumb-item active">Clientes</li>
         </ol>
       </nav>
- <div class="row justify-content-center justify-content-md-between px-4 mb-3">
+      <div class="row justify-content-center justify-content-md-between px-4 mb-3">
         <form>
           <div class="form-inline col">
             <select class="form-control mb-2 my-1 mr-sm-2" name="field" id="field">
               <option value="cli_id"{% if request.GET.field == 'cli_id' %} selected{% endif %}>ID</option>
-              <option value="cli_nomb"{% if request.GET.field == 'cli_nomb' %} selected{% endif %}>Nombres</option>
+              <option value="cli_nomb"{% if request.GET.field == 'cli_nomb' %} selected{% endif %}>Nombre</option>
               <option value="cli_ape1"{% if request.GET.field == 'cli_ape1' %} selected{% endif %}>Apellido Paterno</option>
               <option value="cli_ape2"{% if request.GET.field == 'cli_ape2' %} selected{% endif %}>Apellido Materno</option>
               <option value="tcli_id"{% if request.GET.field == 'tcli_id' %} selected{% endif %}>Tipo de Cliente</option>
               <option value="carr_id"{% if request.GET.field == 'carr_id' %} selected{% endif %}>Carrera</option>
-              <option value="cli_acti"{% if request.GET.field == 'cli_acti' %} selected{% endif %}>Estado</option>
+              <option value="cli_acti"{% if request.GET.field == 'cli_acti' %} selected{% endif %}>Activo</option>
             </select>
             <input class="form-control ml-sm-1 mb-2 my-1 mr-md-2" type="text" name="query" id="query"{% if request.GET.query %} value="{{ request.GET.query }}"{% endif %} placeholder="Búsqueda" required>
             <div class="custom-control custom-checkbox my-1">
@@ -41,6 +41,7 @@
             {% if filtered %}<a class="btn btn-secondary ml-2" href="{% url 'empleados' %}" role="button">Reestablecer</a>{% endif %}
           </div>
         </form>
+      </div>
 
       <div class="row mt-3">
         <div class="col text-center">

@@ -25,7 +25,7 @@
           <div class="form-inline col">
             <select class="form-control mb-2 my-1 mr-sm-2" name="field" id="field">
               <option value="emp_id"{% if request.GET.field == 'emp_id' %} selected{% endif %}>ID</option>
-              <option value="emp_nomb"{% if request.GET.field == 'emp_nomb' %} selected{% endif %}>Nombres</option>
+              <option value="emp_nomb"{% if request.GET.field == 'emp_nomb' %} selected{% endif %}>Nombre</option>
               <option value="emp_ape1"{% if request.GET.field == 'emp_ape1' %} selected{% endif %}>Apellido Paterno</option>
               <option value="emp_ape2"{% if request.GET.field == 'emp_ape2' %} selected{% endif %}>Apellido Materno</option>
               <option value="emp_cedu"{% if request.GET.field == 'emp_cedu' %} selected{% endif %}>Cédula de Identidad</option>
@@ -83,19 +83,19 @@
 {% block scripts %}
     <script>
 
-        $( document ).ready(function() {           
+        $( document ).ready(function() {
             var field = $('#field');
             var query = $('#query');
             var query2 = $('#query2');
 
-            query2.hide(); 
+            query2.hide();
 
             if(field.prop('value') === 'emp_id'){
                 query.prop('type', 'number');
             }
 
-            field.on('change', function(){  
-                
+            field.on('change', function(){
+
                 if(this.value !== 'emp_entra' || this.value !== 'emp_sale'){
                     query.prop('type', 'text');
                     query2.hide();
@@ -103,7 +103,7 @@
 
                 if(this.value === 'emp_entra' || this.value === 'emp_sale'){
                     query.prop('type', 'date');
-                    query2.show();              
+                    query2.show();
                 }
                 else if(this.value === 'emp_id' || this.value === 'emp_cedu'){
                     query.prop('type', 'number');
@@ -115,6 +115,6 @@
                 }
             })
         });
-       
+
     </script>
 {% endblock %}
