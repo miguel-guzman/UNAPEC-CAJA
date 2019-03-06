@@ -25,6 +25,9 @@
           <div class="form-inline col">
             <select class="form-control mb-2 my-1 mr-sm-2" name="field" id="field">
               <option value="emp_id"{% if request.GET.field == 'emp_id' %} selected{% endif %}>ID</option>
+              <option value="emp_nomb"{% if request.GET.field == 'emp_nomb' %} selected{% endif %}>Nombres</option>
+              <option value="emp_ape1"{% if request.GET.field == 'emp_ape1' %} selected{% endif %}>Apellido Paterno</option>
+              <option value="emp_ape2"{% if request.GET.field == 'emp_ape2' %} selected{% endif %}>Apellido Materno</option>
               <option value="emp_cedu"{% if request.GET.field == 'emp_cedu' %} selected{% endif %}>Cédula de Identidad</option>
               <option value="usu_nomb"{% if request.GET.field == 'usu_nomb' %} selected{% endif %}>Nombre de Usuario</option>
               <option value="usu_tipo"{% if request.GET.field == 'usu_tipo' %} selected{% endif %}>Tipo Usuario</option>
