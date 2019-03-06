@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.models import User
@@ -24,7 +24,72 @@ def usuario_cerrar_sesion(request):
 # Empleados
 
 def empleados(request):
-  return render(request, 'empleados/index.html', {'empleados': models.Empleado.objects.all(), 'messages': messages.get_messages(request)})
+  empleados = models.Empleado.objects.all()
+  filtered = None
+
+  if request.method == 'GET':
+
+    if request.GET.get('field') == 'emp_id':
+      if request.GET.get('match') == 'on':
+        empleados = models.Empleado.objects.filter(emp_id=request.GET.get('query'))
+        messages.success(request, 'ID igual a ' + request.GET.get('query') + '.')
+      else:
+        empleados = models.Empleado.objects.filter(emp_id__regex=r'[' + request.GET.get('query') + r']+')
+        messages.success(request, 'ID que contenga ' + request.GET.get('query') + '.')
+      filtered = True
+
+    if request.GET.get('field') == 'emp_cedu':
+      if request.GET.get('match') == 'on':
+        empleados = models.Empleado.objects.filter(emp_cedu=request.GET.get('query'))
+        messages.success(request, 'Cédula de Identidad igual a ' + request.GET.get('query') + '.')
+      else:
+        empleados = models.Empleado.objects.filter(emp_cedu__regex=r'[' + request.GET.get('query') + r']+')
+        messages.success(request, 'Cédula de Identidad que contenga ' + request.GET.get('query') + '.')
+      filtered = True
+
+    if request.GET.get('field') == 'usu_nomb':
+      if request.GET.get('match') == 'on':
+        empleados = models.Empleado.objects.filter(usu_id__in=User.objects.filter(username=request.GET.get('query')))
+        messages.success(request, 'Nombre de Usuario igual a ' + request.GET.get('query') + '.')
+      else:
+        empleados = models.Empleado.objects.filter(usu_id__in=User.objects.filter(username__regex=r'[' + request.GET.get('query') + r']+'))
+        messages.success(request, 'Nombre de Usuario que contenga ' + request.GET.get('query') + '.')
+      filtered = True
+
+    if request.GET.get('field') == 'usu_tipo':
+      if request.GET.get('query').upper().strip() == 'ADMINISTRADOR':
+        empleados = models.Empleado.objects.filter(usu_id__in=User.objects.filter(is_superuser=True).filter(is_staff=True))
+        messages.success(request, 'Tipo de Usuario Administrador.')
+      elif request.GET.get('query').upper().strip() == 'EMPLEADO':
+        empleados = models.Empleado.objects.filter(usu_id__in=User.objects.exclude(is_superuser=True).filter(is_staff=True))
+        messages.success(request, 'Tipo de Usuario Empleado.')
+      else:
+        messages.error(request, 'Por favor, introduzca un tipo de usuario válido (Administrador, Empleado).')
+      filtered = True
+
+    if request.GET.get('field') == 'hor_nomb':
+      if request.GET.get('match') == 'on':
+        empleados = models.Empleado.objects.filter(hor_id__in=models.Horario.objects.filter(hor_nomb=request.GET.get('query')))
+        messages.success(request, 'Nombre de Horario igual a ' + request.GET.get('query') + '.')
+      else:
+        empleados = models.Empleado.objects.filter(hor_id__in=User.objects.filter(hor_nomb__regex=r'[' + request.GET.get('query') + r']+'))
+        messages.success(request, 'Nombre de Horario que contenga ' + request.GET.get('query') + '.')
+      filtered = True
+
+    if request.GET.get('field') == 'emp_acti':
+      if request.GET.get('query').upper().strip() == 'ACTIVO':
+        empleados = models.Empleado.objects.filter(emp_acti=True)
+        messages.success(request, 'Activo.')
+      elif request.GET.get('query').upper().strip() == 'INACTIVO':
+        empleados = models.Empleado.objects.filter(emp_acti=False)
+        messages.success(request, 'Inactivo.')
+      else:
+        messages.error(request, 'Por favor, introduzca un estado válido (Activo, Inactivo).')
+      filtered = True
+
+  print(request.GET)
+
+  return render(request, 'empleados/index.html', {'empleados': empleados, 'filtered': filtered, 'messages': messages.get_messages(request)})
 
 
 def empleado_create(request):
@@ -34,17 +99,17 @@ def empleado_create(request):
     if form.is_valid():
       form.save()
       messages.success(request, ('Operación realizada con éxito.'))
-      return empleados(request)
+      return redirect(empleados)
     else:
       messages.error(request, ('Información incorrecta.'))
 
   if not models.Horario.objects.filter(hor_acti=True).count() > 0:
     messages.error(request, ('No hay horarios disponibles.'))
-    return empleados(request)
+    return redirect(empleados)
 
   if not User.objects.filter(is_active=True).exclude(pk__in=models.Empleado.objects.values('usu_id')).count() > 0:
     messages.error(request, ('No hay usuarios disponibles.'))
-    return empleados(request)
+    return redirect(empleados)
 
   return render(request, 'empleados/create.html', {'form': form, 'horarios': models.Horario.objects.filter(hor_acti=True), 'usuarios': User.objects.filter(is_active=True).exclude(pk__in=models.Empleado.objects.values('usu_id'))})
 
@@ -58,11 +123,9 @@ def empleado_update(request, empleado_id):
     if form.is_valid():
       form.save()
       messages.success(request, ('Operación realizada con éxito.'))
-      return empleados(request)
+      return redirect(empleados)
     else:
       messages.error(request, ('Información incorrecta.'))
-
-  print(User.objects.filter(is_active=True).exclude(pk__in=models.Empleado.objects.values('usu_id')) | User.objects.filter(pk=models.Empleado.objects.get(pk=empleado_id).usu_id.id))
 
   return render(request, 'empleados/update.html', {'form': form, 'empleado': empleado, 'horarios': models.Horario.objects.filter(hor_acti=True).exclude(pk=empleado.hor_id.hor_id) | models.Horario.objects.filter(pk=empleado.hor_id.hor_id), 'usuarios': User.objects.filter(is_active=True).exclude(pk__in=models.Empleado.objects.values('usu_id')) | User.objects.filter(pk=models.Empleado.objects.get(pk=empleado_id).usu_id.id)})
 
