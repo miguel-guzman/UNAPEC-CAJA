@@ -3,20 +3,29 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/js/bootstrap.js" integrity="sha256-K0KkaRh1fs/UYfKcnzBK9G/X7HgzuaeVI1hJPS8Sxs4=" crossorigin="anonymous"></script>
 
     <script>
-        $( document ).ready(function() {
-            
+
+        $( document ).ready(function() {           
             var field = $('#field');
             var query = $('#query');
+            var query2 = $('#query2');
+
+            query2.hide(); 
 
             if(field.prop('value') === 'emp_id'){
                 query.prop('type', 'number');
             }
 
-            field.on('change', function(){
+            field.on('change', function(){  
+                if(this.value !== 'emp_entra' || this.value !== 'emp_sale'){
+                    query.prop('type', 'text');
+                    query2.hide();
+                }
+
                 if(this.value === 'emp_entra' || this.value === 'emp_sale'){
                     query.prop('type', 'date');
+                    query2.show();              
                 }
-                if(this.value === 'emp_id' || this.value === 'emp_cedu'){
+                else if(this.value === 'emp_id' || this.value === 'emp_cedu'){
                     query.prop('type', 'number');
                 }
                 else {

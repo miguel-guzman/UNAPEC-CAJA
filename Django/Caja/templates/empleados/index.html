@@ -37,6 +37,7 @@
               <option value="emp_acti"{% if request.GET.field == 'emp_acti' %} selected{% endif %}>Activo</option>
             </select>
             <input class="form-control ml-sm-1 mb-2 my-1 mr-md-2" type="text" name="query" id="query"{% if request.GET.query %} value="{{ request.GET.query }}"{% endif %} placeholder="Búsqueda" required>
+            <input class="form-control ml-sm-1 mb-2 my-1 mr-md-2" type="date" name="query" id="query2"{% if request.GET.query %} value="{{ request.GET.query }}"{% endif %} placeholder="Búsqueda" required>
             <div class="custom-control custom-checkbox my-1">
               <input class="custom-control-input" type="checkbox" name="match" id="match"{% if request.GET.match %} checked{% endif %}>
               <label class="custom-control-label" for="match">Concidencia exacta</label>
