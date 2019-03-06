@@ -37,7 +37,7 @@
               <option value="emp_acti"{% if request.GET.field == 'emp_acti' %} selected{% endif %}>Activo</option>
             </select>
             <input class="form-control ml-sm-1 mb-2 my-1 mr-md-2" type="text" name="query" id="query"{% if request.GET.query %} value="{{ request.GET.query }}"{% endif %} placeholder="Búsqueda" required>
-            <input class="form-control ml-sm-1 mb-2 my-1 mr-md-2" type="date" name="query" id="query2"{% if request.GET.query %} value="{{ request.GET.query }}"{% endif %} placeholder="Búsqueda" required>
+            <input class="form-control ml-sm-1 mb-2 my-1 mr-md-2" type="date" name="query2" id="query2"{% if request.GET.query2 %} value="{{ request.GET.query2 }}"{% endif %}>
             <div class="custom-control custom-checkbox my-1">
               <input class="custom-control-input" type="checkbox" name="match" id="match"{% if request.GET.match %} checked{% endif %}>
               <label class="custom-control-label" for="match">Concidencia exacta</label>
@@ -79,3 +79,42 @@
       </div>
     </div>
 {% endblock content %}
+
+{% block scripts %}
+    <script>
+
+        $( document ).ready(function() {           
+            var field = $('#field');
+            var query = $('#query');
+            var query2 = $('#query2');
+
+            query2.hide(); 
+
+            if(field.prop('value') === 'emp_id'){
+                query.prop('type', 'number');
+            }
+
+            field.on('change', function(){  
+                
+                if(this.value !== 'emp_entra' || this.value !== 'emp_sale'){
+                    query.prop('type', 'text');
+                    query2.hide();
+                }
+
+                if(this.value === 'emp_entra' || this.value === 'emp_sale'){
+                    query.prop('type', 'date');
+                    query2.show();              
+                }
+                else if(this.value === 'emp_id' || this.value === 'emp_cedu'){
+                    query.prop('type', 'number');
+                }
+                else {
+                    query.prop('type', 'text');
+                    query.prop('pattern', '[A-za-z ÁÉÍÓÚáéíóúü&]+');
+                    query.prop('title', 'Solo puede contener caracteres alfabéticos.');
+                }
+            })
+        });
+       
+    </script>
+{% endblock %}
