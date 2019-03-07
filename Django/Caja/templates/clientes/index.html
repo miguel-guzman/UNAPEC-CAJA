@@ -28,8 +28,8 @@
               <option value="cli_nomb"{% if request.GET.field == 'cli_nomb' %} selected{% endif %}>Nombre</option>
               <option value="cli_ape1"{% if request.GET.field == 'cli_ape1' %} selected{% endif %}>Apellido Paterno</option>
               <option value="cli_ape2"{% if request.GET.field == 'cli_ape2' %} selected{% endif %}>Apellido Materno</option>
-              <option value="tcli_id"{% if request.GET.field == 'tcli_id' %} selected{% endif %}>Tipo de Cliente</option>
-              <option value="carr_id"{% if request.GET.field == 'carr_id' %} selected{% endif %}>Carrera</option>
+              <option value="tcli_nomb"{% if request.GET.field == 'tcli_nomb' %} selected{% endif %}>Tipo de Cliente</option>
+              <option value="carr_nomb"{% if request.GET.field == 'carr_nomb' %} selected{% endif %}>Carrera</option>
               <option value="cli_acti"{% if request.GET.field == 'cli_acti' %} selected{% endif %}>Activo</option>
             </select>
             <input class="form-control ml-sm-1 mb-2 my-1 mr-md-2" type="text" name="query" id="query"{% if request.GET.query %} value="{{ request.GET.query }}"{% endif %} placeholder="Búsqueda" required>

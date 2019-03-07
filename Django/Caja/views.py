@@ -94,6 +94,11 @@ def empleados(request):
         messages.error(request, 'Por favor, introduzca un tipo de usuario válido (Administrador, Empleado).')
       filtered = True
 
+    if request.GET.get('field') == 'emp_entra':
+      empleados = models.Empleado.objects.filter(emp_entra__range=(request.GET.get('query'),request.GET.get('query2')))
+      messages.success(request, 'Fecha de Entrada entre ' + request.GET.get('query') + ' y ' + request.GET.get('query2') + '.')
+      filtered = True
+
     if request.GET.get('field') == 'hor_nomb':
       if request.GET.get('match') == 'on':
         empleados = models.Empleado.objects.filter(hor_id__in=models.Horario.objects.filter(hor_nomb=request.GET.get('query')))
@@ -208,19 +213,19 @@ def clientes(request):
 
     if request.GET.get('field') == 'tcli_nomb':
       if request.GET.get('match') == 'on':
-        clientes = models.Cliente.objects.filter(hor_id__in=models.TipoCliente.objects.filter(tcli_nomb=request.GET.get('query')))
+        clientes = models.Cliente.objects.filter(tcli_id__in=models.TipoCliente.objects.filter(tcli_nomb=request.GET.get('query')))
         messages.success(request, 'Tipo de Cliente igual a ' + request.GET.get('query') + '.')
       else:
-        clientes = models.Cliente.objects.filter(hor_id__in=models.TipoCliente.filter(tcli_nomb__iregex=r'(' + request.GET.get('query') + r')+'))
+        clientes = models.Cliente.objects.filter(tcli_id__in=models.TipoCliente.objects.filter(tcli_nomb__iregex=r'(' + request.GET.get('query') + r')+'))
         messages.success(request, 'Tipo de Cliente que contenga ' + request.GET.get('query') + '.')
       filtered = True
 
     if request.GET.get('field') == 'carr_nomb':
       if request.GET.get('match') == 'on':
-        clientes = models.Cliente.objects.filter(hor_id__in=models.Carrera.objects.filter(carr_nomb=request.GET.get('query')))
+        clientes = models.Cliente.objects.filter(carr_id__in=models.Carrera.objects.filter(carr_nomb=request.GET.get('query')))
         messages.success(request, 'Tipo de Cliente igual a ' + request.GET.get('query') + '.')
       else:
-        clientes = models.Cliente.objects.filter(hor_id__in=models.Carrera.filter(carr_nomb__iregex=r'(' + request.GET.get('query') + r')+'))
+        clientes = models.Cliente.objects.filter(carr_id__in=models.Carrera.objects.filter(carr_nomb__iregex=r'(' + request.GET.get('query') + r')+'))
         messages.success(request, 'Tipo de Cliente que contenga ' + request.GET.get('query') + '.')
       filtered = True
 
