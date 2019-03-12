@@ -47,7 +47,7 @@
             {% if productos %}
             <div class="form-group">
               <label for="prod_id">Producto</label>
-              <select class="form-control" name="prod_id" id="prod_id" required>
+              <select class="form-control sincronizar" name="prod_id" id="prod_id" required>
                 <option value="">Elegir producto...</option>
                   {% for producto in productos %}
                 <option value="{{ producto.prod_id }}">{{ producto.prod_nomb }} (RD${{ producto.prod_prec }})</option>
@@ -84,10 +84,10 @@
             {% if productos %}
             <div class="form-group">
               <label for="mov_monto">Monto</label>
-              <select class="form-control" name="mov_monto" id="mov_monto" required>
+              <select class="form-control sincronizar" name="mov_monto" id="mov_monto" required>
                 <option value="">Elegir monto...</option>
                   {% for producto in productos %}
-                <option value="{{ producto.prod_id }}">{{ producto.prod_prec|stringformat:'0.02f' }}</option>
+                <option value="{{ producto.prod_prec|stringformat:'0.02f' }}">{{ producto.prod_prec|stringformat:'0.02f' }}</option>
                   {% endfor %}
               </select>
             </div>
@@ -125,9 +125,8 @@
 
 {% block scripts %}
 <script>
-  var combobox = $("#prod_id, #mov_monto");
-  combobox.change(function(e) {
-      combobox.val(this.value);
-  });
+var $sincronizar = $(".sincronizar").on('change', function() {
+  $sincronizar.not(this).get(0).selectedIndex = this.selectedIndex;
+});
 </script>
 {% endblock %}
