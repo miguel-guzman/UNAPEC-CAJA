@@ -1,6 +1,6 @@
 {% extends '_layout\core.html' %}
 
-{% block title %}Crear Empleado{% endblock title %}
+{% block title %}Crear Movimiento{% endblock title %}
 
 {% block content %}
     <div class="container">
@@ -17,7 +17,7 @@
       <nav>
         <ol class="breadcrumb bg-light mt-3">
           <li class="breadcrumb-item"><a href="{% url 'index' %}">Inicio</a></li>
-          <li class="breadcrumb-item"><a href="{% url 'empleados' %}">Empleados</a></li>
+          <li class="breadcrumb-item"><a href="{% url 'movimientos' %}">Movimientos</a></li>
           <li class="breadcrumb-item active">Crear</li>
         </ol>
       </nav>
@@ -25,56 +25,96 @@
         <div class="col-lg-6 mx-auto">
           <form method="POST">
             {% csrf_token %}
-            <div class="form-group">
-              <label for="emp_nomb">Nombre</label>
-              <input class="form-control" type="text" name="emp_nomb" id="emp_nomb" maxlength="60" required pattern="[A-za-z áéíóú]+" title="No debe contener caracteres especiales o numeros">
+            {% if empleado %}
+            <div class="form-group" hidden>
+              <label for="emp_nomb">Empleado</label>
+              <select class="form-control" name="emp_id" id="emp_id" required>
+                <option value="{{ empleado.emp_id }}" selected>{{ empleado.emp_nomb }} {{ empleado.emp_ape1 }}</option>
+              </select>
             </div>
+            {% endif %}
+            {% if clientes %}
             <div class="form-group">
-              <label for="emp_ape1">Apellido Paterno</label>
-              <input class="form-control" type="text" name="emp_ape1" id="emp_ape1" maxlength="30" required pattern="[A-za-z áéíóú]+" title="No debe contener caracteres especiales o numeros">
+              <label for="cli_id">Cliente</label>
+              <select class="form-control" name="cli_id" id="cli_id" required>
+                <option value="">Elegir cliente...</option>
+                  {% for cliente in clientes %}
+                <option value="{{ cliente.cli_id }}">{{ cliente.cli_nomb }} {{ cliente.cli_ape1 }}</option>
+                  {% endfor %}
+              </select>
             </div>
+            {% endif %}
+            {% if productos %}
             <div class="form-group">
-              <label for="emp_ape2">Apellido Materno</label>
-              <input class="form-control" type="text" name="emp_ape2" id="emp_ape2" maxlength="30" pattern="[A-za-z áéíóú]+" title="No debe contener caracteres especiales o numeros">
+              <label for="prod_id">Producto</label>
+              <select class="form-control" name="prod_id" id="prod_id" required>
+                <option value="">Elegir producto...</option>
+                  {% for producto in productos %}
+                <option value="{{ producto.prod_id }}">{{ producto.prod_nomb }} (RD${{ producto.prod_prec }})</option>
+                  {% endfor %}
+              </select>
             </div>
+            {% endif %}
+            {% if tipos_documento %}
             <div class="form-group">
-              <label for="emp_cedu">Cédula de Identidad</label>
-              <input class="form-control" type="text" name="emp_cedu" id="emp_cedu" maxlength="11">
+              <label for="tdoc_id">Tipos de documento</label>
+              <select class="form-control" name="tdoc_id" id="tdoc_id" required>
+                <option value="">Elegir tipo de documento...</option>
+                  {% for tipo_documento in tipos_documento %}
+                <option value="{{ tipo_documento.tdoc_id }}">{{ tipo_documento.tdoc_nomb }}</option>
+                  {% endfor %}
+              </select>
             </div>
-            {% if usuarios %}
+            {% endif %}
+            {% if modos_pago %}
             <div class="form-group">
-              <label for="usu_id">Usuario</label>
-              <select class="form-control" name="usu_id" id="usu_id" required>
-                <option value="">Elegir usuario...</option>
-                  {% for usuario in usuarios %}
-                <option value="{{ usuario.id }}">{{ usuario.username }}</option>
+              <label for="mpago_id">Modos de pago</label>
+              <select class="form-control" name="mpago_id" id="mpago_id" required>
+                <option value="">Elegir forma de pago...</option>
+                  {% for modo_pago in modos_pago %}
+                <option value="{{ modo_pago.mpago_id }}">{{ modo_pago.mpago_nomb }}: {{ modo_pago.mpago_cuot }} cuota(s) ({{ modo_pago.mpago_inte }}% de interés)</option>
+                  {% endfor %}
+              </select>
+            </div>
+            {% endif %}
+            <div class="form-group" hidden>
+              <label for="mov_monto">Monto</label>
+              <input class="form-control" type="number" name="mov_monto" id="mov_monto" min="0" max="9999999999.99">
+            </div>
+            {% if productos %}
+            <div class="form-group">
+              <label for="mov_monto">Monto</label>
+              <select class="form-control" name="mov_monto" id="mov_monto" required>
+                <option value="">Elegir monto...</option>
+                  {% for producto in productos %}
+                <option value="{{ producto.prod_id }}">{{ producto.prod_prec|stringformat:'0.02f' }}</option>
                   {% endfor %}
               </select>
             </div>
             {% endif %}
             <div class="form-group">
-              <label for="emp_entra">Fecha de Entrada</label>
-              <input class="form-control" type="date" name="emp_entra" id="emp_entra" required>
+              <label for="mov_abono">Abono</label>
+              <input class="form-control" type="number" name="mov_abono" id="mov_abono" value="0" min="0" max="9999999999.99">
             </div>
-            {% if horarios %}
+            {% if formas_pago %}
             <div class="form-group">
-              <label for="hor_id">Horario</label>
-              <select class="form-control" name="hor_id" id="hor_id" required>
-                <option value="">Elegir horario...</option>
-                  {% for horario in horarios %}
-                <option value="{{ horario.hor_id }}">{{ horario.hor_nomb }} (de {{ horario.hor_entra }} a {{ horario.hor_sale }})</option>
+              <label for="fpago_id">Formas de pago</label>
+              <select class="form-control" name="fpago_id" id="fpago_id" required>
+                <option value="">Elegir forma de pago...</option>
+                  {% for forma_pago in formas_pago %}
+                <option value="{{ forma_pago.fpago_id }}">{{ forma_pago.fpago_nomb }}</option>
                   {% endfor %}
               </select>
             </div>
             {% endif %}
             <div class="form-check" hidden>
-              <input class="form-check-input" type="checkbox" name="emp_acti" id="emp_acti" checked>
-              <label class="form-check-label" for="emp_acti">
+              <input class="form-check-input" type="checkbox" name="mov_acti" id="mov_acti" checked>
+              <label class="form-check-label" for="mov_acti">
                 Habilitado
               </label>
             </div>
             <div class="text-center my-3">
-              <a class="btn text-secondary" href="{% url 'empleados' %}" role="button">Volver</a>
+              <a class="btn text-secondary" href="{% url 'movimientos' %}" role="button">Volver</a>
               <button type="submit" class="btn btn-primary">Agregar</button>
             </div>
           </form>
@@ -82,3 +122,12 @@
       </div>
     </div>
 {% endblock content %}
+
+{% block scripts %}
+<script>
+  var combobox = $("#prod_id, #mov_monto");
+  combobox.change(function(e) {
+      combobox.val(this.value);
+  });
+</script>
+{% endblock %}

@@ -285,7 +285,9 @@ def cliente_delete(request, cliente_id):
 # Movimientos
 
 def movimientos(request):
-  return render(request, 'movimientos/index.html', {'movimientos': models.Movimiento.objects.all(), 'messages': messages.get_messages(request)})
+  filtered = None
+  movimientos = models.Movimiento.objects.all()
+  return render(request, 'movimientos/index.html', {'movimientos': movimientos, 'messages': messages.get_messages(request)})
 
 def movimiento_create(request):
   form = forms.MovimientoForm(request.POST or None)
@@ -300,7 +302,7 @@ def movimiento_create(request):
 
   if request.user.is_authenticated and request.user.is_staff:
     if models.Empleado.objects.filter(usu_id=request.user.id).count() == 0:
-      messages.error(request, ('Su usuario no está configurado como empleado. Contacto a su administrador.'))
+      messages.error(request, ('Su usuario no está configurado como empleado. Contacte a su administrador.'))
       return movimientos(request)
 
   if models.Cliente.objects.filter(cli_acti=True).count() == 0:
@@ -323,7 +325,7 @@ def movimiento_create(request):
     messages.error(request, ('No hay modalidades de pago disponibles.'))
     return movimientos(request)
 
-  return render(request, 'movimientos/create.html', {'form': form, })
+  return render(request, 'movimientos/create.html', {'form': form, 'empleado': models.Empleado.objects.get(usu_id=request.user.id) if models.Empleado.objects.filter(usu_id=request.user.id).count() > 0 else None, 'clientes': models.Cliente.objects.filter(cli_acti=True), 'productos': models.Producto.objects.filter(prod_acti=True), 'tipos_documento': models.TipoDocumento.objects.filter(tdoc_acti=True), 'formas_pago': models.FormaPago.objects.filter(fpago_acti=True), 'modos_pago': models.ModoPago.objects.filter(mpago_acti=True)})
 
 
 def movimiento_update(request, movimiento_id):

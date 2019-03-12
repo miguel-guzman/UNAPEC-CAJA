@@ -112,6 +112,7 @@ class Movimiento(models.Model):
   fpago_id = models.ForeignKey(FormaPago, on_delete=models.DO_NOTHING, db_column='fpago_id')
   mpago_id = models.ForeignKey(ModoPago, on_delete=models.DO_NOTHING, db_column='mpago_id')
   mov_monto = models.DecimalField(max_digits=12, decimal_places=2)
+  mov_abono = models.DecimalField(max_digits=12, decimal_places=2, default=0)
   mov_acti = models.BooleanField(default=True)
 
   class Meta:
