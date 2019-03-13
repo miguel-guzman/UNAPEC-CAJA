@@ -20,6 +20,12 @@
       }
     </style>
     <div class="container">
+      <div class="row no-print mt-3">
+        <div class="col text-center">
+          <a class="btn btn-secondary" href="{% url 'clientes' %}" role="button"><i class="fa fa-arrow-left mx-1"></i>Volver</a>
+          <a class="btn btn-primary" href="#" onclick="window.print();" role="button"><i class="fa fa-print mx-1"></i>Imprimir</a>
+        </div>
+      </div>
       <div class="row mt-3">
         <div class="col text-center">
           <div class="jumbotron">
@@ -49,12 +55,6 @@
               <li class="list-group-item">{% if cliente.cli_acti %}<i class="fa fa-check-square-o pr-1"></i><strong>Activo</strong>{% else %}<i class="fa fa-times pr-1"></i><strong>Inactivo</strong>{% endif %}</li>
             </ul>
           </div>
-        </div>
-      </div>
-      <div class="row no-print">
-        <div class="col text-center mt-3">
-          <a class="btn btn-secondary" href="{% url 'clientes' %}" role="button"><i class="fa fa-arrow-left mx-1"></i>Volver</a>
-          <a class="btn btn-primary" href="#" onclick="window.print();" role="button"><i class="fa fa-print mx-1"></i>Imprimir</a>
         </div>
       </div>
       <div class="row my-3">
