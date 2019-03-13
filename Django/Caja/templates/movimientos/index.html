@@ -27,6 +27,13 @@
           <a class="btn btn-success" href="{% url 'movimiento_create' %}" role="button">Crear</a>
         </div>
       </div>
+      <div class="row mt-3">
+        <div class="col text-center">
+          <a class="btn btn-primary" href="#" onclick="window.print();" role="button"><i class="fa fa-print mx-1"></i>Imprimir</a>
+          <a class="btn btn-primary" href="#" role="button"><i class="fa fa-file-pdf-o mx-1"></i>Exportar a PDF</a>
+          <a class="btn btn-primary" href="#" role="button"><i class="fa fa-file-excel-o mx-1"></i>Exportar a Excel</a>
+        </div>
+      </div>
       <div class="card-group">
   {% if movimientos %}
     {% for movimiento in movimientos %}
@@ -36,14 +43,14 @@
               <h6><span class="badge badge-primary">#{{ movimiento.mov_id }}</span> {{ movimiento.mov_fecha }}</h6>
             </div>
             <ul class="list-group list-group-flush">
-              <li class="list-group-item"><i class="fa fa-user"></i>Cliente:<br/>{{ movimiento.cli_id.cli_nomb }} {{ movimiento.cli_id.cli_ape1 }}</li>
-              <li class="list-group-item"><i class="fa fa-shopping-bag"></i>Producto:<br/>{{ movimiento.prod_id.prod_nomb }}</li>
-              <li class="list-group-item"><i class="fa fa-file-o"></i>Tipo de Documento:<br/>{{ movimiento.tdoc_id.tdoc_nomb }}</li>
-              <li class="list-group-item"><i class="fa fa-usd"></i>Monto:<br/>RD${{ movimiento.mov_monto }}</li>
-              <li class="list-group-item"><i class="fa fa-money"></i>Forma de Pago:<br/>{{ movimiento.fpago_id.fpago_nomb }}</li>
-              <li class="list-group-item"><i class="fa fa-handshake-o"></i>Modo de Pago:<br/>{{ movimiento.mpago_id.mpago_nomb }} ({{ movimiento.mpago_id.mpago_cuot }} cuota(s) {{ movimiento.mpago_id.mpago_inte }}% de interés)</li>
-              <li class="list-group-item"><i class="fa fa-usd"></i>Abono:<br/>RD${{ movimiento.mov_abono }}</li>
-              <li class="list-group-item"><i class="fa fa-black-tie"></i>Empleado:<br/>{{ movimiento.emp_id.emp_nomb }} {{ movimiento.emp_id.emp_ape1 }} ({{ movimiento.emp_id.usu_id.username }})</li>
+              <li class="list-group-item"><i class="fa fa-user pr-1"></i>Cliente:<br/>{{ movimiento.cli_id.cli_nomb }} {{ movimiento.cli_id.cli_ape1 }}</li>
+              <li class="list-group-item"><i class="fa fa-shopping-bag pr-1"></i>Producto:<br/>{{ movimiento.prod_id.prod_nomb }}</li>
+              <li class="list-group-item"><i class="fa fa-file-o pr-1"></i>Tipo de Documento:<br/>{{ movimiento.tdoc_id.tdoc_nomb }}</li>
+              <li class="list-group-item"><i class="fa fa-usd pr-1"></i>Monto:<br/>RD${{ movimiento.mov_monto }}</li>
+              <li class="list-group-item"><i class="fa fa-money pr-1"></i>Forma de Pago:<br/>{{ movimiento.fpago_id.fpago_nomb }}</li>
+              <li class="list-group-item"><i class="fa fa-handshake-o pr-1"></i>Modo de Pago:<br/>{{ movimiento.mpago_id.mpago_nomb }} ({{ movimiento.mpago_id.mpago_cuot }} cuota(s) {{ movimiento.mpago_id.mpago_inte }}% de interés)</li>
+              <li class="list-group-item"><i class="fa fa-usd pr-1"></i>Abono:<br/>RD${{ movimiento.mov_abono }}</li>
+              <li class="list-group-item"><i class="fa fa-black-tie pr-1"></i>Empleado:<br/>{{ movimiento.emp_id.emp_nomb }} {{ movimiento.emp_id.emp_ape1 }} ({{ movimiento.emp_id.usu_id.username }})</li>
               <li class="list-group-item">{% if movimiento.mov_acti %}<i class="fa fa-check-square-o"></i> Activo{% else %}<i class="fa fa-times"></i> Anulado{% endif %}</li>
             </ul>
             <div class="card-footer text-right">
