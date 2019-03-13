@@ -4,6 +4,8 @@ from django.contrib.auth import logout
 from django.contrib.auth.models import User
 from . import models
 from . import forms
+import csv
+from django.http import HttpResponse
 
 # Inicio
 
@@ -166,6 +168,22 @@ def empleado_delete(request, empleado_id):
   models.Empleado.objects.get(pk=empleado_id).delete()
   messages.success(request, ('Operación realizada con éxito.'))
   return empleados(request)
+
+# Imprimir Empleado
+def export_emp_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="emp.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['ID', 'Nombre', 'Apellido Paterno', 'Apellido Materno', 'Cedula', 'Usuario', 'Fecha de Entrada', 'Fecha de Salida', 'Horario', 'Estado'])
+
+    emps = models.Empleado.objects.all().values_list('emp_id', 'emp_nomb', 'emp_ape1', 'emp_ape2', 'emp_cedu', 'usu_id', 'emp_entra', 'emp_sale', 'hor_id', 'emp_acti')
+    for emp in emps:
+        writer.writerow(emp)
+
+    return response
+
+
 
 # Clientes
 

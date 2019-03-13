@@ -60,4 +60,5 @@ urlpatterns = [
     path('tipo-documento/update/<tipo_documento_id>', views.tipo_documento_update, name="tipo_documento_update"),
     path('tipo-documento/delete/<tipo_documento_id>', views.tipo_documento_delete, name="tipo_documento_delete"),
     path('usuarios/cerrar-sesion', views.usuario_cerrar_sesion, name="usuario_cerrar_sesion"),
+    path(r'^export/csv/$', views.export_emp_csv, name='export_emp_csv'),
 ]
