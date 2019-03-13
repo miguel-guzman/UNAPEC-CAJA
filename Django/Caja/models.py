@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Sum, Min
 from django.contrib.auth.models import User
 
 class TipoCliente(models.Model):
@@ -89,6 +90,23 @@ class Empleado(models.Model):
     db_table = 'empleado'
 
 
+class Movimiento(models.Model):
+  mov_id = models.AutoField(primary_key=True)
+  mov_fecha = models.DateTimeField(auto_now_add=True)
+  emp_id = models.ForeignKey(Empleado, on_delete=models.DO_NOTHING, db_column='emp_id')
+  cli_id = models.ForeignKey('Cliente', on_delete=models.DO_NOTHING, db_column='cli_id')
+  prod_id = models.ForeignKey(Producto, on_delete=models.DO_NOTHING, db_column='prod_id')
+  tdoc_id = models.ForeignKey(TipoDocumento, on_delete=models.DO_NOTHING, db_column='tdoc_id')
+  fpago_id = models.ForeignKey(FormaPago, on_delete=models.DO_NOTHING, db_column='fpago_id')
+  mpago_id = models.ForeignKey(ModoPago, on_delete=models.DO_NOTHING, db_column='mpago_id')
+  mov_monto = models.DecimalField(max_digits=12, decimal_places=2)
+  mov_abono = models.DecimalField(max_digits=12, decimal_places=2, default=0)
+  mov_acti = models.BooleanField(default=True)
+
+  class Meta:
+    db_table = 'movimiento'
+
+
 class Cliente(models.Model):
   cli_id = models.AutoField(primary_key=True)
   cli_nomb = models.CharField(max_length=60)
@@ -101,20 +119,8 @@ class Cliente(models.Model):
   class Meta:
     db_table = 'cliente'
 
-
-class Movimiento(models.Model):
-  mov_id = models.AutoField(primary_key=True)
-  mov_fecha = models.DateTimeField(auto_now_add=True)
-  emp_id = models.ForeignKey(Empleado, on_delete=models.DO_NOTHING, db_column='emp_id')
-  cli_id = models.ForeignKey(Cliente, on_delete=models.DO_NOTHING, db_column='cli_id')
-  prod_id = models.ForeignKey(Producto, on_delete=models.DO_NOTHING, db_column='prod_id')
-  tdoc_id = models.ForeignKey(TipoDocumento, on_delete=models.DO_NOTHING, db_column='tdoc_id')
-  fpago_id = models.ForeignKey(FormaPago, on_delete=models.DO_NOTHING, db_column='fpago_id')
-  mpago_id = models.ForeignKey(ModoPago, on_delete=models.DO_NOTHING, db_column='mpago_id')
-  mov_monto = models.DecimalField(max_digits=12, decimal_places=2)
-  mov_abono = models.DecimalField(max_digits=12, decimal_places=2, default=0)
-  mov_acti = models.BooleanField(default=True)
-
-  class Meta:
-    db_table = 'movimiento'
-
+  def balance(self):
+    if Movimiento.objects.filter(cli_id=self.cli_id).filter(mov_acti=True).count() > 0:
+      return Movimiento.objects.filter(cli_id=self.cli_id).filter(mov_acti=True).aggregate(Sum('mov_monto')).get('mov_monto__sum') - Movimiento.objects.filter(cli_id=self.cli_id).filter(mov_acti=True).aggregate(Sum('mov_abono')).get('mov_abono__sum')
+    else:
+      return 0
