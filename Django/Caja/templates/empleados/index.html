@@ -62,7 +62,6 @@
             <div class="form-group">
               <div class="btn-group btn-group-sm" role="group">
                 <button type="submit" class="btn btn-secondary btn-sm my-2 my-lg-0" formaction="{% url 'empleados_print' %}" role="button" formnovalidate><i class="fa fa-print mx-1"></i>Imprimir</a></button>
-                <button type="submit" class="btn btn-secondary btn-sm my-2 my-lg-0" formaction="{% url 'empleados_excel' %}" role="button" formnovalidate><i class="fa fa-file-pdf-o mx-1"></i>Exportar a PDF</button>
                 <button type="submit" class="btn btn-secondary btn-sm my-2 my-lg-0" formaction="{% url 'empleados_excel' %}" role="button" formnovalidate><i class="fa fa-file-excel-o mx-1"></i>Exportar a Excel</button>
               </div>
             </div>
@@ -122,7 +121,6 @@
       </div>
     </div>
 {% endblock content %}
-
 {% block scripts %}
     <script>
 

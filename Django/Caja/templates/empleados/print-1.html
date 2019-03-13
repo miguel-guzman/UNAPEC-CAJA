@@ -4,6 +4,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Impresión de Empleado</title>
   <!-- <Stylesheets> -->
 {% include '_layout\stylesheets.html' %}
   <!-- </Stylesheets> -->
@@ -23,7 +24,7 @@
         <div class="col text-center">
           <div class="jumbotron">
             <h1 class="display-3">{{ empleado.emp_nomb }} {{ empleado.emp_ape1 }}{% if empleado.emp_ape2 %} {{ empleado.emp_ape2 }}{% endif %}</h1>
-            <p class="lead">Empleado</p>
+            <p class="lead">Impresión de Empleado</p>
           </div>
         </div>
       </div>
@@ -51,18 +52,22 @@
               <li class="list-group-item">{% if empleado.emp_acti %}<i class="fa fa-check-square-o pr-1"></i><strong>Activo</strong>{% else %}<i class="fa fa-times pr-1"></i><strong>Inactivo</strong>{% endif %}</li>
             </ul>
           </div>
-          <div class="text-center mt-3 no-print">
-            <a class="btn btn-secondary" href="{% url 'empleados' %}" role="button"><i class="fa fa-arrow-left mx-1"></i>Volver</a>
+        </div>
+      </div>
+      <div class="row no-print">
+        <div class="col text-center">
+          <a class="btn btn-secondary" href="{% url 'empleados' %}" role="button"><i class="fa fa-arrow-left mx-1"></i>Volver</a>
             <a class="btn btn-primary" href="#" onclick="window.print();" role="button"><i class="fa fa-print mx-1"></i>Imprimir</a>
-          </div>
-          <div class="mt-3">
-            <p class="pull-left">{% now 'DATETIME_FORMAT' %}</p>
-            <p class="pull-right">Impreso por: <strong>{{ user.username }}</strong></p>
-          </div>
+        </div>
+      </div>
+      <div class="row my-3">
+        <div class="col">
+          <p class="pull-left">{% now 'DATETIME_FORMAT' %}</p>
+          <p class="pull-right">Impreso por: <strong>{{ user.username }}</strong></p>
         </div>
       </div>
       {% endif %}
-
+    </div>
   <!-- Scripts -->
 {% include '_layout\scripts.html' %}
   <!-- /Scripts -->

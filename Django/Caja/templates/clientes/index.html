@@ -22,49 +22,63 @@
           <li class="breadcrumb-item active">Clientes</li>
         </ol>
       </nav>
-      <div class="row justify-content-center justify-content-md-between px-4 mb-3">
-        <form>
-          <div class="form-inline col">
-            <select class="form-control mb-2 my-1 mr-sm-2" name="field" id="field">
-              <option value="cli_id"{% if request.GET.field == 'cli_id' %} selected{% endif %}>ID</option>
-              <option value="cli_nomb"{% if request.GET.field == 'cli_nomb' %} selected{% endif %}>Nombre</option>
-              <option value="cli_ape1"{% if request.GET.field == 'cli_ape1' %} selected{% endif %}>Apellido Paterno</option>
-              <option value="cli_ape2"{% if request.GET.field == 'cli_ape2' %} selected{% endif %}>Apellido Materno</option>
-              <option value="tcli_nomb"{% if request.GET.field == 'tcli_nomb' %} selected{% endif %}>Tipo de Cliente</option>
-              <option value="carr_nomb"{% if request.GET.field == 'carr_nomb' %} selected{% endif %}>Carrera</option>
-              <option value="cli_acti"{% if request.GET.field == 'cli_acti' %} selected{% endif %}>Activo</option>
-            </select>
-            <input class="form-control ml-sm-1 mb-2 my-1 mr-md-2" type="text" name="query" id="query"{% if request.GET.query %} value="{{ request.GET.query }}"{% endif %} placeholder="Búsqueda" required>
-            <div class="custom-control custom-checkbox my-1">
-              <input class="custom-control-input" type="checkbox" name="match" id="match"{% if request.GET.match %} checked{% endif %}>
-              <label class="custom-control-label" for="match">Concidencia exacta</label>
-            </div>
-            <button type="submit" class="btn btn-primary ml-2">Buscar</button>
-            {% if filtered %}<a class="btn btn-secondary ml-2" href="{% url 'clientes' %}" role="button">Reestablecer</a>{% endif %}
-          </div>
-        </form>
-        <div class="row mt-3 mt-lg-0">
+      <div class="row mt-3">
           <div class="col text-center">
-            <a class="btn btn-success" href="{% url 'cliente_create' %}" role="button">Crear</a>
+            <form>
+              <div class="form-row form-group">
+                <div class="col">
+                  <select class="form-control" name="field" id="field">
+                      <option value="cli_id"{% if request.GET.field == 'cli_id' %} selected{% endif %}>ID</option>
+                      <option value="cli_nomb"{% if request.GET.field == 'cli_nomb' %} selected{% endif %}>Nombre</option>
+                      <option value="cli_ape1"{% if request.GET.field == 'cli_ape1' %} selected{% endif %}>Apellido Paterno</option>
+                      <option value="cli_ape2"{% if request.GET.field == 'cli_ape2' %} selected{% endif %}>Apellido Materno</option>
+                      <option value="tcli_nomb"{% if request.GET.field == 'tcli_nomb' %} selected{% endif %}>Tipo de Cliente</option>
+                      <option value="carr_nomb"{% if request.GET.field == 'carr_nomb' %} selected{% endif %}>Carrera</option>
+                      <option value="cli_acti"{% if request.GET.field == 'cli_acti' %} selected{% endif %}>Activo</option>
+                  </select>
+                </div>
+                <div class="col">
+                    <input class="form-control" type="text" name="query" id="query"{% if request.GET.query %} value="{{ request.GET.query }}"{% endif %} placeholder="Búsqueda" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="custom-control custom-checkbox">
+                  <input class="custom-control-input" type="checkbox" name="match" id="match"{% if request.GET.match %} checked{% endif %}>
+                  <label class="custom-control-label" for="match">Concidencia exacta</label>
+                </div>
+              </div>
+              <div class="form-group">
+                <a class="btn btn-success ml-2" href="{% url 'cliente_create' %}" role="button">Crear</a>
+                <button type="submit" class="btn btn-primary ml-2 my-2 my-lg-0">Buscar</button>
+                {% if filtered %}<a class="btn btn-secondary ml-2 my-2 my-lg-0" href="{% url 'clientes' %}" role="button">Reestablecer</a>{% endif %}
+              </div>
+              <div class="form-group">
+                <div class="btn-group btn-group-sm" role="group">
+                  <button type="submit" class="btn btn-secondary btn-sm my-2 my-lg-0" formaction="{% url 'clientes_print' %}" role="button" formnovalidate><i class="fa fa-print mx-1"></i>Imprimir</a></button>
+                  <button type="submit" class="btn btn-secondary btn-sm my-2 my-lg-0" formaction="{% url 'clientes_excel' %}" role="button" formnovalidate><i class="fa fa-file-excel-o mx-1"></i>Exportar a Excel</button>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
-      </div>
       <div class="card-group">
   {% if clientes %}
     {% for cliente in clientes %}
         <div class="col-sm-4">
-          <div class="card mt-3">
+          <div class="card my-3">
             <div class="card-header">
               <h6><span class="badge badge-primary">#{{ cliente.cli_id }}</span> {{ cliente.cli_nomb }} {{ cliente.cli_ape1 }}{% if cliente.cli_ape2 %} {{ cliente.cli_ape2 }}{% endif %}</h6>
             </div>
             <ul class="list-group list-group-flush">
               <li class="list-group-item"><i class="fa fa-user"></i> {{ cliente.tcli_id.tcli_nomb }}</li>
               <li class="list-group-item"><i class="fa fa-book"></i> {% if cliente.carr_id %}{{ cliente.carr_id.carr_nomb }}{% else %}N/A{% endif %}</li>
-              <li class="list-group-item"><i class="fa fa-usd"></i> {{ cliente.balance }}</li>
+              <li class="list-group-item"><i class="fa fa-usd"></i> Balance: {{ cliente.balance }}</li>
               <li class="list-group-item">{% if cliente.cli_acti %}<i class="fa fa-check-square-o"></i> Activo{% else %}<i class="fa fa-times"></i> Inactivo{% endif %}</li>
             </ul>
             <div class="card-footer text-right">
-              <a class="btn text-primary" href="{% url 'cliente_update' cliente.cli_id %}" role="button">Editar</a><a class="btn text-danger ml-3" href="{% url 'cliente_delete' cliente.cli_id %}" role="button">Eliminar</a>
+              <a class="btn text-primary btn-lg" href="{% url 'cliente_update' cliente.cli_id %}" role="button"><i class="fa fa-pencil"></i></a>
+              <a class="btn text-secondary btn-lg ml-3" href="{% url 'cliente_print' cliente.cli_id %}" role="button"><i class="fa fa-print"></i></a>
+              <a class="btn text-danger btn-lg ml-3" href="{% url 'cliente_delete' cliente.cli_id %}" role="button"><i class="fa fa-trash"></i></a>
             </div>
           </div>
         </div>
@@ -97,3 +111,33 @@
       </div>
     </div>
 {% endblock content %}
+{% block scripts %}
+    <script>
+
+        $( document ).ready(function() {
+            var field = $('#field');
+            var query = $('#query');
+
+            if(field.prop('value') === 'cli_id'){
+              query.prop('type', 'number');
+            }
+            else {
+              query.prop('type', 'text');
+              query.prop('pattern', '[A-za-z ÁÉÍÓÚáéíóúü&]+');
+              query.prop('title', 'Solo puede contener caracteres alfabéticos.');
+            }
+
+            field.on('change', function(){
+                if(field.prop('value') === 'cli_id'){
+                    query.prop('type', 'number');
+                }
+                else {
+                    query.prop('type', 'text');
+                    query.prop('pattern', '[A-za-z ÁÉÍÓÚáéíóúü&]+');
+                    query.prop('title', 'Solo puede contener caracteres alfabéticos.');
+                }
+            })
+        });
+
+    </script>
+{% endblock %}
