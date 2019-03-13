@@ -60,6 +60,7 @@
             <ul class="list-group list-group-flush">
               <li class="list-group-item"><i class="fa fa-user"></i> {{ cliente.tcli_id.tcli_nomb }}</li>
               <li class="list-group-item"><i class="fa fa-book"></i> {% if cliente.carr_id %}{{ cliente.carr_id.carr_nomb }}{% else %}N/A{% endif %}</li>
+              <li class="list-group-item"><i class="fa fa-usd"></i> {{ cliente.balance }}</li>
               <li class="list-group-item">{% if cliente.cli_acti %}<i class="fa fa-check-square-o"></i> Activo{% else %}<i class="fa fa-times"></i> Inactivo{% endif %}</li>
             </ul>
             <div class="card-footer text-right">

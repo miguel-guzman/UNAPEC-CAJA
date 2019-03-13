@@ -77,12 +77,8 @@
               </select>
             </div>
             {% endif %}
-            <div class="form-group" hidden>
-              <label for="mov_monto">Monto</label>
-              <input class="form-control" type="number" name="mov_monto" id="mov_monto" min="0" max="9999999999.99">
-            </div>
             {% if productos %}
-            <div class="form-group">
+            <div class="form-group" hidden>
               <label for="mov_monto">Monto</label>
               <select class="form-control sincronizar" name="mov_monto" id="mov_monto" required>
                 <option value="">Elegir monto...</option>
