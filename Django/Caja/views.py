@@ -655,10 +655,68 @@ def cliente_delete(request, cliente_id):
 
 # Movimientos
 
-def movimientos(request):
-  filtered = None
+def movimiento(request):
   movimientos = models.Movimiento.objects.all()
-  return render(request, 'movimientos/index.html', {'movimientos': movimientos, 'messages': messages.get_messages(request)})
+  filtered = None
+
+  if request.method == 'GET':
+    if request.GET.get('field') == 'mov_id':
+      if request.GET.get('match') == 'on':
+        movimientos = models.Movimiento.objects.filter(mov_id=request.GET.get('query'))
+        messages.success(request, 'ID igual a ' + request.GET.get('query') + '.')
+      else:
+        movimientos = models.Movimiento.objects.filter(mov_id__iregex=r'(' + request.GET.get('query') + r')+')
+        messages.success(request, 'ID que contenga ' + request.GET.get('query') + '.')
+      filtered = True
+
+    if request.GET.get('field') == 'mov_fecha':
+      if request.GET.get('match') == 'on':
+        movimientos = models.Movimiento.objects.filter(mov_fecha=request.GET.get('query'))
+        messages.success(request, 'Fecha igual a ' + request.GET.get('query') + '.')
+      else:
+        movimientos = models.Movimiento.objects.filter(mov_fecha__iregex=r'(' + request.GET.get('query') + r')+')
+        messages.success(request, 'Fecha que contenga ' + request.GET.get('query') + '.')
+      filtered = True
+
+    if request.GET.get('field') == 'doc_id':
+      if request.GET.get('match') == 'on': 
+        movimientos = models.Movimiento.objects.filter(doc_id__in=models.Documento.objects.filter(doc_id=request.GET.get('query'))
+        messages.success(request, 'Documento igual a ' + request.GET.get('query') + '.')
+      else:
+        movimientos = models.Movimiento.objects.filter(doc_id__in=models.FormaPago.objects.filter(doc_id__iregex=r'(' + request.GET.get('query') + r')+'))
+        messages.success(request, 'Documento que contenga ' + request.GET.get('query') + '.')
+      filtered = True
+
+    if request.GET.get('field') == 'fpago_id':
+      if request.GET.get('match') == 'on': 
+        movimientos = models.Movimiento.objects.filter(fpago_id__in=models.FormaPago.objects.filter(fpago_id=request.GET.get('query'))
+        messages.success(request, 'Forma de Pago igual a ' + request.GET.get('query') + '.')
+      else:
+        movimientos = models.Movimiento.objects.filter(fpago_id__in=models.FormaPago.objects.filter(fpago_id__iregex=r'(' + request.GET.get('query') + r')+'))
+        messages.success(request, 'Forma de Pago que contenga ' + request.GET.get('query') + '.')
+      filtered = True
+
+    if request.GET.get('field') == 'mov_monto':
+      if request.GET.get('match') == 'on':
+        movimientos = models.Movimiento.objects.filter(mov_monto=request.GET.get('query'))
+        messages.success(request, 'Tipo de Cliente igual a ' + request.GET.get('query') + '.')
+      else:
+        movimientos = models.Movimiento.objects.filter(mov_monto__iregex=r'(' + request.GET.get('query') + r')+')
+        messages.success(request, 'Tipo de Cliente que contenga ' + request.GET.get('query') + '.')
+      filtered = True
+
+    if request.GET.get('field') == 'mov_acti':
+      if request.GET.get('query').upper().strip() == 'ACTIVO':
+        movimientos = models.Movimiento.objects.filter(mov_acti=True)
+        messages.success(request, 'Activo.')
+      elif request.GET.get('query').upper().strip() == 'INACTIVO':
+        movimientos = models.Movimiento.objects.filter(mov_acti=False)
+        messages.success(request, 'Inactivo.')
+      else:
+        messages.error(request, 'Por favor, introduzca un estado válido (Activo, Inactivo).')
+      filtered = True
+
+  return render(request, 'movimientos/index.html', {'movimientos': movimientos, 'filtered': filtered, 'messages': messages.get_messages(request)})
 
 def movimiento_create(request):
   form = forms.MovimientoForm(request.POST or None)
