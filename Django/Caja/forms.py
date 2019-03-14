@@ -71,7 +71,7 @@ class ClienteForm(forms.ModelForm):
 class MovimientoForm(forms.ModelForm):
   class Meta:
     model = models.Movimiento
-    fields = ['emp_id', 'cli_id', 'prod_id', 'tdoc_id', 'fpago_id', 'mpago_id', 'mov_monto', 'mov_acti']
+    fields = ['mov_id', 'doc_id', 'fpago_id', 'mov_monto', 'mov_acti']
 
 
 class TipoClienteForm(forms.ModelForm):

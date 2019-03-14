@@ -93,18 +93,27 @@ class Empleado(models.Model):
 class Movimiento(models.Model):
   mov_id = models.AutoField(primary_key=True)
   mov_fecha = models.DateTimeField(auto_now_add=True)
-  emp_id = models.ForeignKey(Empleado, on_delete=models.DO_NOTHING, db_column='emp_id')
-  cli_id = models.ForeignKey('Cliente', on_delete=models.DO_NOTHING, db_column='cli_id')
-  prod_id = models.ForeignKey(Producto, on_delete=models.DO_NOTHING, db_column='prod_id')
-  tdoc_id = models.ForeignKey(TipoDocumento, on_delete=models.DO_NOTHING, db_column='tdoc_id')
+  doc_id = models.ForeignKey('Documento', on_delete=models.DO_NOTHING, db_column='doc_id')
   fpago_id = models.ForeignKey(FormaPago, on_delete=models.DO_NOTHING, db_column='fpago_id')
-  mpago_id = models.ForeignKey(ModoPago, on_delete=models.DO_NOTHING, db_column='mpago_id')
   mov_monto = models.DecimalField(max_digits=12, decimal_places=2)
-  mov_abono = models.DecimalField(max_digits=12, decimal_places=2, default=0)
   mov_acti = models.BooleanField(default=True)
 
   class Meta:
     db_table = 'movimiento'
+
+
+class Documento(models.Model):
+  doc_id = models.AutoField(primary_key=True)
+  emp_id = models.ForeignKey(Empleado, on_delete=models.DO_NOTHING, db_column='emp_id')
+  cli_id = models.ForeignKey('Cliente', on_delete=models.DO_NOTHING, db_column='cli_id')
+  prod_id = models.ForeignKey(Producto, on_delete=models.DO_NOTHING, db_column='prod_id')
+  tdoc_id = models.ForeignKey(TipoDocumento, on_delete=models.DO_NOTHING, db_column='tdoc_id')
+  mpago_id = models.ForeignKey(ModoPago, on_delete=models.DO_NOTHING, db_column='mpago_id')
+  doc_monto = models.DecimalField(max_digits=12, decimal_places=2)
+  doc_acti = models.BooleanField(default=True)
+
+  class Meta:
+    db_table = 'documento'
 
 
 class Cliente(models.Model):
@@ -121,6 +130,7 @@ class Cliente(models.Model):
 
   def balance(self):
     if Movimiento.objects.filter(cli_id=self.cli_id).filter(mov_acti=True).count() > 0:
-      return Movimiento.objects.filter(cli_id=self.cli_id).filter(mov_acti=True).aggregate(Sum('mov_monto')).get('mov_monto__sum') - Movimiento.objects.filter(cli_id=self.cli_id).filter(mov_acti=True).aggregate(Sum('mov_abono')).get('mov_abono__sum')
+      return 0 # *
     else:
       return 0
+
