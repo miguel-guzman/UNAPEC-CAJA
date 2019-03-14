@@ -104,6 +104,7 @@ class Movimiento(models.Model):
 
 class Documento(models.Model):
   doc_id = models.AutoField(primary_key=True)
+  doc_fecha = models.DateTimeField(auto_now_add=True)
   emp_id = models.ForeignKey(Empleado, on_delete=models.DO_NOTHING, db_column='emp_id')
   cli_id = models.ForeignKey('Cliente', on_delete=models.DO_NOTHING, db_column='cli_id')
   prod_id = models.ForeignKey(Producto, on_delete=models.DO_NOTHING, db_column='prod_id')
