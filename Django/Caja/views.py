@@ -719,6 +719,13 @@ def movimiento_delete(request, movimiento_id):
   messages.success(request, ('Operación realizada con éxito.'))
   return movimientos(request)
 
+
+def movimientos_print(request):
+  movimientos = models.Movimiento.objects.all()
+  filtered = None
+
+  return render(request, 'movimientos/print.html', {'movimientos': movimientos})
+
 # Tipos de Cliente
 
 def tipos_cliente(request):
