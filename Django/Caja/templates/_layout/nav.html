@@ -16,6 +16,9 @@
     {% if user.is_authenticated %}
       {% if user.is_staff %}
       <li class="nav-item">
+        <a class="nav-link" href="{% url 'documentos' %}">Documentos</a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" href="{% url 'movimientos' %}">Movimientos</a>
       </li>
       <li class="nav-item">
