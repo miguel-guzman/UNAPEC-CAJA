@@ -1,0 +1,128 @@
+{% extends '_layout\core.html' %}
+
+{% block title %}Crear Movimiento{% endblock title %}
+
+{% block content %}
+    <div class="container">
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-primary alert-dismissible fade show mt-3" role="alert">
+        <button type="button" class="close" data-dismiss="alert">
+          &times;
+        </button>
+      {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+      <nav>
+        <ol class="breadcrumb bg-light mt-3">
+          <li class="breadcrumb-item"><a href="{% url 'index' %}">Inicio</a></li>
+          <li class="breadcrumb-item"><a href="{% url 'movimientos' %}">Movimientos</a></li>
+          <li class="breadcrumb-item active">Crear</li>
+        </ol>
+      </nav>
+      <div class="row mt-3">
+        <div class="col-lg-6 mx-auto">
+          <form method="POST">
+            {% csrf_token %}
+            {% if empleado %}
+            <div class="form-group" hidden>
+              <label for="emp_nomb">Empleado</label>
+              <select class="form-control" name="emp_id" id="emp_id" required>
+                <option value="{{ empleado.emp_id }}" selected>{{ empleado.emp_nomb }} {{ empleado.emp_ape1 }}</option>
+              </select>
+            </div>
+            {% endif %}
+            {% if clientes %}
+            <div class="form-group">
+              <label for="cli_id">Cliente</label>
+              <select class="form-control" name="cli_id" id="cli_id" required>
+                <option value="">Elegir cliente...</option>
+                  {% for cliente in clientes %}
+                <option value="{{ cliente.cli_id }}">{{ cliente.cli_nomb }} {{ cliente.cli_ape1 }}</option>
+                  {% endfor %}
+              </select>
+            </div>
+            {% endif %}
+            {% if productos %}
+            <div class="form-group">
+              <label for="prod_id">Producto</label>
+              <select class="form-control sincronizar" name="prod_id" id="prod_id" required>
+                <option value="">Elegir producto...</option>
+                  {% for producto in productos %}
+                <option value="{{ producto.prod_id }}">{{ producto.prod_nomb }} (RD${{ producto.prod_prec }})</option>
+                  {% endfor %}
+              </select>
+            </div>
+            {% endif %}
+            {% if tipos_documento %}
+            <div class="form-group">
+              <label for="tdoc_id">Tipos de documento</label>
+              <select class="form-control" name="tdoc_id" id="tdoc_id" required>
+                <option value="">Elegir tipo de documento...</option>
+                  {% for tipo_documento in tipos_documento %}
+                <option value="{{ tipo_documento.tdoc_id }}">{{ tipo_documento.tdoc_nomb }}</option>
+                  {% endfor %}
+              </select>
+            </div>
+            {% endif %}
+            {% if modos_pago %}
+            <div class="form-group">
+              <label for="mpago_id">Modos de pago</label>
+              <select class="form-control" name="mpago_id" id="mpago_id" required>
+                <option value="">Elegir forma de pago...</option>
+                  {% for modo_pago in modos_pago %}
+                <option value="{{ modo_pago.mpago_id }}">{{ modo_pago.mpago_nomb }}: {{ modo_pago.mpago_cuot }} cuota(s) ({{ modo_pago.mpago_inte }}% de interés)</option>
+                  {% endfor %}
+              </select>
+            </div>
+            {% endif %}
+            {% if productos %}
+            <div class="form-group" hidden>
+              <label for="mov_monto">Monto</label>
+              <select class="form-control sincronizar" name="mov_monto" id="mov_monto" required>
+                <option value="">Elegir monto...</option>
+                  {% for producto in productos %}
+                <option value="{{ producto.prod_prec|stringformat:'0.02f' }}">{{ producto.prod_prec|stringformat:'0.02f' }}</option>
+                  {% endfor %}
+              </select>
+            </div>
+            {% endif %}
+            <div class="form-group">
+              <label for="mov_abono">Abono</label>
+              <input class="form-control" type="number" name="mov_abono" id="mov_abono" value="0" min="0" max="9999999999.99">
+            </div>
+            {% if formas_pago %}
+            <div class="form-group">
+              <label for="fpago_id">Formas de pago</label>
+              <select class="form-control" name="fpago_id" id="fpago_id" required>
+                <option value="">Elegir forma de pago...</option>
+                  {% for forma_pago in formas_pago %}
+                <option value="{{ forma_pago.fpago_id }}">{{ forma_pago.fpago_nomb }}</option>
+                  {% endfor %}
+              </select>
+            </div>
+            {% endif %}
+            <div class="form-check" hidden>
+              <input class="form-check-input" type="checkbox" name="mov_acti" id="mov_acti" checked>
+              <label class="form-check-label" for="mov_acti">
+                Habilitado
+              </label>
+            </div>
+            <div class="text-center my-3">
+              <a class="btn text-secondary" href="{% url 'movimientos' %}" role="button">Volver</a>
+              <button type="submit" class="btn btn-primary">Agregar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+{% endblock content %}
+
+{% block scripts %}
+<script>
+var $sincronizar = $(".sincronizar").on('change', function() {
+  $sincronizar.not(this).get(0).selectedIndex = this.selectedIndex;
+});
+</script>
+{% endblock %}
