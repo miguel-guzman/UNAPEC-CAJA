@@ -55,7 +55,7 @@
               </div>
             </div>
             <div class="form-group">
-              <a class="btn btn-success ml-2" href="{% url 'movimiento_create' %}" role="button">Crear</a>
+              {% comment %} <a class="btn btn-success ml-2" href="{% url 'documentos' %}" role="button">Crear</a> {% endcomment %}
               <button type="submit" class="btn btn-primary ml-2 my-2 my-lg-0">Buscar</button>
               {% if filtered %}<a class="btn btn-secondary ml-2 my-2 my-lg-0" href="{% url 'movimientos' %}" role="button">Reestablecer</a>{% endif %}
             </div>
@@ -77,14 +77,16 @@
               <h6><span class="badge badge-primary">#{{ movimiento.mov_id }}</span> {{ movimiento.mov_fecha }}</h6>
             </div>
             <ul class="list-group list-group-flush">
-              <li class="list-group-item"><i class="fa fa-calendar"></i> {{ movimiento.mov_fecha }}</li>
-              <li class="list-group-item"><i class="fa fa-file-o"></i> {{ movimiento.doc_id.doc_id }}</li>
-              <li class="list-group-item"><i class="fa fa-dollar"></i> {{ movimiento.fpago_id.fpago_nomb }}</li>
-              <li class="list-group-item"><i class="fa fa-usd"></i> {{ movimiento.mov_monto }}</li>
-              <li class="list-group-item">{% if movimiento.mov_acti %}<i class="fa fa-check-square-o"></i> Activo{% else %}<i class="fa fa-times"></i> Inactivo{% endif %}</li>
+              <li class="list-group-item"><i class="fa fa-id-card pr-1"></i><strong>Documento</strong>: {{ movimiento.doc_id.doc_id }}</li>
+              <li class="list-group-item"><i class="fa fa-id-card pr-1"></i><strong>Abono</strong>: {{ movimiento.mov_monto }}</li>
+              <li class="list-group-item"><i class="fa fa-id-card pr-1"></i><strong>Pendiente</strong>: {{ movimiento.doc_id.pendiente }}</li>
+              <li class="list-group-item"><i class="fa fa-user-circle pr-1"></i><strong>Usuario</strong>: {{ movimiento.emp_id.usu_id.username }}</li>
+              <li class="list-group-item"><i class="fa fa-key pr-1"></i><strong>Perfil</strong>: {% if movimiento.emp_id.usu_id.is_superuser %}Administrador{% else %}{% if movimiento.emp_id.usu_id.is_staff %}Empleado{% endif %}{% endif %}{% if not movimiento.emp_id.usu_id.is_active %} (Inactivo){% endif %}</li>
+              <li class="list-group-item">{% if movimiento.mov_acti %}<i class="fa fa-check-square-o pr-1"></i><strong>Activo</strong>{% else %}<i class="fa fa-times pr-1"></i><strong>Inactivo</strong>{% endif %}</li>
             </ul>
             <div class="card-footer text-right">
-              {% if user.is_superuser %}<a class="btn text-danger ml-3" href="{% url 'movimiento_update' movimiento.mov_id %}" role="button">Anular</a>{% endif %}
+              {% if user.is_superuser %}<a class="btn text-secondary ml-3" href="{% url 'movimiento_print' movimiento.mov_id %}" role="button">Imprimir</a>{% endif %}
+              {% if user.is_superuser %}<a class="btn text-danger ml-3" href="{% url 'movimiento_delete' movimiento.mov_id %}" role="button">Anular</a>{% endif %}
             </div>
           </div>
         </div>
@@ -128,7 +130,7 @@
             query2.prop('required', 'false');
 
             if (field.prop('value') === 'mov_fecha') {
-              query.prop('type', 'date');)
+              query.prop('type', 'date');
               query2.show();
               query2.prop('required', 'true');
             }
@@ -141,6 +143,11 @@
               query.prop('title', 'Solo puede contener caracteres alfabéticos.');
             }
             field.on('change', function(){
+              if(field.prop('value') !== 'mov_fecha'){
+                  query.prop('type', 'text');
+                  query2.hide();
+                  query2.prop('required', 'false');
+              }
               if (field.prop('value') === 'mov_fecha') {
                 query.prop('type', 'date');
                 query2.show();

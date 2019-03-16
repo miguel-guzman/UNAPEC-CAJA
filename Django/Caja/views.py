@@ -29,96 +29,98 @@ def empleados(request):
   empleados = models.Empleado.objects.all()
   filtered = None
 
-  if request.method == 'GET':
-    if request.GET.get('field') == 'emp_id':
-      if request.GET.get('match') == 'on':
-        empleados = models.Empleado.objects.filter(emp_id=request.GET.get('query'))
-        messages.success(request, 'ID igual a ' + request.GET.get('query') + '.')
-      else:
-        empleados = models.Empleado.objects.filter(emp_id__iregex=r'(' + request.GET.get('query') + r')+')
-        messages.success(request, 'ID que contenga ' + request.GET.get('query') + '.')
-      filtered = True
+  if request.GET.get('query') is not None:
+    if len(request.GET.get('query')) > 0:
+      if request.method == 'GET':
+        if request.GET.get('field') == 'emp_id':
+          if request.GET.get('match') == 'on':
+            empleados = models.Empleado.objects.filter(emp_id=request.GET.get('query'))
+            messages.success(request, 'ID igual a ' + request.GET.get('query') + '.')
+          else:
+            empleados = models.Empleado.objects.filter(emp_id__iregex=r'(' + request.GET.get('query') + r')+')
+            messages.success(request, 'ID que contenga ' + request.GET.get('query') + '.')
+          filtered = True
 
-    if request.GET.get('field') == 'emp_nomb':
-      if request.GET.get('match') == 'on':
-        empleados = models.Empleado.objects.filter(emp_nomb=request.GET.get('query'))
-        messages.success(request, 'Nombres igual a ' + request.GET.get('query') + '.')
-      else:
-        empleados = models.Empleado.objects.filter(emp_nomb__iregex=r'(' + request.GET.get('query') + r')+')
-        messages.success(request, 'Nombres que contengan ' + request.GET.get('query') + '.')
-      filtered = True
+        if request.GET.get('field') == 'emp_nomb':
+          if request.GET.get('match') == 'on':
+            empleados = models.Empleado.objects.filter(emp_nomb=request.GET.get('query'))
+            messages.success(request, 'Nombres igual a ' + request.GET.get('query') + '.')
+          else:
+            empleados = models.Empleado.objects.filter(emp_nomb__iregex=r'(' + request.GET.get('query') + r')+')
+            messages.success(request, 'Nombres que contengan ' + request.GET.get('query') + '.')
+          filtered = True
 
-    if request.GET.get('field') == 'emp_ape1':
-      if request.GET.get('match') == 'on':
-        empleados = models.Empleado.objects.filter(emp_ape1=request.GET.get('query'))
-        messages.success(request, 'Apellido Paterno igual a ' + request.GET.get('query') + '.')
-      else:
-        empleados = models.Empleado.objects.filter(emp_ape1__iregex=r'(' + request.GET.get('query') + r')+')
-        messages.success(request, 'Apellido Paterno que contenga ' + request.GET.get('query') + '.')
-      filtered = True
+        if request.GET.get('field') == 'emp_ape1':
+          if request.GET.get('match') == 'on':
+            empleados = models.Empleado.objects.filter(emp_ape1=request.GET.get('query'))
+            messages.success(request, 'Apellido Paterno igual a ' + request.GET.get('query') + '.')
+          else:
+            empleados = models.Empleado.objects.filter(emp_ape1__iregex=r'(' + request.GET.get('query') + r')+')
+            messages.success(request, 'Apellido Paterno que contenga ' + request.GET.get('query') + '.')
+          filtered = True
 
-    if request.GET.get('field') == 'emp_ape2':
-      if request.GET.get('match') == 'on':
-        empleados = models.Empleado.objects.filter(emp_ape2=request.GET.get('query'))
-        messages.success(request, 'Apellido Materno igual a ' + request.GET.get('query') + '.')
-      else:
-        empleados = models.Empleado.objects.filter(emp_ape2__iregex=r'(' + request.GET.get('query') + r')+')
-        messages.success(request, 'Apellido Materno que contenga ' + request.GET.get('query') + '.')
-      filtered = True
+        if request.GET.get('field') == 'emp_ape2':
+          if request.GET.get('match') == 'on':
+            empleados = models.Empleado.objects.filter(emp_ape2=request.GET.get('query'))
+            messages.success(request, 'Apellido Materno igual a ' + request.GET.get('query') + '.')
+          else:
+            empleados = models.Empleado.objects.filter(emp_ape2__iregex=r'(' + request.GET.get('query') + r')+')
+            messages.success(request, 'Apellido Materno que contenga ' + request.GET.get('query') + '.')
+          filtered = True
 
-    if request.GET.get('field') == 'emp_cedu':
-      if request.GET.get('match') == 'on':
-        empleados = models.Empleado.objects.filter(emp_cedu=request.GET.get('query'))
-        messages.success(request, 'Cédula de Identidad igual a ' + request.GET.get('query') + '.')
-      else:
-        empleados = models.Empleado.objects.filter(emp_cedu__iregex=r'(' + request.GET.get('query') + r')+')
-        messages.success(request, 'Cédula de Identidad que contenga ' + request.GET.get('query') + '.')
-      filtered = True
+        if request.GET.get('field') == 'emp_cedu':
+          if request.GET.get('match') == 'on':
+            empleados = models.Empleado.objects.filter(emp_cedu=request.GET.get('query'))
+            messages.success(request, 'Cédula de Identidad igual a ' + request.GET.get('query') + '.')
+          else:
+            empleados = models.Empleado.objects.filter(emp_cedu__iregex=r'(' + request.GET.get('query') + r')+')
+            messages.success(request, 'Cédula de Identidad que contenga ' + request.GET.get('query') + '.')
+          filtered = True
 
-    if request.GET.get('field') == 'usu_nomb':
-      if request.GET.get('match') == 'on':
-        empleados = models.Empleado.objects.filter(usu_id__in=User.objects.filter(username=request.GET.get('query')))
-        messages.success(request, 'Nombre de Usuario igual a ' + request.GET.get('query') + '.')
-      else:
-        empleados = models.Empleado.objects.filter(usu_id__in=User.objects.filter(username__iregex=r'(' + request.GET.get('query') + r')+'))
-        messages.success(request, 'Nombre de Usuario que contenga ' + request.GET.get('query') + '.')
-      filtered = True
+        if request.GET.get('field') == 'usu_nomb':
+          if request.GET.get('match') == 'on':
+            empleados = models.Empleado.objects.filter(usu_id__in=User.objects.filter(username=request.GET.get('query')))
+            messages.success(request, 'Nombre de Usuario igual a ' + request.GET.get('query') + '.')
+          else:
+            empleados = models.Empleado.objects.filter(usu_id__in=User.objects.filter(username__iregex=r'(' + request.GET.get('query') + r')+'))
+            messages.success(request, 'Nombre de Usuario que contenga ' + request.GET.get('query') + '.')
+          filtered = True
 
-    if request.GET.get('field') == 'usu_tipo':
-      if request.GET.get('query').upper().strip() == 'ADMINISTRADOR':
-        empleados = models.Empleado.objects.filter(usu_id__in=User.objects.filter(is_superuser=True).filter(is_staff=True))
-        messages.success(request, 'Tipo de Usuario Administrador.')
-      elif request.GET.get('query').upper().strip() == 'EMPLEADO':
-        empleados = models.Empleado.objects.filter(usu_id__in=User.objects.exclude(is_superuser=True).filter(is_staff=True))
-        messages.success(request, 'Tipo de Usuario Empleado.')
-      else:
-        messages.error(request, 'Por favor, introduzca un tipo de usuario válido (Administrador, Empleado).')
-      filtered = True
+        if request.GET.get('field') == 'usu_tipo':
+          if request.GET.get('query').upper().strip() == 'ADMINISTRADOR':
+            empleados = models.Empleado.objects.filter(usu_id__in=User.objects.filter(is_superuser=True).filter(is_staff=True))
+            messages.success(request, 'Tipo de Usuario Administrador.')
+          elif request.GET.get('query').upper().strip() == 'EMPLEADO':
+            empleados = models.Empleado.objects.filter(usu_id__in=User.objects.exclude(is_superuser=True).filter(is_staff=True))
+            messages.success(request, 'Tipo de Usuario Empleado.')
+          else:
+            messages.error(request, 'Por favor, introduzca un tipo de usuario válido (Administrador, Empleado).')
+          filtered = True
 
-    if request.GET.get('field') == 'emp_entra':
-      empleados = models.Empleado.objects.filter(emp_entra__range=(request.GET.get('query'),request.GET.get('query2')))
-      messages.success(request, 'Fecha de Entrada entre ' + request.GET.get('query') + ' y ' + request.GET.get('query2') + '.')
-      filtered = True
+        if request.GET.get('field') == 'emp_entra':
+          empleados = models.Empleado.objects.filter(emp_entra__range=(request.GET.get('query'),request.GET.get('query2')))
+          messages.success(request, 'Fecha de Entrada entre ' + request.GET.get('query') + ' y ' + request.GET.get('query2') + '.')
+          filtered = True
 
-    if request.GET.get('field') == 'hor_nomb':
-      if request.GET.get('match') == 'on':
-        empleados = models.Empleado.objects.filter(hor_id__in=models.Horario.objects.filter(hor_nomb=request.GET.get('query')))
-        messages.success(request, 'Nombre de Horario igual a ' + request.GET.get('query') + '.')
-      else:
-        empleados = models.Empleado.objects.filter(hor_id__in=models.Horario.objects.filter(hor_nomb__iregex=r'(' + request.GET.get('query') + r')+'))
-        messages.success(request, 'Nombre de Horario que contenga ' + request.GET.get('query') + '.')
-      filtered = True
+        if request.GET.get('field') == 'hor_nomb':
+          if request.GET.get('match') == 'on':
+            empleados = models.Empleado.objects.filter(hor_id__in=models.Horario.objects.filter(hor_nomb=request.GET.get('query')))
+            messages.success(request, 'Nombre de Horario igual a ' + request.GET.get('query') + '.')
+          else:
+            empleados = models.Empleado.objects.filter(hor_id__in=models.Horario.objects.filter(hor_nomb__iregex=r'(' + request.GET.get('query') + r')+'))
+            messages.success(request, 'Nombre de Horario que contenga ' + request.GET.get('query') + '.')
+          filtered = True
 
-    if request.GET.get('field') == 'emp_acti':
-      if request.GET.get('query').upper().strip() == 'ACTIVO':
-        empleados = models.Empleado.objects.filter(emp_acti=True)
-        messages.success(request, 'Activo.')
-      elif request.GET.get('query').upper().strip() == 'INACTIVO':
-        empleados = models.Empleado.objects.filter(emp_acti=False)
-        messages.success(request, 'Inactivo.')
-      else:
-        messages.error(request, 'Por favor, introduzca un estado válido (Activo, Inactivo).')
-      filtered = True
+        if request.GET.get('field') == 'emp_acti':
+          if request.GET.get('query').upper().strip() == 'ACTIVO':
+            empleados = models.Empleado.objects.filter(emp_acti=True)
+            messages.success(request, 'Activo.')
+          elif request.GET.get('query').upper().strip() == 'INACTIVO':
+            empleados = models.Empleado.objects.filter(emp_acti=False)
+            messages.success(request, 'Inactivo.')
+          else:
+            messages.error(request, 'Por favor, introduzca un estado válido (Activo, Inactivo).')
+          filtered = True
 
   return render(request, 'empleados/index.html', {'empleados': empleados, 'filtered': filtered, 'messages': messages.get_messages(request)})
 
@@ -532,7 +534,6 @@ def clientes_excel(request):
   writer.writerow(['ID', 'Nombre', 'Apellido Paterno', 'Apellido Materno', 'Tipo', 'Carrera', 'Activo'])
 
   clientes = models.Cliente.objects.all()
-  filtered = None
 
   if request.method == 'GET':
     if len(request.GET.get('query')) > 0:
@@ -543,7 +544,6 @@ def clientes_excel(request):
         else:
           clientes = models.Cliente.objects.filter(cli_id__iregex=r'(' + request.GET.get('query') + r')+')
           messages.success(request, 'ID que contenga ' + request.GET.get('query') + '.')
-        filtered = True
 
       if request.GET.get('field') == 'cli_nomb':
         if request.GET.get('match') == 'on':
@@ -552,7 +552,6 @@ def clientes_excel(request):
         else:
           clientes = models.Cliente.objects.filter(cli_nomb__iregex=r'(' + request.GET.get('query') + r')+')
           messages.success(request, 'Nombre que contenga ' + request.GET.get('query') + '.')
-        filtered = True
 
       if request.GET.get('field') == 'cli_ape1':
         if request.GET.get('match') == 'on':
@@ -561,7 +560,6 @@ def clientes_excel(request):
         else:
           clientes = models.Cliente.objects.filter(cli_ape1__iregex=r'(' + request.GET.get('query') + r')+')
           messages.success(request, 'Apellido Paterno que contenga ' + request.GET.get('query') + '.')
-        filtered = True
 
       if request.GET.get('field') == 'cli_ape2':
         if request.GET.get('match') == 'on':
@@ -570,7 +568,6 @@ def clientes_excel(request):
         else:
           clientes = models.Cliente.objects.filter(cli_ape2__iregex=r'(' + request.GET.get('query') + r')+')
           messages.success(request, 'Apellido Materno que contenga ' + request.GET.get('query') + '.')
-        filtered = True
 
       if request.GET.get('field') == 'tcli_nomb':
         if request.GET.get('match') == 'on':
@@ -579,7 +576,6 @@ def clientes_excel(request):
         else:
           clientes = models.Cliente.objects.filter(tcli_id__in=models.TipoCliente.objects.filter(tcli_nomb__iregex=r'(' + request.GET.get('query') + r')+'))
           messages.success(request, 'Tipo de Cliente que contenga ' + request.GET.get('query') + '.')
-        filtered = True
 
       if request.GET.get('field') == 'carr_nomb':
         if request.GET.get('match') == 'on':
@@ -588,7 +584,6 @@ def clientes_excel(request):
         else:
           clientes = models.Cliente.objects.filter(carr_id__in=models.Carrera.objects.filter(carr_nomb__iregex=r'(' + request.GET.get('query') + r')+'))
           messages.success(request, 'Tipo de Cliente que contenga ' + request.GET.get('query') + '.')
-        filtered = True
 
       if request.GET.get('field') == 'cli_acti':
         if request.GET.get('query').upper().strip() == 'ACTIVO':
@@ -600,7 +595,6 @@ def clientes_excel(request):
         else:
           messages.error(request, 'Por favor, introduzca un estado válido (Activo, Inactivo).')
           return redirect(clientes)
-        filtered = True
 
     clientes = clientes.values_list('cli_id', 'cli_nomb', 'cli_ape1', 'cli_ape2', 'tcli_id', 'carr_id', 'cli_acti')
 
@@ -621,13 +615,13 @@ def cliente_create(request):
     if form.is_valid():
       form.save()
       messages.success(request, ('Operación realizada con éxito.'))
-      return clientes(request)
+      return redirect(clientes)
     else:
       messages.error(request, ('Información incorrecta.'))
 
   if models.TipoCliente.objects.filter(tcli_acti=True).count() == 0:
     messages.error(request, ('No hay tipos de cliente disponibles.'))
-    return clientes(request)
+    return redirect(clientes)
 
   return render(request, 'clientes/create.html', {'tipos_cliente': models.TipoCliente.objects.filter(tcli_acti=True), 'carreras': models.Carrera.objects.filter(carr_acti=True)})
 
@@ -655,7 +649,7 @@ def cliente_delete(request, cliente_id):
 
 # Movimientos
 
-def movimiento(request):
+def movimientos(request):
   movimientos = models.Movimiento.objects.all()
   filtered = None
 
@@ -680,7 +674,7 @@ def movimiento(request):
 
     if request.GET.get('field') == 'doc_id':
       if request.GET.get('match') == 'on': 
-        movimientos = models.Movimiento.objects.filter(doc_id__in=models.Documento.objects.filter(doc_id=request.GET.get('query'))
+        movimientos = models.Movimiento.objects.filter(doc_id__in=models.Documento.objects.filter(doc_id=request.GET.get('query')))
         messages.success(request, 'Documento igual a ' + request.GET.get('query') + '.')
       else:
         movimientos = models.Movimiento.objects.filter(doc_id__in=models.FormaPago.objects.filter(doc_id__iregex=r'(' + request.GET.get('query') + r')+'))
@@ -689,7 +683,7 @@ def movimiento(request):
 
     if request.GET.get('field') == 'fpago_id':
       if request.GET.get('match') == 'on': 
-        movimientos = models.Movimiento.objects.filter(fpago_id__in=models.FormaPago.objects.filter(fpago_id=request.GET.get('query'))
+        movimientos = models.Movimiento.objects.filter(fpago_id__in=models.FormaPago.objects.filter(fpago_id=request.GET.get('query')))
         messages.success(request, 'Forma de Pago igual a ' + request.GET.get('query') + '.')
       else:
         movimientos = models.Movimiento.objects.filter(fpago_id__in=models.FormaPago.objects.filter(fpago_id__iregex=r'(' + request.GET.get('query') + r')+'))
@@ -718,43 +712,28 @@ def movimiento(request):
 
   return render(request, 'movimientos/index.html', {'movimientos': movimientos, 'filtered': filtered, 'messages': messages.get_messages(request)})
 
-def movimiento_create(request):
+def movimiento_create(request, documento_id):
+  documento = models.Documento.objects.filter(pk=documento_id)
   form = forms.MovimientoForm(request.POST or None)
 
   if request.method == 'POST':
     if form.is_valid():
       form.save()
       messages.success(request, ('Operación realizada con éxito.'))
-      return movimientos(request)
+      return redirect(documentos)
     else:
       messages.error(request, ('Información incorrecta.'))
 
   if request.user.is_authenticated and request.user.is_staff:
     if models.Empleado.objects.filter(usu_id=request.user.id).count() == 0:
       messages.error(request, ('Su usuario no está configurado como empleado. Contacte a su administrador.'))
-      return movimientos(request)
-
-  if models.Cliente.objects.filter(cli_acti=True).count() == 0:
-    messages.error(request, ('No hay clientes disponibles.'))
-    return movimientos(request)
-
-  if models.Producto.objects.filter(prod_acti=True).count() == 0:
-    messages.error(request, ('No hay productos disponibles.'))
-    return movimientos(request)
-
-  if models.TipoDocumento.objects.filter(tdoc_acti=True).count() == 0:
-    messages.error(request, ('No hay tipos de documento disponibles.'))
-    return movimientos(request)
+      return redirect(documentos)
 
   if models.FormaPago.objects.filter(fpago_acti=True).count() == 0:
     messages.error(request, ('No hay formas de pago disponibles.'))
-    return movimientos(request)
+    return redirect(documentos)
 
-  if models.ModoPago.objects.filter(mpago_acti=True).count() == 0:
-    messages.error(request, ('No hay modalidades de pago disponibles.'))
-    return movimientos(request)
-
-  return render(request, 'movimientos/create.html', {'form': form, 'empleado': models.Empleado.objects.get(usu_id=request.user.id) if models.Empleado.objects.filter(usu_id=request.user.id).count() > 0 else None, 'clientes': models.Cliente.objects.filter(cli_acti=True), 'productos': models.Producto.objects.filter(prod_acti=True), 'tipos_documento': models.TipoDocumento.objects.filter(tdoc_acti=True), 'formas_pago': models.FormaPago.objects.filter(fpago_acti=True), 'modos_pago': models.ModoPago.objects.filter(mpago_acti=True)})
+  return render(request, 'movimientos/create.html', {'form': form, 'empleado': models.Empleado.objects.get(usu_id=request.user.id) if models.Empleado.objects.filter(usu_id=request.user.id).count() > 0 else None, 'formas_pago': models.FormaPago.objects.filter(fpago_acti=True), 'documento': documento[0]})
 
 
 def movimiento_update(request, movimiento_id):
@@ -773,16 +752,151 @@ def movimiento_update(request, movimiento_id):
 
 
 def movimiento_delete(request, movimiento_id):
-  models.Movimiento.objects.get(pk=movimiento_id).delete()
-  messages.success(request, ('Operación realizada con éxito.'))
-  return movimientos(request)
+  movimiento = models.Movimiento.objects.filter(pk=movimiento_id)
+  if request.method == 'POST':
+    movimiento.update(mov_acti=0)
+    messages.success(request, ('Operación realizada con éxito.'))
+    return redirect(movimientos)
+
+  return render(request, 'movimientos/delete.html', {'movimiento': movimiento[0]})
+
+
+def movimientos_excel(request):
+  return redirect(movimientos)
 
 
 def movimientos_print(request):
-  movimientos = models.Movimiento.objects.all()
+  return render(movimientos, {'movimiento': models.Movimiento.objects.all().get(pk=movimiento_id)})
+
+
+def movimiento_print(request, movimiento_id):
+  return render(request, 'movimientos/print-1.html', {'movimiento': models.Movimiento.objects.all().get(pk=movimiento_id)})
+
+
+def documentos(request):
+  documentos = models.Documento.objects.all()
   filtered = None
 
-  return render(request, 'movimientos/print.html', {'movimientos': movimientos})
+  if request.method == 'GET':
+    if request.GET.get('query') is not None:
+      if len(request.GET.get('query')) > 0:
+        if request.GET.get('field') == 'doc_id':
+          if request.GET.get('match') == 'on':
+            documentos = models.Documento.objects.filter(doc_id=request.GET.get('query'))
+            messages.success(request, 'ID igual a ' + request.GET.get('query') + '.')
+          else:
+            documentos = models.Documento.objects.filter(doc_id__iregex=r'(' + request.GET.get('query') + r')+')
+
+        if request.GET.get('field') == 'emp_nomb':
+          if request.GET.get('match') == 'on':
+            documentos = models.Documento.objects.filter(emp_nomb_id__in=models.Empleado.objects.filter(emp_nomb_nomb=request.GET.get('query')))
+            messages.success(request, 'Empleado igual a ' + request.GET.get('query') + '.')
+          else:
+            documentos = models.Documento.objects.filter(emp_nomb_id__in=models.Empleado.objects.filter(emp_nomb_nomb__iregex=r'(' + request.GET.get('query') + r')+'))
+            messages.success(request, 'Empleado que contenga ' + request.GET.get('query') + '.')
+
+        if request.GET.get('field') == 'cli_nomb':
+          if request.GET.get('match') == 'on':
+            documentos = models.Documento.objects.filter(cli_nomb_id__in=models.Cliente.objects.filter(cli_nomb_nomb=request.GET.get('query')))
+            messages.success(request, 'Cliente igual a ' + request.GET.get('query') + '.')
+          else:
+            documentos = models.Documento.objects.filter(cli_nomb_id__in=models.Cliente.objects.filter(cli_nomb_nomb__iregex=r'(' + request.GET.get('query') + r')+'))
+            messages.success(request, 'Cliente que contenga ' + request.GET.get('query') + '.')
+
+        if request.GET.get('field') == 'prod_nomb':
+          if request.GET.get('match') == 'on':
+            documentos = models.Documento.objects.filter(prod_id__in=models.Producto.objects.filter(prod_nomb=request.GET.get('query')))
+            messages.success(request, 'Producto igual a ' + request.GET.get('query') + '.')
+          else:
+            documentos = models.Documento.objects.filter(prod_id__in=models.Producto.objects.filter(prod_nomb__iregex=r'(' + request.GET.get('query') + r')+'))
+            messages.success(request, 'Producto que contenga ' + request.GET.get('query') + '.')
+
+        if request.GET.get('field') == 'tdoc_nomb':
+          if request.GET.get('match') == 'on':
+            documentos = models.Documento.objects.filter(tdoc_id__in=models.TipoDocumento.objects.filter(tdoc_nomb=request.GET.get('query')))
+            messages.success(request, 'Tipo de Documento igual a ' + request.GET.get('query') + '.')
+          else:
+            documentos = models.Documento.objects.filter(tdoc_id__in=models.TipoDocumento.objects.filter(tdoc_nomb__iregex=r'(' + request.GET.get('query') + r')+'))
+            messages.success(request, 'Tipo de Documento que contenga ' + request.GET.get('query') + '.')
+
+        if request.GET.get('field') == 'mpago_nomb':
+          if request.GET.get('match') == 'on':
+            documentos = models.Documento.objects.filter(mpago_id__in=models.ModoPago.objects.filter(mpago_nomb=request.GET.get('query')))
+            messages.success(request, 'Modo de Pago igual a ' + request.GET.get('query') + '.')
+          else:
+            documentos = models.Documento.objects.filter(mpago_id__in=models.ModoPago.objects.filter(mpago_nomb__iregex=r'(' + request.GET.get('query') + r')+'))
+            messages.success(request, 'Modo de Pago que contenga ' + request.GET.get('query') + '.')
+
+        if request.GET.get('field') == 'doc_acti':
+          if request.GET.get('query').upper().strip() == 'ACTIVO':
+            documentos = models.Documento.objects.filter(doc_acti=True)
+            messages.success(request, 'Activo.')
+          elif request.GET.get('query').upper().strip() == 'INACTIVO':
+            documentos = models.Documento.objects.filter(doc_acti=False)
+            messages.success(request, 'Inactivo.')
+          else:
+            messages.error(request, 'Por favor, introduzca un estado válido (Activo, Inactivo).')
+            return redirect(documentos)
+
+  return render(request, 'documentos/index.html', {'documentos': documentos, 'filtered': filtered, 'messages': messages.get_messages(request)})
+
+
+def documento_create(request):
+  form = forms.DocumentoForm(request.POST or None)
+
+  if request.method == 'POST':
+    if form.is_valid():
+      form.save()
+      messages.success(request, ('Operación realizada con éxito.'))
+      return redirect(documentos)
+    else:
+      messages.error(request, ('Información incorrecta.'))
+
+# Validación
+
+  if request.user.is_authenticated and request.user.is_staff:
+    if models.Empleado.objects.filter(usu_id=request.user.id).count() == 0:
+      messages.error(request, ('Su usuario no está configurado como empleado. Contacte a su administrador.'))
+      return redirect(documentos)
+
+  if models.Cliente.objects.filter(cli_acti=True).count() == 0:
+    messages.error(request, ('No hay clientes disponibles.'))
+    return redirect(documentos)
+
+  if models.Producto.objects.filter(prod_acti=True).count() == 0:
+    messages.error(request, ('No hay productos disponibles.'))
+    return redirect(documentos)
+
+  if models.TipoDocumento.objects.filter(tdoc_acti=True).count() == 0:
+    messages.error(request, ('No hay tipos de documento disponibles.'))
+    return redirect(documentos)
+
+  if models.ModoPago.objects.filter(mpago_acti=True).count() == 0:
+    messages.error(request, ('No hay modalidades de pago disponibles.'))
+    return redirect(documentos)
+
+  return render(request, 'documentos/create.html', {'form': form, 'empleado': models.Empleado.objects.get(usu_id=request.user.id) if models.Empleado.objects.filter(usu_id=request.user.id).count() > 0 else None, 'clientes': models.Cliente.objects.filter(cli_acti=True), 'productos': models.Producto.objects.filter(prod_acti=True), 'tipos_documento': models.TipoDocumento.objects.filter(tdoc_acti=True), 'modos_pago': models.ModoPago.objects.filter(mpago_acti=True)})
+
+
+def documentos_print(request):
+  return redirect(documentos)
+
+
+def documentos_excel(request):
+  return redirect(documentos)
+
+
+def documento_print(request):
+  return redirect(documentos)
+
+def documento_delete(request, documento_id):
+  documento = models.Documento.objects.filter(pk=documento_id)
+  if request.method == 'POST':
+    documento.update(doc_acti=0)
+    messages.success(request, ('Operación realizada con éxito.'))
+    return redirect(documentos)
+
+  return render(request, 'documentos/delete.html', {'documento': documento[0]})
 
 # Tipos de Cliente
 

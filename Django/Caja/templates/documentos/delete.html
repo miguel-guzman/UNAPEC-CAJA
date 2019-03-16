@@ -1,0 +1,68 @@
+{% extends '_layout\core.html' %}
+
+{% block title %}Documentos{% endblock title %}
+
+{% block content %}
+<div class="container">
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-primary alert-dismissible fade show mt-3" role="alert">
+        <button type="button" class="close" data-dismiss="alert">
+          &times;
+        </button>
+      {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+  {% if user.is_authenticated %}
+    {% if user.is_superuser %}
+        <nav>
+            <ol class="breadcrumb bg-light mt-3">
+            <li class="breadcrumb-item"><a href="{% url 'index' %}">Inicio</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'documentos' %}">Documentos</a></li>
+            <li class="breadcrumb-item active">Anular</li>
+            </ol>
+        </nav>
+        <div class="text-center mt-3">
+            <a class="btn btn-secondary" href="{% url 'documentos' %}" role="button">Volver</a>
+        </div>
+    {% else %}
+    <div class="row mt-3">
+        <div class="col-lg-6 mx-auto">
+        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+            <button type="button" class="close" data-dismiss="alert">
+            &times;
+            </button>
+            No tiene los permisos suficientes para ver este contenido
+        </div>
+        </div>
+    </div>
+    {% endif %}
+    {% else %}
+    <div class="row mt-3">
+        <div class="col-lg-6 mx-auto">
+        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+            <button type="button" class="close" data-dismiss="alert">
+            &times;
+            </button>
+            Para continuar, debe iniciar sesión
+        </div>
+        </div>
+    </div>
+    {% endif %}
+    <form method='POST'>
+        {% csrf_token %}
+    </form>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+$(document).ready(function() {
+      if (confirm("¿Seguro desea anular el documento #{{ documento.doc_id }}?")){
+         $('form').submit();
+      } else {
+        window.history.back();
+      }
+});
+</script>
+{% endblock %}

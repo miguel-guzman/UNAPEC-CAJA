@@ -15,7 +15,7 @@
     {% endfor %}
   {% endif %}
   {% if user.is_authenticated %}
-    {% if user.is_superuser %}
+    {% if user.is_staff %}
       <nav>
         <ol class="breadcrumb bg-light mt-3">
           <li class="breadcrumb-item"><a href="{% url 'index' %}">Inicio</a></li>
@@ -28,17 +28,15 @@
             <div class="form-row form-group">
               <div class="col">
                 <select class="form-control" name="field" id="field">
-                  <option value="mov_id"{% if request.GET.field == 'mov_id' %} selected{% endif %}>ID</option>
-                  <option value="mov_fecha"{% if request.GET.field == 'mov_fecha' %} selected{% endif %}>Fecha</option>
+                  <option value="doc_id"{% if request.GET.field == 'doc_id' %} selected{% endif %}>ID</option>
+                  <option value="doc_fecha"{% if request.GET.field == 'doc_fecha' %} selected{% endif %}>Fecha</option>
                   <option value="emp_nomb"{% if request.GET.field == 'emp_nomb' %} selected{% endif %}>Empleado</option>
                   <option value="cli_nomb"{% if request.GET.field == 'cli_nomb' %} selected{% endif %}>Cliente</option>
                   <option value="prod_nomb"{% if request.GET.field == 'prod_nomb' %} selected{% endif %}>Producto</option>
                   <option value="tdoc_nomb"{% if request.GET.field == 'tdoc_nomb' %} selected{% endif %}>Tipo de Documento</option>
-                  <option value="fpago_nomb"{% if request.GET.field == 'fpago_nomb' %} selected{% endif %}>Forma de Pago</option>
                   <option value="mpago_nomb"{% if request.GET.field == 'mpago_nomb' %} selected{% endif %}>Modo de Pago</option>
-                  <option value="mov_monto"{% if request.GET.field == 'mov_monto' %} selected{% endif %}>Monto</option>
-                  <option value="mov_abono"{% if request.GET.field == 'mov_abono' %} selected{% endif %}>Abono</option>
-                  <option value="mov_acti"{% if request.GET.field == 'mov_acti' %} selected{% endif %}>Activo</option>
+                  <option value="doc_monto"{% if request.GET.field == 'doc_monto' %} selected{% endif %}>Monto</option>
+                  <option value="doc_acti"{% if request.GET.field == 'doc_acti' %} selected{% endif %}>Activo</option>
                 </select>
               </div>
               <div class="col">
@@ -55,14 +53,14 @@
               </div>
             </div>
             <div class="form-group">
-              <a class="btn btn-success ml-2" href="{% url 'movimiento_create' %}" role="button">Crear</a>
+              <a class="btn btn-success ml-2" href="{% url 'documento_create' %}" role="button">Crear</a>
               <button type="submit" class="btn btn-primary ml-2 my-2 my-lg-0">Buscar</button>
-              {% if filtered %}<a class="btn btn-secondary ml-2 my-2 my-lg-0" href="{% url 'movimientos' %}" role="button">Reestablecer</a>{% endif %}
+              {% if filtered %}<a class="btn btn-secondary ml-2 my-2 my-lg-0" href="{% url 'documentos' %}" role="button">Reestablecer</a>{% endif %}
             </div>
             <div class="form-group">
               <div class="btn-group btn-group-sm" role="group">
-                <button type="submit" class="btn btn-secondary btn-sm my-2 my-lg-0" formaction="{# url 'movimientos_print' #}#" role="button" formnovalidate><i class="fa fa-print mx-1"></i>Imprimir</a></button>
-                <button type="submit" class="btn btn-secondary btn-sm my-2 my-lg-0" formaction="{# url 'movimientos_excel' #}#" role="button" formnovalidate><i class="fa fa-file-excel-o mx-1"></i>Exportar a Excel</button>
+                <button type="submit" class="btn btn-secondary btn-sm my-2 my-lg-0" formaction="{# url 'documentos_print' #}#" role="button" formnovalidate><i class="fa fa-print mx-1"></i>Imprimir</a></button>
+                <button type="submit" class="btn btn-secondary btn-sm my-2 my-lg-0" formaction="{# url 'documentos_excel' #}#" role="button" formnovalidate><i class="fa fa-file-excel-o mx-1"></i>Exportar a Excel</button>
               </div>
             </div>
           </form>
@@ -77,16 +75,21 @@
               <h6><span class="badge badge-primary">#{{ documento.doc_id }}</span> {{ documento.doc_fecha }}</h6>
             </div>
             <ul class="list-group list-group-flush">
-              <li class="list-group-item"><i class="fa fa-user"></i> {{ documento.cli_id.cli_nomb }} {{ documento.cli_id.cli_ape1 }}{% documento.cli_id.cli_ape2 %} {{ documento.cli_id.cli_ape2 }}{% endif %}</li>
+              <li class="list-group-item"><i class="fa fa-user"></i> {{ documento.cli_id.cli_nomb }} {{ documento.cli_id.cli_ape1 }}{% if documento.cli_id.cli_ape2 %} {{ documento.cli_id.cli_ape2 }}{% endif %}</li>
               <li class="list-group-item"><i class="fa fa-archive"></i> {{ documento.prod_id.prod_nomb }}</li>
               <li class="list-group-item"><i class="fa fa-usd"></i> RD${{ documento.doc_monto }}</li>
-              <li class="list-group-item"><i class="fa fa-dollar"></i> {{ documento.mpago_id.mpago_nomb }}</li>
-              <li class="list-group-item"><i class="fa fa-user-circle"></i> {{ documento.emp_id.emp_nomb }} {{ documento.emp_id.emp_ape1 }}{% documento.emp_id.emp_ape2 %} {{ documento.emp_id.emp_ape2 }}{% endif %}</li>
-              <li class="list-group-item">{% if documento.mov_acti %}<i class="fa fa-check-square-o"></i> Activo{% else %}<i class="fa fa-times"></i> Inactivo{% endif %}</li>
+              <li class="list-group-item"><i class="fa fa-money"></i> RD${{ documento.abono }}</li>
+              <li class="list-group-item"><i class="fa fa-file-o"></i> RD${{ documento.pendiente }}</li>
+              <li class="list-group-item"><i class="fa fa-handshake-o"></i> {{ documento.mpago_id.mpago_nomb }}</li>
+              <li class="list-group-item"><i class="fa fa-user-circle"></i> {{ documento.emp_id.emp_nomb }} {{ documento.emp_id.emp_ape1 }}{% if documento.emp_id.emp_ape2 %} {{ documento.emp_id.emp_ape2 }}{% endif %}</li>
+              <li class="list-group-item">{% if documento.doc_acti %}<i class="fa fa-check-square-o"></i> Activo{% else %}<i class="fa fa-times"></i> Inactivo{% endif %}</li>
             </ul>
+            {% if documento.doc_acti %}
             <div class="card-footer text-right">
-              {% if user.is_superuser %}<a class="btn text-danger ml-3" href="{% url 'documento_update' documento.mov_id %}" role="button">Anular</a>{% endif %}
+              {% if documento.pendiente > 0 %}{% if user.is_superuser %}<a class="btn text-success" href="{% url 'movimiento_create' documento.doc_id %}" role="button">Abonar</a>{% endif %}{% endif %}
+              {% if user.is_superuser %}<a class="btn text-danger ml-3" href="{% url 'documento_delete' documento.doc_id %}" role="button">Anular</a>{% endif %}
             </div>
+            {% endif %}
           </div>
         </div>
     {% endfor %}
@@ -120,7 +123,7 @@
 {% endblock content %}
 {% block scripts %}
     <script>
-        $( document ).ready(function() {
+   $( document ).ready(function() {
             var field = $('#field');
             var query = $('#query');
             var query2 = $('#query2');
@@ -128,12 +131,12 @@
             query2.hide();
             query2.prop('required', 'false');
 
-            if (field.prop('value') === 'mov_fecha') {
-              query.prop('type', 'date');)
+            if (field.prop('value') === 'doc_fecha') {
+              query.prop('type', 'date');
               query2.show();
               query2.prop('required', 'true');
             }
-            else if (field.prop('value') === 'mov_id') {
+            else if (field.prop('value') === 'doc_id') {
               query.prop('type', 'number');
             }
             else {
@@ -142,12 +145,17 @@
               query.prop('title', 'Solo puede contener caracteres alfabéticos.');
             }
             field.on('change', function(){
-              if (field.prop('value') === 'mov_fecha') {
+              if(field.prop('value') !== 'doc_fecha'){
+                  query.prop('type', 'text');
+                  query2.hide();
+                  query2.prop('required', 'false');
+              }
+              if (field.prop('value') === 'doc_fecha') {
                 query.prop('type', 'date');
                 query2.show();
                 query2.prop('required', 'true');
               }
-              else if (field.prop('value') === 'mov_id') {
+              else if (field.prop('value') === 'doc_id') {
                 query.prop('type', 'number');
               }
               else {
@@ -157,6 +165,5 @@
               }
             })
         });
-
     </script>
 {% endblock %}

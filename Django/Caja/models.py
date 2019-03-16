@@ -94,6 +94,7 @@ class Movimiento(models.Model):
   mov_id = models.AutoField(primary_key=True)
   mov_fecha = models.DateTimeField(auto_now_add=True)
   doc_id = models.ForeignKey('Documento', on_delete=models.DO_NOTHING, db_column='doc_id')
+  emp_id = models.ForeignKey(Empleado, on_delete=models.DO_NOTHING, db_column='emp_id')
   fpago_id = models.ForeignKey(FormaPago, on_delete=models.DO_NOTHING, db_column='fpago_id')
   mov_monto = models.DecimalField(max_digits=12, decimal_places=2)
   mov_acti = models.BooleanField(default=True)
@@ -116,6 +117,15 @@ class Documento(models.Model):
   class Meta:
     db_table = 'documento'
 
+  def abono(self):
+    if Movimiento.objects.filter(doc_id=self.doc_id).filter(mov_acti=True).count() > 0:
+      return Movimiento.objects.filter(doc_id=self.doc_id).filter(mov_acti=True).aggregate(Sum('mov_monto')).get('mov_monto__sum')
+    else:
+      return 0
+
+  def pendiente(self):
+    return self.doc_monto - self.abono()
+
 
 class Cliente(models.Model):
   cli_id = models.AutoField(primary_key=True)
@@ -129,9 +139,14 @@ class Cliente(models.Model):
   class Meta:
     db_table = 'cliente'
 
+  def nombre_completo(self):
+    return self.cli_nomb + " " + self.cli_ape1 + " " + self.cli_ape2
+
   def balance(self):
-    if Movimiento.objects.filter(cli_id=self.cli_id).filter(mov_acti=True).count() > 0:
-      return 0 # *
+    if Documento.objects.filter(cli_id=self.cli_id).filter(doc_acti=True).count() > 0 and Movimiento.objects.filter(doc_id__in=Documento.objects.filter(cli_id=self.cli_id).filter(doc_acti=True)).filter(mov_acti=True).count() > 0:
+      return Documento.objects.filter(cli_id=self.cli_id).filter(doc_acti=True).aggregate(Sum('doc_monto')).get('doc_monto__sum') - Movimiento.objects.filter(doc_id__in=Documento.objects.filter(cli_id=self.cli_id).filter(doc_acti=True)).filter(mov_acti=True).aggregate(Sum('mov_monto')).get('mov_monto__sum')
+    elif Documento.objects.filter(cli_id=self.cli_id).filter(doc_acti=True).count() > 0:
+      return Documento.objects.filter(cli_id=self.cli_id).filter(doc_acti=True).aggregate(Sum('doc_monto')).get('doc_monto__sum')
     else:
       return 0
 
